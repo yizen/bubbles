@@ -1,0 +1,11 @@
+{
+  "name": "bubbles",
+  "description": "Bubbles web application",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "",
+    "mysql" : "",
+    "sequelize" : ""
+  }
+}
