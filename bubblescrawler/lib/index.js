@@ -19,7 +19,7 @@ var bubblescrawler = function () {
 	var Lerepairedebacchus = require("./rules/Lerepairedebacchus")(scrapinode);
 	var Vinatis = require("./rules/Vinatis")(scrapinode);
 	var Cavagogo = require("./rules/Cavagogo")(scrapinode);
-	
+	var Champagneendirect = require("./rules/Champagneendirect")(scrapinode);
 	
 	db.sequelize.sync().complete(function(err) {
 	  if (err) {
@@ -57,6 +57,7 @@ var bubblescrawler = function () {
 		    parsedURL.path.match(/\.pdf/i) ||
 		    parsedURL.path.match(/\.ico/i) ||
 		    parsedURL.path.match(/\.swf/i) ||
+		    		    
 		    
 		    parsedURL.path.match(/\.js/i) ||
 		    parsedURL.path.match(/\/\.js\.php/i) ||
@@ -98,6 +99,8 @@ var bubblescrawler = function () {
 			parsedURL.path.match(/\/vins-etiquettes-abimees/i) ||
 	    
 		    parsedURL.path.match(/\/back=/i) ||
+		    parsedURL.path.match(/add&amp/i) ||
+		    parsedURL.path.match(/cart.php/i) ||
 		    
 		    
 		    parsedURL.path.match(/\/amp%3Bamp%3Bamp/i) ||
@@ -173,13 +176,15 @@ var bubblescrawler = function () {
 					    if (price){price = priceStringToFloat(price)}
 					    
 					    if (!name) {name = _.join(" ", producer, wine)}
+					    
+					    if (name == "") return;
 					    			    				    	
 				    	db.Wine.find({ where: {url: queueItem.url} }).success(function(wineFound) {
 					    	if (wineFound) {
 					    		console.log("EXIST".cyan,name,price);
 					    	
 						    	if (wineFound.price != price) {
-						    		console.log("PRICE ALERT :".blue, name, price, wineFound.price);
+						    		console.log("PRICE ALERT :".blue, name, price, wineFound.price, wineFound.url);
 						    		
 							    	var oldPrice = wineFound.price;
 							    	var oldDate = wineFound.updatedAt;
@@ -205,16 +210,17 @@ var bubblescrawler = function () {
 					    		//Look for same name and same site to avoid duplicates
 					    	    db.Wine.find({where: {name:name, WebsiteId:webSite.id}}).success(function(duplicate) {
 						    	   if (duplicate) { 
-									   console.log("DUPLICATE".cyan,name,price);
+									   console.log("DUPLICATE".cyan,name);
 						    	   } 
 						    	   else {
-									 console.log("NEW".inverse,name,price);
+									 console.log("NEW".magenta, name, price, queueItem.url);
 							    	 var newWine = db.Wine.create ({
 							    		name:name,
 										wine:wine,
 										producer:producer,
 										url:queueItem.url,
-										price:price
+										price:price,
+										size:nameToSize(name)
 									}).success( function( justCreated) {
 										//console.log("wine created, saving".blue);
 										justCreated.setWebsite(webSite);
