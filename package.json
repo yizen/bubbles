@@ -5,7 +5,10 @@
   "private": true,
   "dependencies": {
     "express": "",
+    "less-middleware":"",
+    "less" : "",
     "mysql" : "",
-    "sequelize" : ""
+    "sequelize" : "",
+    "jade": ">= 0.0.1"
   }
 }

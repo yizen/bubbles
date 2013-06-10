@@ -1,0 +1,14 @@
+table#results.table.table-striped
+	tbody
+		tr
+			th Champagne
+			th Prix
+			th Site
+		- each wine in wines
+			tr
+				td
+					= wine.name
+				td.euro
+					= wine.euro
+				td
+					a(href=wine.url, target='_blank') #{wine.website}

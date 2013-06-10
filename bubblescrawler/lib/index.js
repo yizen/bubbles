@@ -4,7 +4,7 @@ var bubblescrawler = function () {
 	var colors 		= require("colors");
 	var scrapinode 	= require("scrapinode");
 	
-	var db      	= require('./models');
+	var db      	= require('../../models');
 	
 	var _  			= require('underscore');
 	_.str 			= require('underscore.string');
@@ -69,6 +69,8 @@ var bubblescrawler = function () {
 		    parsedURL.path.match(/\.jpg/i) ||
 		    parsedURL.path.match(/\.png/i) ||
 		    parsedURL.path.match(/\.gif/i) ||
+		    parsedURL.path.match(/jquery/i) ||
+		    parsedURL.path.match(/blank/i) ||
 		    
 		    parsedURL.path.match(/\/panier/i) ||
 		    parsedURL.path.match(/\/checkout/i) ||
@@ -148,7 +150,7 @@ var bubblescrawler = function () {
 		        };
 			    
 			    scrapinode.createScraper(scrapinodeOption, function(err, scraper) {
-			    	console.log("Scrapinode return on :".green, queueItem.url);
+			    	console.log(queueItem.url.green);
 		
 				    if (err) {
 				    	
@@ -171,14 +173,13 @@ var bubblescrawler = function () {
 					    if (price){price = priceStringToFloat(price)}
 					    
 					    if (!name) {name = _.join(" ", producer, wine)}
-					    			    
-					    console.log("Wine : Name : ".cyan+name+" Price : ".cyan+price);
-				    	
+					    			    				    	
 				    	db.Wine.find({ where: {url: queueItem.url} }).success(function(wineFound) {
 					    	if (wineFound) {
+					    		console.log("EXIST".cyan,name,price);
+					    	
 						    	if (wineFound.price != price) {
-						    	
-						    		console.log("Price alert :".blue, wine, price, wineFound.price);
+						    		console.log("PRICE ALERT :".blue, name, price, wineFound.price);
 						    		
 							    	var oldPrice = wineFound.price;
 							    	var oldDate = wineFound.updatedAt;
@@ -193,11 +194,21 @@ var bubblescrawler = function () {
 								    	justCreated.setWine(wineFound);
 								    	justCreated.save();
 							    	});
-						    	}				    	
+						    	}
+						    	
+						    	if (!wineFound.size) {
+							    	wineFound.size = nameToSize(name);
+							    	wineFound.save();
+						    	}
+						    					    	
 					    	} else {
 					    		//Look for same name and same site to avoid duplicates
 					    	    db.Wine.find({where: {name:name, WebsiteId:webSite.id}}).success(function(duplicate) {
-						    	   if (duplicate) { console.log("Wine : Duplicate ".red, name);} else {
+						    	   if (duplicate) { 
+									   console.log("DUPLICATE".cyan,name,price);
+						    	   } 
+						    	   else {
+									 console.log("NEW".inverse,name,price);
 							    	 var newWine = db.Wine.create ({
 							    		name:name,
 										wine:wine,
@@ -281,6 +292,18 @@ var bubblescrawler = function () {
 		else {
 			return "";
 		}
+	}
+	
+	var nameToSize = function(name) {
+		if (name.match(/magnum/i)) return "Magnum";
+		if (name.match(/demi-bouteille/i)) return "Demi-bouteille";
+		if (name.match(/1\/2 b/i)) return "Demi-bouteille";
+
+		if (name.match(/jéroboam/i)) return "Jeroboam";
+		if (name.match(/jeroboam/i)) return "Jeroboam";
+		if (name.match(/mathusalem/i)) return "Mathusalem";
+		
+		else return "";
 	}
 }()
 
