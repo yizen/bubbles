@@ -23,6 +23,8 @@ var bubblescrawler = function () {
 	var Cavagogo = require("./rules/Cavagogo")(scrapinode);
 	var Champagneendirect = require("./rules/Champagneendirect")(scrapinode);
 	var Nicolas = require("./rules/Nicolas")(scrapinode);
+	var Champagnepascher = require("./rules/Champagnepascher")(scrapinode);
+	
 	
 	var log = {
 	  'logger' : {
