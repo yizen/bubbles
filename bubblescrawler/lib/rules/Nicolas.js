@@ -1,8 +1,9 @@
-/* scrapinode callbacks */
-	var _  			= require('underscore');
-	_.str 			= require('underscore.string');
-	_.mixin(_.str.exports());
-	_.str.include('Underscore.string', 'string');
+var _  			= require('underscore');
+_.str 			= require('underscore.string');
+_.mixin(_.str.exports());
+_.str.include('Underscore.string', 'string');
+
+
 var Nicolas = function ( scrapinode ) {
 	var path = /http:\/\/www.nicolas.com/;
 	
@@ -56,7 +57,7 @@ var Nicolas = function ( scrapinode ) {
 			name = $('div.icc_titre h1').text();
 		}
 		
-		return name;
+		return name.toString('UTF-8');
 	}
 		
 	scrapinode.use (path,'isValid', isValidOperation);

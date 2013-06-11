@@ -319,7 +319,7 @@ var bubblescrawler = function () {
 			return value.replace(regEx, replaceMask);	
 		}
 		
-		if (!type.match(/Les Demoiselles de Champagne/i)) value = removeChampagne( value );
+		if (!value.match(/Les Demoiselles de Champagne/i)) value = removeChampagne( value );
 		value = remove75cl( value );
 	
 		value = _.trim(value);

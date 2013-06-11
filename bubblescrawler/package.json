@@ -6,12 +6,13 @@
   
   "dependencies": {
     "simplecrawler": "",
-    "colors": "",
+    "winston": "",
     "scrapinode": "",
     "sequelize" : "",
     "mysql" : "",
     "underscore" : "",
-    "underscore.string" : ""  
+    "underscore.string" : ""
+
    },
   "engine": "node >= 0.8.1",
   
