@@ -24,7 +24,7 @@ var bubblescrawler = function () {
 	var Champagneendirect = require("./rules/Champagneendirect")(scrapinode);
 	var Nicolas = require("./rules/Nicolas")(scrapinode);
 	var Champagnepascher = require("./rules/Champagnepascher")(scrapinode);
-	
+	var Lavinia = require("./rules/Lavinia")(scrapinode);
 	
 	var log = {
 	  'logger' : {
@@ -275,7 +275,7 @@ var bubblescrawler = function () {
 				    	}); // end find
 				    }  
 			    });
-			}, 3500);	    
+			}, 4500);	    
 		});
 		
 		mainCrawler.on("fetchheaders",function(queueItem){
@@ -352,6 +352,9 @@ var bubblescrawler = function () {
 		if (name.match(/jeroboam/i)) return "Jeroboam";
 		if (name.match(/mathusalem/i)) return "Mathusalem";
 		if (name.match(/salmanazar/i)) return "Salmanazar";
+		if (name.match(/salomon/i)) return "Salomon";
+		if (name.match(/nabuchodosor/i)) return "Nabuchodosor";
+		
 		
 		else return "";
 	}
