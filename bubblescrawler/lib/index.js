@@ -1,7 +1,9 @@
 var bubblescrawler = function () {
 
 	var crawler 	= require("simplecrawler");
-	var colors 		= require("colors");
+	
+	var winston		= require("winston");
+	
 	var scrapinode 	= require("scrapinode");
 	
 	var db      	= require('../../models');
@@ -20,8 +22,48 @@ var bubblescrawler = function () {
 	var Vinatis = require("./rules/Vinatis")(scrapinode);
 	var Cavagogo = require("./rules/Cavagogo")(scrapinode);
 	var Champagneendirect = require("./rules/Champagneendirect")(scrapinode);
+	var Nicolas = require("./rules/Nicolas")(scrapinode);
 	
-	db.sequelize.sync().complete(function(err) {
+	var log = {
+	  'logger' : {
+      'levels': {
+        'detail': 0,
+        'trace': 1,
+        'debug': 2,
+        'enter': 3,
+        'info': 4,
+        'warn': 5,
+        'error': 6
+      },
+      'colors': {
+        'detail': 'grey',
+        'trace': 'white',
+        'debug': 'blue',
+        'enter': 'inverse',
+        'info': 'green',
+        'warn': 'yellow',
+        'error': 'red'
+      },
+    }
+  };
+	
+	var logger = new (winston.Logger)({
+      'transports': [
+      new (winston.transports.Console)(
+      {
+        'level': 'enter',
+        'colorize': true
+      }),
+      new (winston.transports.File)(
+      {
+        'filename': 'scrapping.log'
+      })]
+    });
+ 
+    logger.setLevels(log.logger.levels);
+    winston.addColors(log.logger.colors);	
+    
+    db.sequelize.sync().complete(function(err) {
 	  if (err) {
 	    throw err
 	  } else {
@@ -102,6 +144,13 @@ var bubblescrawler = function () {
 		    parsedURL.path.match(/add&amp/i) ||
 		    parsedURL.path.match(/cart.php/i) ||
 		    
+			parsedURL.path.match(/millesime_filtre=/i) ||
+		    parsedURL.path.match(/nez=/i) ||
+		    parsedURL.path.match(/mode_culture=/i) ||
+		    parsedURL.path.match(/cepage_filtre=/i) ||
+		    parsedURL.path.match(/couleur=/i) ||
+		    parsedURL.path.match(/goutstyle=/i) ||
+		    parsedURL.path.match(/occasion=/i) ||
 		    
 		    parsedURL.path.match(/\/amp%3Bamp%3Bamp/i) ||
 	
@@ -109,56 +158,48 @@ var bubblescrawler = function () {
 		    
 		    parsedURL.path.match(/\/feeds/i) ||
 	
-		    parsedURL.path.match(/\/spiritueux/i) ||
-		    parsedURL.path.match(/\/alsace/i) ||
-		    parsedURL.path.match(/\/bourgogne/i) ||
-		    parsedURL.path.match(/\/rhone/i) ||
-			parsedURL.path.match(/\/languedoc/i) ||
-			parsedURL.path.match(/\/bordeaux/i) ||
-			parsedURL.path.match(/\/beaujolais/i) ||
-	
+		    parsedURL.path.match(/spiritueux/i) ||
+		    parsedURL.path.match(/alsace/i) ||
+		    parsedURL.path.match(/bourgogne/i) ||
+		    parsedURL.path.match(/rhone/i) ||
+			parsedURL.path.match(/languedoc/i) ||
+			parsedURL.path.match(/bordeaux/i) ||
+			parsedURL.path.match(/bordelais/i) ||
+			parsedURL.path.match(/beaujolais/i) ||
+			parsedURL.path.match(/roussillon/i) ||
+			parsedURL.path.match(/savoie/i) ||
+			parsedURL.path.match(/provence/i) ||
+			parsedURL.path.match(/sud-ouest/i) ||
+			parsedURL.path.match(/corse/i) ||
 			
-			parsedURL.path.match(/\/vins-de-bordeaux/i) ||
-			parsedURL.path.match(/\/vins-de-bourgogne/i) ||
-			parsedURL.path.match(/\/vins-des-cotes-du-rhone/i) ||
-			parsedURL.path.match(/\/vins-du-roussillon/i) ||
-			parsedURL.path.match(/\/vins-de-savoie/i) ||
 			parsedURL.path.match(/\/vins-du-monde/i) ||
 			parsedURL.path.match(/\/vins-de-loire/i) ||
 			parsedURL.path.match(/\/autres-regions-de-france/i) ||
-			
-	
-	
-			parsedURL.path.match(/\/corse/i) ||
-			parsedURL.path.match(/\/beaujolais/i) ||
-			parsedURL.path.match(/\/provence/i) ||
-			parsedURL.path.match(/\/vin-rhone/i) ||
-			parsedURL.path.match(/\/sud-ouest/i) ||
-			
+						
 		    parsedURL.path.match(/\/en\//i)); 
-		}, function(err){console.log(err);});
+		}, function(err){logger.error("addFetchCondition", err);});
 		
 		mainCrawler.on("fetchstart",function(queueItem){
-		    //console.log("Started fetching resource:".green, queueItem.url);
+		    //logger.info("Started fetching resource:".green, queueItem.url);
 		});
 		
 		mainCrawler.on("fetchcomplete",function(queueItem){
 		
 			setTimeout(function () {
 	
-			    //console.log("Analysing resource:".green, queueItem.url);
+			    //logger.log("Analysing resource:".green, queueItem.url);
 			    
 			    var scrapinodeOption = {
 		       		url : queueItem.url
 		        };
 			    
 			    scrapinode.createScraper(scrapinodeOption, function(err, scraper) {
-			    	console.log(queueItem.url.green);
+			    	logger.info(queueItem.url);
 		
 				    if (err) {
 				    	
 				    	//TODO : if timeout error increase timeout
-				    	return console.error("Scrapinode Error".red, err, queueItem.url)
+				    	return logger.error("Scrapinode Error :"+ err+ " on :"+ queueItem.url)
 				    };
 		
 				    var isValid = scraper.get('isValid');
@@ -181,10 +222,10 @@ var bubblescrawler = function () {
 					    			    				    	
 				    	db.Wine.find({ where: {url: queueItem.url} }).success(function(wineFound) {
 					    	if (wineFound) {
-					    		console.log("EXIST".cyan,name,price);
+					    		logger.warn("WINE EXIST : "+name+" @ "+price);
 					    	
 						    	if (wineFound.price != price) {
-						    		console.log("PRICE ALERT :".blue, name, price, wineFound.price, wineFound.url);
+						    		logger.warn("PRICE ALERT :"+name+", now @ :"+ price+ ", was :"+ wineFound.price+ " URL : "+ wineFound.url);
 						    		
 							    	var oldPrice = wineFound.price;
 							    	var oldDate = wineFound.updatedAt;
@@ -210,10 +251,10 @@ var bubblescrawler = function () {
 					    		//Look for same name and same site to avoid duplicates
 					    	    db.Wine.find({where: {name:name, WebsiteId:webSite.id}}).success(function(duplicate) {
 						    	   if (duplicate) { 
-									   console.log("DUPLICATE".cyan,name);
+									   logger.warn("DUPLICATE :" + name);
 						    	   } 
 						    	   else {
-									 console.log("NEW".magenta, name, price, queueItem.url);
+									 logger.info("NEW WINE " + name + " @ " + price + " " + queueItem.url);
 							    	 var newWine = db.Wine.create ({
 							    		name:name,
 										wine:wine,
@@ -222,7 +263,7 @@ var bubblescrawler = function () {
 										price:price,
 										size:nameToSize(name)
 									}).success( function( justCreated) {
-										//console.log("wine created, saving".blue);
+										//logger.log("wine created, saving".blue);
 										justCreated.setWebsite(webSite);
 										justCreated.save();
 									});     
@@ -236,23 +277,23 @@ var bubblescrawler = function () {
 		});
 		
 		mainCrawler.on("fetchheaders",function(queueItem){
-		    //console.log("Headers fetching resource:", queueItem.url);
+		    //logger.log("Headers fetching resource:", queueItem.url);
 		});
 		
 		mainCrawler.on("fetchclienterror",function(queueItemi, errorData){
-		    console.log("Client Error fetching resource:".red, queueItemi.url, errorData);
+		    logger.error("Client Error fetching resource on "+queueItemi.url+" error :"+ errorData);
 		});
 		
 		mainCrawler.on("fetchdataterror",function(queueItemi, errorData){
-		    console.log("Data Error fetching resource:".red, queueItemi.url, errorData);
+		    logger.error("Data Error fetching resource on "+queueItemi.url+" error :"+ errorData);
 		});
 	
 		mainCrawler.on("fetchdataerror",function(queueItem){
-		    console.log("Error: fetching resource:".red, queueItem.url);
+		    logger.error("Error: fetching resource on "+ queueItem.url);
 		});
 		
 		mainCrawler.on("complete", function(){
-			console.log("Scanning complete for ".magenta, mainCrawler.initialPath);
+			logger.info("Scanning complete for "+ mainCrawler.initialPath);
 			webSite.lastRunEnd = new Date();
 			webSite.save();
 		});
@@ -278,7 +319,7 @@ var bubblescrawler = function () {
 			return value.replace(regEx, replaceMask);	
 		}
 		
-		value = removeChampagne( value );
+		if (!type.match(/Les Demoiselles de Champagne/i)) value = removeChampagne( value );
 		value = remove75cl( value );
 	
 		value = _.trim(value);
@@ -308,6 +349,7 @@ var bubblescrawler = function () {
 		if (name.match(/jéroboam/i)) return "Jeroboam";
 		if (name.match(/jeroboam/i)) return "Jeroboam";
 		if (name.match(/mathusalem/i)) return "Mathusalem";
+		if (name.match(/salmanazar/i)) return "Salmanazar";
 		
 		else return "";
 	}

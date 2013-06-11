@@ -38,7 +38,7 @@ var Champagneendirect = function ( scrapinode ) {
 	
 		var $ = window.$;
 		var name = $('div#pb-left-column h2').text();
-		console.log(name);
+
 		return name;
 	}
 		
