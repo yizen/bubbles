@@ -1,13 +1,16 @@
 table#results.table.table-striped
 	tbody
 		tr
-			th Champagne
+			th Cuvée
+			th Producteur
 			th Prix
 			th Site
 		- each wine in wines
 			tr
 				td
-					= wine.name
+					= wine.wine
+				td
+					= wine.producer
 				td.euro
 					= wine.euro
 				td

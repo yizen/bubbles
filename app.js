@@ -31,7 +31,7 @@ db.sequelize.sync().complete(function(err) {
 			wines.forEach(function(wine) {
 				index.add({
 					id: wine.id,
-					name: wine.name,
+					name: wine.wine+" "+wine.producer,
 					url: wine.url
 				});			
    			}); 
