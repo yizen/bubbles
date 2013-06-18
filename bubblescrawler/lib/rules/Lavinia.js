@@ -51,12 +51,17 @@ var Lavinia = function ( scrapinode ) {
 		var wine = partsName[1];
 		
 		var qty = $('h1.m-header span').text();
+		
+		/* FIXME : should be in quantity check 
+		
 		if (qty.match(/0,3/i)) 		wine = wine+" - Demi-bouteille";
 		if (qty.match(/0,2/i)) 		wine = wine+" - Demi-bouteille";
 		if (qty.match(/18,00/i))	wine = wine+" - Salomon";
 		if (qty.match(/15,00/i))	wine = wine+" - Nabuchodosor";
 		if (qty.match(/3,00/i))	wine = wine+" - JŽroboam";
 		if (qty.match(/1,50/i))	wine = wine+" - Magnum";
+		
+		*/
 		
 		return wine;
 	};

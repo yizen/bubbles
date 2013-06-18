@@ -353,9 +353,12 @@ var bubblescrawler = function () {
 		if (name.match(/mathusalem/i)) return "Mathusalem";
 		if (name.match(/salmanazar/i)) return "Salmanazar";
 		if (name.match(/salomon/i)) return "Salomon";
+		if (name.match(/balthazar/i)) return "Balthazar";
 		if (name.match(/nabuchodosor/i)) return "Nabuchodosor";
-		
-		
+		if (name.match(/primat/i)) return "Primat";
+		if (name.match(/melchisédech/i)) return "Melchisédech";
+		if (name.match(/melchisedech/i)) return "Melchisédech";
+
 		else return "";
 	}
 }()

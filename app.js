@@ -43,24 +43,28 @@ db.sequelize.sync().complete(function(err) {
 // Configuration
 
 app.configure(function(){
-  app.use(express.static(__dirname + '/public'));
+	app.use(express.logger({format: 'dev'}));
+	
+	app.use(express.static(__dirname + '/public'));
 
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
+	app.set('views', __dirname + '/views');
+	app.set('view engine', 'jade');
   
-  app.use(require('less-middleware')({ 
-  	src: __dirname + '/public/less',
-  	dest: __dirname + '/public/css',
-  	prefix: "/css",
+	app.use(require('less-middleware')({ 
+  		src: __dirname + '/public/less',
+  		dest: __dirname + '/public/css',
+  		prefix: "/css",
 		// force true recompiles on every request... not the best
 		// for production, but fine in debug while working through changes
-	force: true
-  }));
+		force: true
+	}));
 
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
+	app.use(express.bodyParser());
+	app.use(express.cookieParser());
+	app.use(express.session({secret: 'Gpe3YY88WGtxzizVh'}));
+	app.use(express.methodOverride());
   
-  app.use(app.router);
+	app.use(app.router);
 });
 
 app.configure('development', function(){
@@ -75,11 +79,17 @@ app.configure('production', function(){
 // Routes
 app.get('/', routes.index);
 
-app.get('/search/:query?', function(req, res){
-	console.log("GOT QUERY ", req.params.query);
-  var query = req.params.query;
+app.get('/search', function(req, res){
+  console.log(req.query);
   
-  var results = index.search(query);
+  var q = req.query.q;
+  var demibouteille = req.query.demibouteille;
+  
+  var sizes = new Array();
+  
+  if (demibouteille == "undefined") sizes['Demi-bouteille'] = false;
+  
+  var results = index.search(q);
   var wines = new Array();
   
   console.log("TOTAL RESULTS : ",results.length);
@@ -109,7 +119,17 @@ app.get('/search/:query?', function(req, res){
 					
 					wine.euro = formatEuro(wine.price);
 					
-					wines.push(wine);
+					
+					var include = true;
+					
+					for (var key in sizes) {
+						if ((!sizes[key]) && (wine.size == key) )include = false;
+					}
+					
+					
+					if (include) 
+						wines.push(wine);
+						
 					callback(); // tell async that the iterator has completed
 					});
 			})

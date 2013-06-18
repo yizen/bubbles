@@ -5,6 +5,7 @@ module.exports = function(sequelize, DataTypes) {
 		producer: DataTypes.STRING,
 		url: DataTypes.STRING,
 		price: DataTypes.FLOAT,
-		size: DataTypes.STRING
+		size: DataTypes.STRING,
+		options: DataTypes.STRING
 	});
 }
