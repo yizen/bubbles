@@ -52,14 +52,28 @@ var Champmarket = function ( scrapinode ) {
 						
 		return wine;	
 	}
+	var optionsOperation = function(window) {
+		return;
+	}
 	
-	scrapinode.use (path,'isValid', isValidOperation);
+	var minQuantityOperation = function(window) {
+		return;
+	}
+	
+	var sizeOperation = function(window) {
+		return;
+		
+	}
+	
+	scrapinode.use (path,'isValid', isValidOperation);	
 
 	scrapinode.use (path,'producer', producerOperation);
 	scrapinode.use (path,'price', priceOperation);
 	scrapinode.use (path,'wine', wineOperation);
 	scrapinode.use (path,'name', nameOperation);
-
+	scrapinode.use (path,'options', optionsOperation);
+	scrapinode.use (path,'minQuantity', minQuantityOperation);
+	scrapinode.use (path,'size', sizeOperation);
 
 };
 

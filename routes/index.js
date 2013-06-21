@@ -1,13 +1,6 @@
-
-/*
- * GET home page.
- */
-
-exports.index = function(req, res){
-  res.render('index');
-};
-
-exports.partials = function (req, res) {
-  var name = req.params.name;
-  res.render('partials/' + name);
-};
+require('fs').readdirSync(__dirname + '/').forEach(function(file) {
+  if (file.match(/.+\.js/g) !== null && file !== 'index.js') {
+    var name = file.replace('.js', '');
+    exports[name] = require('./' + file);
+  }
+});
