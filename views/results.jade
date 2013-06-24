@@ -15,6 +15,6 @@ table#results.table.table-striped
 				td
 					= wine.size	
 				td.euro
-					= wine.euro
+					| !{wine.euro}
 				td
 					a(href=wine.url, target='_blank') #{wine.website}

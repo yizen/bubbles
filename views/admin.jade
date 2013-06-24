@@ -11,9 +11,9 @@ block body
 							div#nav-collapse01.nav-collapse.collapse
 								ul.nav
 									li.active 
-										a Refresh
+										a(href='/admin/') Websites
 									li
-										a Spider
+										a(href='/admin/jobs/') Jobs
 									li
 										a Users
 		div.row.searchbar
@@ -22,21 +22,21 @@ block body
 					tbody
 						tr
 							th Website
-							th Last Spider
-							th Last Refresh
+							th Crawl status
+							th Refresh status
 							th Actions
 						- each website in websites
 							tr
 								td
 									= website.name
 								td
-									= website.lastRunEnd	
+									= website.crawlStatus	
 								td
-									
+									= website.refreshStatus
 								td
-									a(href=website.refresh) Refresh
+									a(href=website.refresh) Run Refresh
 									br
-									a(href=website.crawl) Crawl	
+									a(href=website.crawl) Run Crawl	
 				
 						
 	script(src='/js/ui/jquery-1.8.3.min.js')

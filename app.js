@@ -1,9 +1,11 @@
 var express 		= require('express'),
   	lunr 			= require('lunr'),
+  	uuid 			= require('node-uuid'),  	
   	async 			= require('async'),
   	expressWinston 	= require('express-winston'),
   	winston			= require('winston'),
   	db 				= require('./models'),  	
+  	elasticSearchClient = require('elasticsearchclient'),
   	bubblescrawler	= require('./crawler/bubblescrawler');
   	
 var routes 			= require('./routes');  	
@@ -11,11 +13,22 @@ var routes 			= require('./routes');
 var app = module.exports = express();
 var port = 3000;
 
-var searchIndex = lunr(function () {
+app.searchIndex = lunr(function () {
 		 		this.field('name', {boost: 10})
 		 		this.field('url')
 		 		this.ref('id')
 });
+
+
+//Connect to Elasticsearch
+var elasticSearchserverOptions = {
+    host: 'localhost',
+    port: 9200,
+    pathPrefix:'',
+    secure: false,
+};
+
+var es = new elasticSearchClient(elasticSearchserverOptions);
 
 //Init models
 db.sequelize.sync().complete(function(err) {
@@ -29,7 +42,7 @@ db.sequelize.sync().complete(function(err) {
 		
 		db.Wine.findAll().success(function(wines) {
 			wines.forEach(function(wine) {
-				searchIndex.add({
+				app.searchIndex.add({
 					id: wine.id,
 					name: wine.wine+" "+wine.producer,
 					url: wine.url
@@ -107,8 +120,7 @@ app.configure('production', function(){
 });
 
 // Routes
-app.get('/', require('./routes/home'));
-app.get('/search',  require('./routes/search'));
+require('./routes')(app);
 
 app.get('/admin/', function (req, res) {
 	//Admin login page
@@ -123,70 +135,46 @@ app.get('/admin/', function (req, res) {
 });
 
 app.get('/admin/refresh/:website', function (req, res) {
-	console.log ('hello');
-	res.render('refresh');
 	
+	
+	var job = uuid.v1();	
 	var websiteId = req.param('website');
 	
 	db.Website.find(websiteId).success(function(website) {
 		website.lastRefreshStart = new Date();
+		website.refreshStatus = "RUNNING";
 		website.save();
 		
-		var asyncProcessOn = true;
-		
-		io.sockets.on('connection', function (socket) {
-			
-			// Client disconnects
-			socket.on('disconnect', function () {
-				app.emit('event:refresh:stop');
-			});
-			
-			
-			// Are we the current socket or a previous one that got disconnected ? 
-			socket.get('active', function(err, active){
-				if (!err) {
-					if (active == "reset") {
-						socket.disconnect();
-					};
-					
-					app.on('event:refresh:stop', function(){
-						console.log ("STOP");
-						socket.set('active', false);
-						asyncProcessOn = false;
-					}); //refresh stop
-											
-					socket.emit('message', { message: 'Refresh started '+website.name });
-					var timeout = 4500;
+		var timeout = 4500;
 										
-					website.getWines().success(function(wines) {
-						console.log("Total "+wines.length);
+		website.getWines().success(function(wines) {
 					
-						async.eachSeries(
-							wines, 
-							function (wine, callback){
-								
-								console.log("Starting "+wine.name+" ? "+asyncProcessOn);
-								
-								if (asyncProcessOn) {
-									setTimeout(function () {
-										bubblescrawler.explore(website, wine.url, socket, app);
-										callback();
-									}, timeout);	 
-								} else {
-									callback(true);
-								}
-							},
-							function(err) {				
-								website.lastRefreshEnd = new Date();
-								website.save();
-								socket.emit('message', { message: "Refresh finished at :" + website.lastRefreshEnd });
-						}); //async
-				  	}); //get Wines			
+			async.eachSeries(
+				wines, 
+				function (wine, callback){				
+					console.log("Starting "+wine.name);
+					setTimeout(function () {
+						bubblescrawler.explore(website, wine.url, job);
+						callback();
+						}, timeout);
+					},
 					
-				}; // not err
-			}); // socket.get.active
-		}); //socket.on.connection	
+					function(err) {				
+						website.lastRefreshEnd = new Date();
+						
+						if (err) {
+							website.refreshStatus = "ERROR";
+						} else {
+							website.refreshStatus = "OK";
+						}
+						website.save();
+					}
+			); //async
+		}); //get Wines			
 	}); //db.Website.find
+	
+	res.redirect('/admin/');
+
 });
 
 
@@ -194,10 +182,7 @@ app.get('/admin/refresh/:website', function (req, res) {
 app.get('*', require('./routes/home'));
 
 // Start server
-/*
+
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
-*/
-
-var io = require('socket.io').listen(app.listen(port));

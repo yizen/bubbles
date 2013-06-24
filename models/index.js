@@ -25,7 +25,8 @@ if (!global.hasOwnProperty('db')) {
     sequelize: sequelize,
     Website:   sequelize.import(__dirname + '/website'),
     Wine:      sequelize.import(__dirname + '/wine'),
-    Price:     sequelize.import(__dirname + '/price')
+    Price:     sequelize.import(__dirname + '/price'),
+    Log:       sequelize.import(__dirname + '/log')    
   }
 
   /*
@@ -35,6 +36,9 @@ if (!global.hasOwnProperty('db')) {
 	
 	global.db.Wine.hasMany(global.db.Price);
 	global.db.Price.belongsTo(global.db.Wine);
+	
+	global.db.Website.hasMany(global.db.Log);
+	global.db.Log.belongsTo(global.db.Website);
 }
 
 module.exports = global.db;

@@ -20,7 +20,23 @@ var bubblescrawler = (function () {
 	var Nicolas = require("./rules/Nicolas")(scrapinode);
 	var Champagnepascher = require("./rules/Champagnepascher")(scrapinode);
 	var Lavinia = require("./rules/Lavinia")(scrapinode);
+	
+	
+	var _log = function( job, message, level, url, website ) {
+	
+		var newlog = db.Log.create ({
+					job:job,
+					message:message,
+					level:level,
+					url:url
+		}).success( function( justCreated) {
+			justCreated.setWebsite(website);
+			justCreated.save();
+		});     
 
+		console.log(message, url);
+	}
+	
     /*
      * Sync : synchronise databases and datamodel.
      *
@@ -37,13 +53,14 @@ var bubblescrawler = (function () {
 	 * Explore : check a single URL
 	 *
 	 */
-	var _explore = function (website, url, socket, callback) {
+	var _explore = function (website, url, job) {
 		//Test if url exists
 		request(url, function (error, response, body) {
 			if (error || response.statusCode == 404) {
 				db.Wine.find({ where: {url: url} }).success(function(wineFound) {
 					wineFound.active = false;
 					wineFound.save();
+					_log(job, 'Wine not found', 'WARN', url, website);					
 				});
 			} else {
 				db.Wine.find({ where: {url: url} }).success(function(wineFound) {
@@ -60,98 +77,108 @@ var bubblescrawler = (function () {
 	    scrapinode.createScraper(scrapinodeOption, function(err, scraper) {
 		
 		    if (err) { 	
-	    		if (socket) socket.emit('message', { message: 'Error '+ err+ " on :"+ url });
-	    		console.error("Scrapinode Error :"+ err+ " on :"+ url);
-	    		return;
+		    	_log(job, 'Scrapinode error '+err, 'ERROR', url, website);					
+	    		return new Error("Scrapinode Error :"+ err);
 			};
 	
 		    var isValid = scraper.get('isValid');
 		    		    
 		    if (isValid) {
-		    var producer = scraper.get('producer');
-		    var wine = scraper.get('wine');	
-		    var price = scraper.get('price');
-		    var name = scraper.get('name');
-		    var options = scraper.get('options');
-		    var size = scraper.get('size');
-		    var minQuantity = scraper.get('minQuantity');
-		    
-		    if (producer) 	{producer = sanitize(producer)}
-		    if (wine) 		{wine =sanitize(wine)}		    
-		    if (name) 		{name =sanitize(name)}
-		    if (price)		{price = stringToFloat(price)}
-		    if (minQuantity){minQuantity = stringToFloat(minQuantity)}
-		    
-		    if (!name) {name = _.join(" ", producer, wine)}
-		    
-		    if (name == "") callback();
-		    			    				    	
-	    	db.Wine.find({ where: {url: url} }).success(function(wineFound) {
-		    	if (wineFound) {
-		    		if (socket) socket.emit('message', { message: "WINE EXIST : "+name+" @ "+price });
-		    		console.warn("WINE EXIST : "+name+" @ "+price);
-		    	
-			    	if (wineFound.price != price) {
-			    		if (socket) socket.emit('message', { message: "PRICE ALERT :"+name+", now @ :"+ price+ ", was :"+ wineFound.price+ " URL : "+ wineFound.url });
-			    		console.warn("PRICE ALERT :"+name+", now @ :"+ price+ ", was :"+ wineFound.price+ " URL : "+ wineFound.url);
-			    		
-				    	var oldPrice = wineFound.price;
-				    	var oldDate = wineFound.updatedAt;
+			    var producer 	= sanitize(scraper.get('producer'));
+			    var wine 		= sanitize(scraper.get('wine'));	
+			    var price 		= sanitize(scraper.get('price'));
+			    var name 		= sanitize(scraper.get('name'));
+			    var options 	= sanitize(scraper.get('options'));
+			    var size 		= sanitize(scraper.get('size'));
+			    var minQuantity = sanitize(scraper.get('minQuantity'));
+			    
+				//Change string to float for values.
+			    if (price)		{price = stringToFloat(price)}
+			    if (minQuantity){minQuantity = stringToFloat(minQuantity)}
+			    
+			   
+			   
+			    
+			    if (!name) {name = _.join(" ", producer, wine)}
+			    if (name == "") {
+		    		_log(job, 'Name empty', 'ERROR', url, website);					
+					return new Error("Name empty on :"+ url);
+			    }
+			    
+			    if (!options) options = extractOptionsFromName(name);
+			    if (!size) size= extractSizeFromName(name);
+			    
+			    color = extractColorFromName(name);
+
+			    
+			    name = removeExtrasfromName(name);
+			    			    				    	
+		    	db.Wine.find({ where: {url: url} }).success(function(wineFound) {
+			    	if (wineFound) {
+			    	
+			    		//_log(job, 'Wine found '+name, 'INFO', url, website);					
+			    	
+				    	if (wineFound.price != price) {
+				    					    
+				    		_log(job, 'Price change on '+name, 'INFO', url, website);					
+				    		
+					    	var oldPrice = wineFound.price;
+					    	var oldDate = wineFound.updatedAt;
+					    	
+					    	wineFound.price = price;
+					    	wineFound.lastPriceModified = new Date();
+					    	wineFound.save();
+					    	
+					    	var newPrice = db.Price.create({
+						    	price:oldPrice,
+						    	date:oldDate
+					    	}).success( function (justCreated) {
+						    	justCreated.setWine(wineFound);
+						    	justCreated.save();
+					    	});
+				    	}
 				    	
-				    	wineFound.price = price;
-				    	wineFound.lastPriceModified = new Date();
-				    	wineFound.save();
+				    	if (!wineFound.size) {
+					    	wineFound.size = size;
+					    	wineFound.save();
+				    	}
 				    	
-				    	var newPrice = db.Price.create({
-					    	price:oldPrice,
-					    	date:oldDate
-				    	}).success( function (justCreated) {
-					    	justCreated.setWine(wineFound);
-					    	justCreated.save();
-				    	});
-			    	}
-			    	
-			    	if (!wineFound.size) {
-				    	wineFound.size = size;
-				    	wineFound.save();
-			    	}
-			    	
-			    	if (!wineFound.options) {
-				    	wineFound.options = options;
-				    	wineFound.save();
-			    	}
-			    	
-			    	if (wineFound.minQuantity == null) {
-				    	wineFound.minQuantity = minQuantity;
-				    	wineFound.save();
-			    	}
-			    						    					    	
-		    	} else {
-		    	    db.Wine.find({where: {name:name, WebsiteId:website.id}}).success(function(duplicate) {
-			    	   if (duplicate) { 
-			    	   		if (socket) socket.emit('message', { message: "DUPLICATE :" + name });
-					   		console.warn("DUPLICATE :" + name);
-			    	   } 
-			    	   else {
-			    	   	 if (socket) socket.emit('message', { message: "NEW WINE " + name + " @ " + price + " " + url });
-						 console.info("NEW WINE " + name + " @ " + price + " " + url);
-				    	 var newWine = db.Wine.create ({
-				    		name:name,
-							wine:wine,
-							producer:producer,
-							url:url,
-							price:price,
-							minQuantity: minQuantity,
-							size: size,
-							options : options
-						}).success( function( justCreated) {
-							justCreated.setWebsite(webSite);
-							justCreated.save();
-						});     
-			    	   }//end else 
-		    	    }); //end find
-		    	} //end else
-	    	}); // end find
+				    	if (!wineFound.options) {
+					    	wineFound.options = options;
+					    	wineFound.save();
+				    	}
+				    	
+				    	if (wineFound.minQuantity == null) {
+					    	wineFound.minQuantity = minQuantity;
+					    	wineFound.save();
+				    	}
+				    						    					    	
+			    	} else {
+			    	    db.Wine.find({where: {name:name, WebsiteId:website.id}}).success(function(duplicate) {
+				    	   if (duplicate) { 
+				    			_log(job, 'Duplicate on '+name, 'INFO', url, website);					
+				    	   } 
+				    	   else {
+				    	   	 	_log(job, 'New wine '+name, 'INFO', url, website);					
+
+					    	 var newWine = db.Wine.create ({
+					    		name:name,
+								wine:wine,
+								producer:producer,
+								url:url,
+								price:price,
+								minQuantity: minQuantity,
+								size: size,
+								color: color,
+								options : options
+							}).success( function( justCreated) {
+								justCreated.setWebsite(website);
+								justCreated.save();
+							});     
+				    	   }//end else 
+			    	    }); //end find
+			    	} //end else
+		    	}); // end find
 		  }; //end is valid  
 		}); //end create scrapinos
 		 		
@@ -311,6 +338,7 @@ var bubblescrawler = (function () {
 	}
 	
 	var sanitize = function(value) {
+		if (!value) return;
 
 		value = _.trim(value);
 		value = _.clean(value);
@@ -332,24 +360,39 @@ var bubblescrawler = (function () {
 	}
 	
 	var extractSizeFromName = function(name) {
-		if (name.match(/magnum/i)) return "Magnum";
-		if (name.match(/demi-bouteille/i)) return "Demi-bouteille";
-		if (name.match(/demi bouteille/i)) return "Demi-bouteille";
+		if (name.match(/demi-bouteille/i)) return 0.5;
+		if (name.match(/demi bouteille/i)) return 0.5;
+		if (name.match(/1\/2 b/i)) return 0.5;
 
-		if (name.match(/1\/2 b/i)) return "Demi-bouteille";
+		if (name.match(/magnum/i)) return 2;
 
-		if (name.match(/jéroboam/i)) return "Jeroboam";
-		if (name.match(/jeroboam/i)) return "Jeroboam";
-		if (name.match(/mathusalem/i)) return "Mathusalem";
-		if (name.match(/salmanazar/i)) return "Salmanazar";
-		if (name.match(/salomon/i)) return "Salomon";
-		if (name.match(/balthazar/i)) return "Balthazar";
-		if (name.match(/nabuchodosor/i)) return "Nabuchodosor";
-		if (name.match(/primat/i)) return "Primat";
-		if (name.match(/melchisédech/i)) return "Melchisédech";
-		if (name.match(/melchisedech/i)) return "Melchisédech";
+		if (name.match(/jéroboam/i)) return 4;
+		if (name.match(/jeroboam/i)) return 4;
+		
+		if (name.match(/mathusalem/i)) return 8;
+		
+		if (name.match(/salmanazar/i)) return 12;
+		
+		if (name.match(/balthazar/i)) return 16;
+		
+		if (name.match(/nabuchodosor/i)) return 20;
+		
+		if (name.match(/salomon/i)) return 24;
+		
+		if (name.match(/primat/i)) return 36;
+		
+		if (name.match(/melchisédech/i)) return 40;
+		if (name.match(/melchisedech/i)) return 40;
 
-		else return null;
+		else return 1;
+	}
+	
+	var extractColorFromName = function(name) {
+		if (name.match(/rosé/i)) return "Rosé";
+		if (name.match(/rose/i)) return "Rosé";
+		if (name.match(/pink/i)) return "Rosé";
+
+		else return "White";
 	}
 	
 	var extractOptionsFromName = function (name) {
@@ -392,8 +435,8 @@ var bubblescrawler = (function () {
 	}
 	
 	return {
-		explore: function(website, url, socket, callback) {
-			_explore(website, url, socket, callback );
+		explore: function( website, url, job) {
+			_explore( website, url, job );
 		}
 	}
 })();

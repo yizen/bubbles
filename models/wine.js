@@ -5,8 +5,9 @@ module.exports = function(sequelize, DataTypes) {
 		producer: DataTypes.STRING,
 		url: DataTypes.STRING,
 		price: DataTypes.FLOAT,
-		size: DataTypes.STRING,
+		size: DataTypes.FLOAT,
 		options: DataTypes.STRING,
+		color: { type: DataTypes.STRING, defaultValue: 'White' },
 		minQuantity: DataTypes.INTEGER,		
 		lastPriceModified:DataTypes.DATE,
 		active: DataTypes.BOOLEAN

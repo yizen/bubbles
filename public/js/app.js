@@ -29,6 +29,13 @@ var launchSearch = function() {
 	var options = Array();
 	options['bouteille'] = $('input#bouteille').attr('checked');
 	options['demibouteille'] = $('input#demibouteille').attr('checked');
+	options['magnum'] = $('input#magnum').attr('checked');
+	options['jeroboam'] = $('input#jeroboam').attr('checked');
+	options['mathusalem'] = $('input#mathusalem').attr('checked');
+	options['salmanazar'] = $('input#salmanazar').attr('checked');
+	options['balthazar'] = $('input#balthazar').attr('checked');
+	options['nabuchodonosor'] = $('input#nabuchodonosor').attr('checked');
+	
 	
 	var optionsString = "";
 	for(var key in options) {

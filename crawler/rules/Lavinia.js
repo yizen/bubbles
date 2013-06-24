@@ -35,8 +35,7 @@ var Lavinia = function ( scrapinode ) {
 		if (!window) return;
 	
 		var $ = window.$;
-		var price = $('label[itemprop="lowPrice"]').text();
-		
+		var price = $("form[data-section='product'] label[itemprop='lowPrice']").text();
 		return price;
 	};
 	
@@ -49,19 +48,6 @@ var Lavinia = function ( scrapinode ) {
 		var partsName = _.words(fullName, ",");
 	
 		var wine = partsName[1];
-		
-		var qty = $('h1.m-header span').text();
-		
-		/* FIXME : should be in quantity check 
-		
-		if (qty.match(/0,3/i)) 		wine = wine+" - Demi-bouteille";
-		if (qty.match(/0,2/i)) 		wine = wine+" - Demi-bouteille";
-		if (qty.match(/18,00/i))	wine = wine+" - Salomon";
-		if (qty.match(/15,00/i))	wine = wine+" - Nabuchodosor";
-		if (qty.match(/3,00/i))	wine = wine+" - JŽroboam";
-		if (qty.match(/1,50/i))	wine = wine+" - Magnum";
-		
-		*/
 		
 		return wine;
 	};
@@ -84,8 +70,20 @@ var Lavinia = function ( scrapinode ) {
 	}
 	
 	var sizeOperation = function(window) {
-		return;
+		if (!window) return;
+	
+		var $ = window.$;
 		
+		var qty = $('h1.m-header span').text();
+		
+		if (qty.match(/0,3/i)) 		return (0.5);
+		if (qty.match(/0,2/i)) 		return (0.5);
+		if (qty.match(/18,00/i))	return (24);
+		if (qty.match(/15,00/i))	return (20);
+		if (qty.match(/3,00/i))	 	return (4);
+		if (qty.match(/1,50/i))		return (2);
+		
+		return (1);	
 	}
 	
 	scrapinode.use (path,'isValid', isValidOperation);	
