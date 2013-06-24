@@ -7,3 +7,10 @@
 .searchbar-fixed-top {
     position:fixed;
 }
+
+table#results em {
+	font-style: normal;
+	background-color: #dfdfdf;
+	padding-left: 4px;
+	padding-right: 4px;
+}

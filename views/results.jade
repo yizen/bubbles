@@ -5,16 +5,19 @@ table#results.table.table-striped
 			th Producteur
 			th Size
 			th Prix
+			th Options
 			th Site
 		- each wine in wines
 			tr
 				td
 					= wine.wine
 				td
-					= wine.producer
+					| !{wine.producer}
 				td
 					= wine.size	
 				td.euro
 					| !{wine.euro}
+				td
+					= wines.options
 				td
 					a(href=wine.url, target='_blank') #{wine.website}

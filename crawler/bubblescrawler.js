@@ -396,10 +396,12 @@ var bubblescrawler = (function () {
 	}
 	
 	var extractOptionsFromName = function (name) {
-		var options = ['étui', 'etui', 'coffret', 'carafe', 'flute', 'flûte', ]
+		var options = ['étui', 'etui', 'coffret', 'carafe', 'flute', 'flûte' ];
+		
+		
 	}
 	
-	var removeExtrasfromName = function (name) {
+	var removeExtrasfromName = function (value) {
 		value = removeString( value, 'champagne', 
 			[	'Les Demoiselles de Champagne', 
 				'Ratafia de Champagne', 
@@ -413,18 +415,20 @@ var bubblescrawler = (function () {
 		//Remove text in brackets.
 		value.replace(/ *\([^)]*\) */g, '');
 		
-		//Remove text after "plus"
+		return value;
 	}
 	
 	var removeString = function(value, searchMask, exceptions) {
 		
 		var doNotProcess = false;
-	
-		if (isArray(exceptions)) {
-			exceptions.forEach(function(exception) {
-				var regEx = new RegExp(exception, "ig");
-				if (value.match(regEx)) doNotProcess = true;		
-   			}); 			
+		
+		if (typeof(exceptions) != "undefined") {
+			if (exceptions.isArray) {
+				exceptions.forEach(function(exception) {
+					var regEx = new RegExp(exception, "ig");
+					if (value.match(regEx)) doNotProcess = true;		
+	   			}); 			
+   			}
 		}
 		
 		if (doNotProcess) return;

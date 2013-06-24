@@ -1,5 +1,4 @@
 var express 		= require('express'),
-  	lunr 			= require('lunr'),
   	uuid 			= require('node-uuid'),  	
   	async 			= require('async'),
   	expressWinston 	= require('express-winston'),
@@ -13,12 +12,6 @@ var routes 			= require('./routes');
 var app = module.exports = express();
 var port = 3000;
 
-app.searchIndex = lunr(function () {
-		 		this.field('name', {boost: 10})
-		 		this.field('url')
-		 		this.ref('id')
-});
-
 
 //Connect to Elasticsearch
 var elasticSearchserverOptions = {
@@ -28,7 +21,7 @@ var elasticSearchserverOptions = {
     secure: false,
 };
 
-var es = new elasticSearchClient(elasticSearchserverOptions);
+app.es = new elasticSearchClient(elasticSearchserverOptions);
 
 //Init models
 db.sequelize.sync().complete(function(err) {
@@ -38,15 +31,19 @@ db.sequelize.sync().complete(function(err) {
 	  	
 	  	console.log("Database initialized");
 	  	
-	  	//Set up search with LUNR
+	  	//Set up search
 		
 		db.Wine.findAll().success(function(wines) {
-			wines.forEach(function(wine) {
-				app.searchIndex.add({
-					id: wine.id,
-					name: wine.wine+" "+wine.producer,
-					url: wine.url
-				});			
+			wines.forEach(function(wine, index) {
+				wine.getWebsite().success(function(website) {
+					var copy = JSON.parse(JSON.stringify(wine));
+					copy.website = website.name;
+					/*app.es.index('bubbles', 'wine', copy, copy.id)
+						.on('data', function(data) {
+							console.log(data)
+						})
+						.exec();	*/
+				});
    			}); 
 		})
 	}
@@ -143,7 +140,9 @@ app.get('/admin/refresh/:website', function (req, res) {
 	db.Website.find(websiteId).success(function(website) {
 		website.lastRefreshStart = new Date();
 		website.refreshStatus = "RUNNING";
-		website.save();
+		website.save().success(function() {
+			res.redirect('/admin/');
+		});
 		
 		var timeout = 4500;
 										
@@ -173,8 +172,7 @@ app.get('/admin/refresh/:website', function (req, res) {
 		}); //get Wines			
 	}); //db.Website.find
 	
-	res.redirect('/admin/');
-
+	
 });
 
 
