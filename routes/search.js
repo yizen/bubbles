@@ -16,33 +16,38 @@ module.exports = function(app){
 
 		var sizes = new Array();
 		
-		if (bouteille == "undefined") 		sizes['1'] 		= false;
-		if (demibouteille == "undefined") 	sizes['0.5'] 	= false;
-		if (magnum == "undefined") 			sizes['2'] 		= false;
-		if (jeroboam == "undefined") 		sizes['4'] 		= false;
-		if (mathusalem == "undefined") 		sizes['8'] 		= false;
-		if (salmanazar == "undefined") 		sizes['12'] 	= false;
-		if (balthazar == "undefined") 		sizes['16'] 	= false;
-		if (nabuchodonosor == "undefined") 	sizes['20'] 	= false;
-			
-		//var results = app.searchIndex.search(q);
-		
+		if (bouteille == "checked") 		sizes.push(1);
+		if (demibouteille == "checked") 	sizes.push(0.5);
+		if (magnum == "checked") 			sizes.push(2);
+		if (jeroboam == "checked") 			sizes.push(4);
+		if (mathusalem == "checked") 		sizes.push(8);
+		if (salmanazar == "checked") 		sizes.push(12);
+		if (balthazar == "checked") 		sizes.push(16);
+		if (nabuchodonosor == "checked") 	sizes.push(20);
+					
 		var qryObj =
 		{
 		  "from": 0,
 		  "size": 100,
+		  
 		  "query": {
-		    "multi_match": {
-		      "query": "veuve",
-		      "fields": [
-		        "wine.producer",
-		        "wine.wine"
-		      ]
-		    }
+		    "match" : {
+				"name" : {
+					"query" : q.toString(),
+					"operator" : "and",
+					"fuzziness": 0.4
+				}
+			}
+		  },
+		  "filter": {
+			  "terms" : {
+				  "size" : sizes,
+				  
+			  }
 		  },
 		  "sort": [
 		    {
-		      "wine.price": {
+		      "price": {
 		        "order": "asc"
 		      }
 		    }
@@ -62,26 +67,39 @@ module.exports = function(app){
 		
 		app.es.search('bubbles', 'wine', qryObj, function(err, data){
 			data = JSON.parse(data);
-			if (data.hits.total > 0) {
+			
+			if (data.hits && data.hits.total > 0) {
+						
 				data.hits.hits.forEach(function(item) { 
 					var wine = new Object;
 					wine.wine = item._source.wine;
-					
-					if (item.highlight.producer) {
+
+					if (item.highlight && item.highlight.producer) {
 						wine.producer = item.highlight.producer;
 					} else {
 						wine.producer = item._source.producer;
 					}
 					
-					wine.options = item._source.options;
+					if (item.highlight && item.highlight.wine) {
+						wine.wine = item.highlight.wine;
+					} else {
+						wine.wine = item._source.wine;
+					}
+					
+					wine.size = item._source.size;
+
 					wine.website = item._source.website;						
 					wine.euro = formatEuro(item._source.price);
-					wine.options = item._source.options
+					wine.options = item._source.options;
+					wine.url = item._source.url;
+
 					wines.push(wine);	
 				});
 				
 				res.render('results', { wines : wines });
-			};
+			} else {
+				res.render('noresults' );
+			}
 		});
 
 	});	

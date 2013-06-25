@@ -13,7 +13,6 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives'])
 var search = document.querySelector('[type=search]');
 
 $('#checkboxes label').on('click', function(event) {
-	console.log("check");
 	launchSearch();
 });
 
@@ -25,8 +24,8 @@ $('#search-query-2').on('keyup', function(event) {
 
 var launchSearch = function() {
 	if (search.value.length < 3) { return }
-
-	var options = Array();
+	
+	var options = new Array();
 	options['bouteille'] = $('input#bouteille').attr('checked');
 	options['demibouteille'] = $('input#demibouteille').attr('checked');
 	options['magnum'] = $('input#magnum').attr('checked');
@@ -41,7 +40,7 @@ var launchSearch = function() {
 	for(var key in options) {
 		optionsString += "&"+key.toString()+"="+options[key];
 	}
-	
+	/*
 	var xhr = new XMLHttpRequest;
 	xhr.open('GET', '/search?' + 'q='+ search.value + optionsString, true);
 	xhr.onreadystatechange = function(){
@@ -49,14 +48,36 @@ var launchSearch = function() {
 		   results(xhr.responseText);
 		 }
 	};
-	xhr.send();
+	xhr.send();*/
+	
+	$.ajax({
+		url: '/search?' + 'q='+ search.value + optionsString
+	}).success(function(wines) {
+		$('#results').replaceWith(wines);
+	});
 };
 
 var results = function (wines) {
-	$('#results').replaceWith(wines);
+	
 };
 
+
+
 (function($) {
+
+	// Add segments to a slider
+	  $.fn.addSliderSegments = function (amount) {
+	    return this.each(function () {
+	      var segmentGap = 100 / (amount - 1) + "%"
+	        , segment = "<div class='ui-slider-segment' style='margin-left: " + segmentGap + ";'></div>";
+	      $(this).prepend(segment.repeat(amount - 2));
+	    });
+	  };
+
+	  String.prototype.repeat = function(num) {
+		  return new Array(num + 1).join(this);
+	  };
+
 	 $(function() {
 		// Focus state for append/prepend inputs
 		$('.input-prepend, .input-append').on('focus', 'input', function () {
@@ -67,6 +88,29 @@ var results = function (wines) {
 		
 		
 		$('#search-query-2').focus();
+		
+		var $sizes = $("#sizes")
+			,sizesValueMultiplier = 0.5
+			,sizesOptions;
+    
+		if ($sizes.length > 0) {
+			$sizes.slider({
+				min: 1,
+				max: 20,
+				values: [2 ,10],
+				orientation: "horizontal",
+				range: true,
+				slide: function(event, ui) {
+					$sizes.find(".ui-slider-value:first").text(ui.values[0] * sizesValueMultiplier).end()
+						  .find(".ui-slider-value:last").text(ui.values[1] * sizesValueMultiplier);
+				}
+			});
+      
+			sizesOptions = $sizes.slider("option");
+      
+			$sizes.addSliderSegments(sizesOptions.max).find(".ui-slider-value:first").text(sizesOptions.values[0] * sizesValueMultiplier).end()
+			.find(".ui-slider-value:last").text(sizesOptions.values[1] * sizesValueMultiplier);
+		}
 	});
 	
 	//Searchbar fixed on top for scroll

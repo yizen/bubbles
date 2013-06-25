@@ -10,7 +10,7 @@ table#results.table.table-striped
 		- each wine in wines
 			tr
 				td
-					= wine.wine
+					| !{wine.wine}
 				td
 					| !{wine.producer}
 				td
