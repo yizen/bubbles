@@ -13,31 +13,48 @@ block body
 									li.active 
 										a(href='/admin/') Websites
 									li
-										a(href='/admin/jobs/') Jobs
-									li
-										a Users
-		div.row.searchbar
+										a(href='/admin/elasticsearch/') Elastic Search
+		div.row
 			div.span12
-				table#results.table.table-striped
-					tbody
+				table.table.table-bordered
+					thead
 						tr
 							th Website
-							th Crawl status
-							th Refresh status
+							th Jobs
 							th Actions
+					tbdody
 						- each website in websites
 							tr
+								td	
+									=website.name
+								td	
+									table.table.table-striped.smallTable
+										thead
+											tr
+												th	Job Id
+												th	Type
+												th	Status
+												th 	Action
+										tbody
+										- each job in website.jobs
+											tr
+												td
+													a.btn.btn-mini(href='/admin/job/'+job.id) Job #{job.id}
+												td
+													=job.type 
+												td	
+													=job.status
+												td
+													if (job.status == "RUNNING")
+														a.btn.btn-mini.btn-warning.mlm(href='/admin/job/stop/'+job.id)
+															i(style='font-size:11px').fui-power
+													a.btn.btn-mini.btn-danger.mlm(href='/admin/job/clear/'+job.id)
+														i(style='font-size:11px').fui-trash
 								td
-									= website.name
-								td
-									= website.crawlStatus	
-								td
-									= website.refreshStatus
-								td
-									a(href=website.refresh) Run Refresh
-									br
-									a(href=website.crawl) Run Crawl	
-				
+									div.actions		
+										a.btn.btn-mini.btn-primary(href=website.refresh) Run Refresh
+										a.btn.btn-mini.btn-primary(href=website.crawl) Run Crawl					
+												
 						
 	script(src='/js/ui/jquery-1.8.3.min.js')
 	script(src='/js/ui/jquery-ui-1.10.3.custom.min.js')

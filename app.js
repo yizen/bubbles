@@ -1,5 +1,4 @@
 var express 		= require('express'),
-  	uuid 			= require('node-uuid'),  	
   	async 			= require('async'),
   	expressWinston 	= require('express-winston'),
   	winston			= require('winston'),
@@ -12,6 +11,7 @@ var routes 			= require('./routes');
 var app = module.exports = express();
 var port = 3000;
 
+//TODO : remove all jobs
 
 //Connect to Elasticsearch
 var elasticSearchserverOptions = {
@@ -27,25 +27,6 @@ app.es = new elasticSearchClient(elasticSearchserverOptions);
 db.sequelize.sync().complete(function(err) {
 	if (err) {
 	   	throw err
-	} else {
-	  	
-	  	console.log("Database initialized");
-	  	
-	  	//Set up search
-		
-		db.Wine.findAll().success(function(wines) {
-			wines.forEach(function(wine, index) {
-				wine.getWebsite().success(function(website) {
-					var copy = JSON.parse(JSON.stringify(wine));
-					copy.website = website.name;
-					/*app.es.index('bubbles', 'wine', copy, copy.id)
-						.on('data', function(data) {
-							console.log(data)
-						})
-						.exec();	*/
-				});
-   			}); 
-		})
 	}
 });
 
@@ -108,73 +89,14 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   app.locals.pretty = true;
 });
 
 app.configure('production', function(){
-  //app.use(express.errorHandler());
 });
 
 // Routes
 require('./routes')(app);
-
-app.get('/admin/', function (req, res) {
-	//Admin login page
-	db.Website.findAll().success(function(websites) {
-		websites.forEach( function (website) {
-			website['refresh'] = "admin/refresh/"+website.id;
-			website['crawl'] = "admin/crawl/"+website.id;
-		});
-		
-		res.render('admin', { websites : websites });
-	});
-});
-
-app.get('/admin/refresh/:website', function (req, res) {
-	
-	
-	var job = uuid.v1();	
-	var websiteId = req.param('website');
-	
-	db.Website.find(websiteId).success(function(website) {
-		website.lastRefreshStart = new Date();
-		website.refreshStatus = "RUNNING";
-		website.save().success(function() {
-			res.redirect('/admin/');
-		});
-		
-		var timeout = 4500;
-										
-		website.getWines().success(function(wines) {
-					
-			async.eachSeries(
-				wines, 
-				function (wine, callback){				
-					console.log("Starting "+wine.name);
-					setTimeout(function () {
-						bubblescrawler.explore(website, wine.url, job);
-						callback();
-						}, timeout);
-					},
-					
-					function(err) {				
-						website.lastRefreshEnd = new Date();
-						
-						if (err) {
-							website.refreshStatus = "ERROR";
-						} else {
-							website.refreshStatus = "OK";
-						}
-						website.save();
-					}
-			); //async
-		}); //get Wines			
-	}); //db.Website.find
-	
-	
-});
-
 
 // redirect all others to the index (HTML5 history)
 app.get('*', require('./routes/home'));

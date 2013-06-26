@@ -25,12 +25,11 @@ var bubblescrawler = (function () {
 	var _log = function( job, message, level, url, website ) {
 	
 		var newlog = db.Log.create ({
-					job:job,
 					message:message,
 					level:level,
 					url:url
 		}).success( function( justCreated) {
-			justCreated.setWebsite(website);
+			justCreated.setJob(job);
 			justCreated.save();
 		});     
 
@@ -95,9 +94,6 @@ var bubblescrawler = (function () {
 				//Change string to float for values.
 			    if (price)		{price = stringToFloat(price)}
 			    if (minQuantity){minQuantity = stringToFloat(minQuantity)}
-			    
-			   
-			   
 			    
 			    if (!name) {name = _.join(" ", producer, wine)}
 			    if (name == "") {

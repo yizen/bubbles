@@ -1,0 +1,47 @@
+extends layout
+
+block body
+	div(ng-controller='AppCtrl').container
+		div.row
+			div.span12
+				div.navbar
+					div.navbar-inner
+						div.container
+							a.brand Champagne
+							div#nav-collapse01.nav-collapse.collapse
+								ul.nav
+									li.active 
+										a Search
+									li
+										a Stats
+									li
+										a About us
+		div.row.searchbar
+			div.span12
+				form.form-search
+					div.input-prepend
+						button.btn.btn-huge(type='submit')
+							span.fui-search
+						input#search-query-2.huge.search-query.search-query-rounded(type='search', placeholder='Search champagne',style='width:700px;', autocomplete='off' )
+		div#checkboxes.row
+			div.span8
+				div#sizes.ui-slider
+					span.ui-slider-value.first 1/2 bouteille
+					span.ui-slider-value.last Nabuchodonosor
+		div.row
+			div.span12
+				table#results
+		
+	script(src='/js/ui/jquery-1.8.3.min.js')
+	script(src='/js/ui/jquery-ui-1.10.3.custom.min.js')
+	script(src='/js/ui/jquery.ui.touch-punch.min.js')
+	script(src='/js/ui/bootstrap.min.js')
+	script(src='/js/ui/bootstrap-select.js')
+	script(src='/js/ui/bootstrap-switch.js')
+	script(src='/js/ui/flatui-checkbox.js')
+	script(src='/js/ui/flatui-radio.js')
+	script(src='/js/ui/jquery.tagsinput.js')
+	script(src='/js/ui/jquery.placeholder.js')
+	script(src='/js/ui/jquery.stacktable.js')
+	script(src='/js/app.js')
+

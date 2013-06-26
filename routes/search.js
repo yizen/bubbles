@@ -24,7 +24,7 @@ module.exports = function(app){
 		if (salmanazar == "checked") 		sizes.push(12);
 		if (balthazar == "checked") 		sizes.push(16);
 		if (nabuchodonosor == "checked") 	sizes.push(20);
-					
+
 		var qryObj =
 		{
 		  "from": 0,
