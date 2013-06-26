@@ -3,28 +3,10 @@ module.exports = function(app){
 	app.get('/search', function(req, res){
 		console.log(req.query);
   
-		var q = req.query.q;
-		
-		var bouteille = req.query.bouteille;
-		var demibouteille = req.query.demibouteille;
-		var magnum = req.query.magnum;
-		var jeroboam = req.query.jeroboam;
-		var mathusalem = req.query.mathusalem;
-		var salmanazar = req.query.salmanazar;
-		var balthazar = req.query.balthazar;
-		var nabuchodonosor = req.query.nabuchodonosor;
-
-		var sizes = new Array();
-		
-		if (bouteille == "checked") 		sizes.push(1);
-		if (demibouteille == "checked") 	sizes.push(0.5);
-		if (magnum == "checked") 			sizes.push(2);
-		if (jeroboam == "checked") 			sizes.push(4);
-		if (mathusalem == "checked") 		sizes.push(8);
-		if (salmanazar == "checked") 		sizes.push(12);
-		if (balthazar == "checked") 		sizes.push(16);
-		if (nabuchodonosor == "checked") 	sizes.push(20);
-
+		var q 		= req.query.q;
+		var minSize =  req.query.minSize || 1;
+		var maxSize =  req.query.maxSize || 20;
+	
 		var qryObj =
 		{
 		  "from": 0,
@@ -40,9 +22,11 @@ module.exports = function(app){
 			}
 		  },
 		  "filter": {
-			  "terms" : {
-				  "size" : sizes,
-				  
+			  "range" : {
+				  "size" : {
+					  "from" : parseFloat(minSize),
+					  "to" : parseFloat(maxSize)
+				  }
 			  }
 		  },
 		  "sort": [

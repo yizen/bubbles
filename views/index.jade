@@ -1,7 +1,7 @@
 extends layout
 
 block body
-	div(ng-controller='AppCtrl').container
+	div.container
 		div.row
 			div.span12
 				div.navbar
@@ -22,66 +22,42 @@ block body
 					div.input-prepend
 						button.btn.btn-huge(type='submit')
 							span.fui-search
-						input#search-query-2.huge.search-query.search-query-rounded(type='search', placeholder='Search champagne',style='width:700px;', autocomplete='off' )
-		div#checkboxes.row
-			div.span3
-					label.checkbox.checked(for='bouteille')
-						span.icons
-							span.first-icon.fui-checkbox-unchecked
-							span.second-icon.fui-checkbox-checked
-						input#bouteille(type='checkbox', checked='checked', value='', data-toggle='checkbox')
-						| Bouteille
-					label.checkbox(for='demibouteille')
-						span.icons
-							span.first-icon.fui-checkbox-unchecked
-							span.second-icon.fui-checkbox-checked
-						input#demibouteille(type='checkbox', checked='', value='', data-toggle='checkbox')
-						| Demi-bouteille
-					label.checkbox.checked(for='magnum')
-						span.icons
-							span.first-icon.fui-checkbox-unchecked
-							span.second-icon.fui-checkbox-checked
-						input#magnum(type='checkbox', checked='checked', value='', data-toggle='checkbox')
-						| Magnum
-					label.checkbox.checked(for='jeroboam')
-						span.icons
-							span.first-icon.fui-checkbox-unchecked
-							span.second-icon.fui-checkbox-checked
-						input#jeroboam(type='checkbox', checked='checked', value='', data-toggle='checkbox')
-						| Jéroboam
-			div.span3
-					label.checkbox.checked(for='mathusalem')
-						span.icons
-							span.first-icon.fui-checkbox-unchecked
-							span.second-icon.fui-checkbox-checked
-						input#mathusalem(type='checkbox', checked='checked', value='', data-toggle='checkbox')
-						| Mathusalem
-					label.checkbox.checked(for='salmanazar')
-						span.icons
-							span.first-icon.fui-checkbox-unchecked
-							span.second-icon.fui-checkbox-checked
-						input#salmanazar(type='checkbox', checked='checked', value='', data-toggle='checkbox')
-						| Salmanazar
-					label.checkbox.checked(for='balthazar')
-						span.icons
-							span.first-icon.fui-checkbox-unchecked
-							span.second-icon.fui-checkbox-checked
-						input#balthazar(type='checkbox', checked='checked', value='', data-toggle='checkbox')
-						| Balthazar
-					label.checkbox.checked(for='nabuchodonosor')
-						span.icons
-							span.first-icon.fui-checkbox-unchecked
-							span.second-icon.fui-checkbox-checked
-						input#nabuchodonosor(type='checkbox', checked='checked', value='', data-toggle='checkbox')
-						| Nabuchodonosor
-
+						input#search-query.huge.search-query.search-query-rounded(type='search', placeholder='Search champagne',style='width:700px;', autocomplete='off' )
 		div.row
+			div.span8
+				fieldset
+						select#minimumSize(name='minimumSize')
+							option(value='0.5') Demi-bouteille
+							option(value='1', selected='selected') Bouteille
+							option(value='2') Magnum
+							option(value='4') Jeroboam
+							option(value='8') Mathusalem
+							option(value='12') Salmanazar
+							option(value='16') Balthazar
+							option(value='20') Nabuchodonosor
+							option(value='24') Salomon
+							option(value='36') Primat
+						select#maximumSize(name='maximumSize')
+							option(value='0.5') Demi-bouteille
+							option(value='1') Bouteille
+							option(value='2') Magnum
+							option(value='4') Jeroboam
+							option(value='8') Mathusalem
+							option(value='12') Salmanazar
+							option(value='16') Balthazar
+							option(value='20', selected='selected') Nabuchodonosor
+							option(value='24') Salomon
+							option(value='36') Primat
+	
+		div.row.wines
 			div.span12
 				table#results
 		
 	script(src='/js/ui/jquery-1.8.3.min.js')
 	script(src='/js/ui/jquery-ui-1.10.3.custom.min.js')
 	script(src='/js/ui/jquery.ui.touch-punch.min.js')
+	script(src='/js/ui/jquery.ui.selecttoslider.js')
+	
 	script(src='/js/ui/bootstrap.min.js')
 	script(src='/js/ui/bootstrap-select.js')
 	script(src='/js/ui/bootstrap-switch.js')
