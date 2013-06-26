@@ -12,6 +12,12 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives'])
 
 var search = document.querySelector('[type=search]');
 
+
+$('#search-box').on('submit', function(event) {	
+	launchSearch();
+	return false;
+});
+
 $('#checkboxes label').on('click', function(event) {
 	launchSearch();
 });
