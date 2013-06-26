@@ -116,7 +116,7 @@ var bubblescrawler = (function () {
 			    	
 				    	if (wineFound.price != price) {
 				    					    
-				    		_log(job, 'Price change on '+name, 'INFO', url, website);					
+				    		_log(job, 'Price change on '+name+ ' new price is '+price, 'INFO', url, website);					
 				    		
 					    	var oldPrice = wineFound.price;
 					    	var oldDate = wineFound.updatedAt;

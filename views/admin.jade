@@ -48,13 +48,21 @@ block body
 													if (job.status == "RUNNING")
 														a.btn.btn-mini.btn-warning.mlm(href='/admin/job/stop/'+job.id)
 															i(style='font-size:11px').fui-power
-													a.btn.btn-mini.btn-danger.mlm(href='/admin/job/clear/'+job.id)
+													a.btn.btn-mini.btn-danger.mlm.confirm-delete(data-id=job.id)
 														i(style='font-size:11px').fui-trash
 								td
 									div.actions		
 										a.btn.btn-mini.btn-primary(href=website.refresh) Run Refresh
 										a.btn.btn-mini.btn-primary(href=website.crawl) Run Crawl					
 												
+	#modal-from-dom.modal.hide.fade.alert.alert-error
+		button.close.fui-cross(type='button', data-dismiss='alert')
+		h3 Attention: You are about to remove a complete Job.
+		p
+			| This action will permanently remove the
+			| selected Job and associated log.
+		a.btn.btn-danger.danger.btn-wide(href='/admin/job/clear/') Delete
+		a.btn.btn-wide(href='javascript:$(\'#modal-from-dom\').modal(\'hide\')') Cancel
 						
 	script(src='/js/ui/jquery-1.8.3.min.js')
 	script(src='/js/ui/jquery-ui-1.10.3.custom.min.js')

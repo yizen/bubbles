@@ -91,13 +91,27 @@ module.exports = function(app){
 	app.get('/admin/job/clear/:job', function (req, res) {
 		var jobId = req.param('job');
 		
-		db.Job.find(jobId).success(function(job) {
-			//TODO : add confirmation dialog when deleting
-			//FIXME : remove also all Logs
-			job.delete().success(function(err){
-				res.redirect('/admin/');
+		db.Job.find(jobId).on('success', function(job) {
+			job.destroy().on('success', function(u) {
+					// successfully deleted the job
+					//delete all child Logs
+					db.Log.findAll({where: "JobId = "+jobId}).success(function(logs) {
+						console.log("Logs "+logs.length);
+						async.each(
+							logs, 
+							function (log, callback){				
+								log.destroy().on('success', function() {
+									callback();
+									})
+								},
+								
+								function(err) {				
+									res.redirect('/admin/');
+								}
+						); //async
+					});
 			});
-		}); //db.Job.find
+		});
 	});
 	
 	app.get('/admin/elasticsearch/', function (req, res) {
