@@ -1,4 +1,10 @@
-transportationFees = require('../lib/transportationFees');
+transportationFees 	= require('../lib/transportationFees');
+sizes 				= require('../lib/sizes');
+
+var _  				= require('underscore');
+	_.str 			= require('underscore.string');
+	_.mixin(_.str.exports());
+	_.str.include('Underscore.string', 'string');
 
 module.exports = function(app){
 
@@ -74,11 +80,11 @@ module.exports = function(app){
 						wine.wine = item._source.wine;
 					}
 					
-					wine.size = item._source.size;
+					wine.size =  _.capitalize(sizes.sizeNumToText(item._source.size));
 
 					wine.website = item._source.website;						
 					wine.euro = formatEuro(item._source.price);
-					wine.options = item._source.options;
+					wine.options = _.capitalize(item._source.options);
 					wine.url = item._source.url;
 					wine.total = formatEuro(item._source.price + transportationFees.transportationFees(qty, item._source.website));
 
@@ -94,17 +100,6 @@ module.exports = function(app){
 	});	
 			
 	var formatEuro = function  (number) {
-		if (!number) return ("Prix sur demande");
-	
-		var numberStr = parseFloat(number).toFixed(2).toString();
-		var numFormatDec = numberStr.slice(-2); /*decimal 00*/
-		numberStr = numberStr.substring(0, numberStr.length-3); /*cut last 3 strings*/
-		var numFormat = new Array;
-		while (numberStr.length > 3) {
-			numFormat.unshift(numberStr.slice(-3));
-			numberStr = numberStr.substring(0, numberStr.length-3);
-		}
-		numFormat.unshift(numberStr);
-		return numFormat.join(' ')+','+numFormatDec+' &euro;'; /*format 000.000.000,00 */
+		return _.numberFormat(number, 2, ',', ' ')+' &euro;'; /*format 000.000.000,00 */
 	}
 };
