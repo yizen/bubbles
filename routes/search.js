@@ -1,9 +1,13 @@
+transportationFees = require('../lib/transportationFees');
+
 module.exports = function(app){
 
 	app.get('/search', function(req, res){
 		console.log(req.query);
   
 		var q 		= req.query.q;
+		var qty 	= req.query.qty || 1;
+
 		var minSize =  req.query.minSize || 1;
 		var maxSize =  req.query.maxSize || 20;
 	
@@ -76,6 +80,7 @@ module.exports = function(app){
 					wine.euro = formatEuro(item._source.price);
 					wine.options = item._source.options;
 					wine.url = item._source.url;
+					wine.total = formatEuro(item._source.price + transportationFees.transportationFees(qty, item._source.website));
 
 					wines.push(wine);	
 				});

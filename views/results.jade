@@ -4,7 +4,8 @@ table#results.table.table-striped
 			th Cuvée
 			th Producteur
 			th Size
-			th Prix
+			th Prix unitaire
+			th Prix total
 			th Options
 			th Site
 		- each wine in wines
@@ -17,6 +18,8 @@ table#results.table.table-striped
 					= wine.size	
 				td.euro
 					| !{wine.euro}
+				td.euro
+					| !{wine.total}	
 				td
 					= wine.options
 				td
