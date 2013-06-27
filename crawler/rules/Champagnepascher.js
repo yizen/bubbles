@@ -51,7 +51,16 @@ var Champagnepascher = function ( scrapinode ) {
 	
 	var sizeOperation = function(window) {
 		return;
+	}
+	
+	var photoOperation = function(window) {
+		if (!window) return;
+	
+		var $ = window.$;
+		var photo = $('div#primary_block div#image-block img#bigpic').attr('src');
 		
+		if (photo) return ('http://www.champagnepascher.fr'+photo);
+		return;
 	}
 	
 	scrapinode.use (path,'isValid', isValidOperation);	
@@ -63,6 +72,8 @@ var Champagnepascher = function ( scrapinode ) {
 	scrapinode.use (path,'options', optionsOperation);
 	scrapinode.use (path,'minQuantity', minQuantityOperation);
 	scrapinode.use (path,'size', sizeOperation);
+	scrapinode.use (path,'photo', photoOperation);
+
 
 };
 

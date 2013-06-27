@@ -91,12 +91,20 @@ module.exports = function(app){
 	app.get('/admin/job/clear/:job', function (req, res) {
 		var jobId = req.param('job');
 		
+		if (!jobId) {
+			res.redirect('/admin/');
+			return; 
+		}
+		
 		db.Job.find(jobId).on('success', function(job) {
+			if (!job) {
+				res.redirect('/admin/');
+				return; 
+			}
 			job.destroy().on('success', function(u) {
 					// successfully deleted the job
 					//delete all child Logs
 					db.Log.findAll({where: "JobId = "+jobId}).success(function(logs) {
-						console.log("Logs "+logs.length);
 						async.each(
 							logs, 
 							function (log, callback){				

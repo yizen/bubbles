@@ -86,6 +86,16 @@ var Lavinia = function ( scrapinode ) {
 		return (1);	
 	}
 	
+	var photoOperation = function(window) {
+		if (!window) return;
+	
+		var $ = window.$;
+		var photo = $("div.content_product img[itemprop='image']").attr('src');
+		
+		if (photo) return ('http://www.lavinia.fr'+photo);
+		return;
+	}
+	
 	scrapinode.use (path,'isValid', isValidOperation);	
 
 	scrapinode.use (path,'producer', producerOperation);
@@ -95,7 +105,7 @@ var Lavinia = function ( scrapinode ) {
 	scrapinode.use (path,'options', optionsOperation);
 	scrapinode.use (path,'minQuantity', minQuantityOperation);
 	scrapinode.use (path,'size', sizeOperation);
-
+	scrapinode.use (path,'photo', photoOperation);
 };
 
 module.exports = Lavinia;

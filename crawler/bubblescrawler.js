@@ -7,6 +7,10 @@ var bubblescrawler = (function () {
 	_.str 			= require('underscore.string');
 	_.mixin(_.str.exports());
 	_.str.include('Underscore.string', 'string');
+	
+	var http 		= require('http-get');
+	var crypto = require('crypto');
+	var fs = require('fs'); 
 		
     /* Specific sites rules */
 	var PlusDeBulles = require("./rules/PlusDeBulles")(scrapinode);
@@ -90,6 +94,7 @@ var bubblescrawler = (function () {
 			    var options 	= sanitize(scraper.get('options'));
 			    var size 		= sanitize(scraper.get('size'));
 			    var minQuantity = sanitize(scraper.get('minQuantity'));
+			    var photo		= sanitize(scraper.get('photo'));
 			    
 				//Change string to float for values.
 			    if (price)		{price = stringToFloat(price)}
@@ -104,9 +109,7 @@ var bubblescrawler = (function () {
 			    if (!options) options = extractOptionsFromName(name);
 			    if (!size) size= extractSizeFromName(name);
 			    
-			    color = extractColorFromName(name);
-
-			    
+			    color = extractColorFromName(name);			    
 			    name = removeExtrasfromName(name);
 			    			    				    	
 		    	db.Wine.find({ where: {url: url} }).success(function(wineFound) {
@@ -148,6 +151,29 @@ var bubblescrawler = (function () {
 					    	wineFound.minQuantity = minQuantity;
 					    	wineFound.save();
 				    	}
+				    	
+				    	if (!wineFound.photo && photo) {
+							_log(job, 'New Photo '+photo+' for '+name, 'INFO', url, website);					
+							
+							//Get file extension
+							var photoBits = new Array;
+							photoBits = photo.split("\\");
+							var photoName = photoBits[photoBits.length-1];
+							var photoExt = photoName.substring(photoName.lastIndexOf(".")+1);
+							photoExt = photoExt.split("?")[0];
+
+							var filename = 'photo_'+crypto.randomBytes(4).readUInt32LE(0)+'.'+photoExt;
+					    	
+					    	http.get(photo, global.photodir+'/'+filename, function (error, result) {
+								if (error) {
+									_log(job, error+' on '+photo+' for '+name, 'ERROR', url, website);					
+								} else {
+									wineFound.photo = filename;
+									wineFound.save();
+									_log(job, 'Photo downloaded to '+result.file+' for '+name, 'INFO', url, website);					
+								}
+							});
+				    	}
 				    						    					    	
 			    	} else {
 			    	    db.Wine.find({where: {name:name, WebsiteId:website.id}}).success(function(duplicate) {
@@ -170,6 +196,31 @@ var bubblescrawler = (function () {
 							}).success( function( justCreated) {
 								justCreated.setWebsite(website);
 								justCreated.save();
+								
+								//photo
+								if (photo) {
+									_log(job, 'New Photo '+photo+' for '+name, 'INFO', url, website);					
+									
+									//Get file extension
+									var photoBits = new Array;
+									photoBits = photo.split("\\");
+									var photoName = photoBits[photoBits.length-1];
+									var photoExt = photoName.substring(photoName.lastIndexOf(".")+1);							
+									photoExt = photoExt.split("?")[0];
+									
+									var filename = 'photo_'+crypto.randomBytes(4).readUInt32LE(0)+'.'+photoExt;
+							    	
+							    	http.get(photo, global.photodir+'/'+filename, function (error, result) {
+										if (error) {
+											_log(job, error+' on '+photo+' for '+name, 'ERROR', url, website);					
+										} else {
+											justCreated.photo = filename;
+											justCreated.save();
+											_log(job, 'Photo downloaded to '+result.file+' for '+name, 'INFO', url, website);					
+										}
+									});
+								}
+								
 							});     
 				    	   }//end else 
 			    	    }); //end find

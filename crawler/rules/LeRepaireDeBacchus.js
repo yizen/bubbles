@@ -58,7 +58,11 @@ var Lerepairedebacchus = function ( scrapinode ) {
 	
 	var sizeOperation = function(window) {
 		return;
-		
+	}
+	
+	var photoOperation = function(window) {
+		//images en popin, sauf l'Žtiquette
+		return;
 	}
 	
 	scrapinode.use (path,'isValid', isValidOperation);	
@@ -70,6 +74,8 @@ var Lerepairedebacchus = function ( scrapinode ) {
 	scrapinode.use (path,'options', optionsOperation);
 	scrapinode.use (path,'minQuantity', minQuantityOperation);
 	scrapinode.use (path,'size', sizeOperation);
+	scrapinode.use (path,'photo', photoOperation);
+
 
 };
 

@@ -1,6 +1,7 @@
 table#results.table.table-striped
 	tbody
 		tr
+			th Image
 			th Cuvée
 			th Producteur
 			th Size
@@ -10,6 +11,8 @@ table#results.table.table-striped
 			th Site
 		- each wine in wines
 			tr
+				td
+					img(src=wine.photo)
 				td
 					| !{wine.wine}
 				td

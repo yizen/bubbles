@@ -9,6 +9,7 @@ module.exports = function(sequelize, DataTypes) {
 		options: DataTypes.STRING,
 		color: { type: DataTypes.STRING, defaultValue: 'White' },
 		minQuantity: DataTypes.INTEGER,		
+		photo: DataTypes.STRING,
 		lastPriceModified:DataTypes.DATE,
 		active: DataTypes.BOOLEAN
 	});

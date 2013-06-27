@@ -72,6 +72,16 @@ var PlusDeBulles = function ( scrapinode ) {
 		
 	}
 	
+	var photoOperation = function(window) {
+		if (!window) return;
+	
+		var $ = window.$;
+		var photo = $('#product_left #image-block img').attr('src');
+		
+		if (photo) return photo;
+		return;
+	}
+	
 	scrapinode.use (path,'isValid', isValidOperation);	
 
 	scrapinode.use (path,'producer', producerOperation);
@@ -81,7 +91,8 @@ var PlusDeBulles = function ( scrapinode ) {
 	scrapinode.use (path,'options', optionsOperation);
 	scrapinode.use (path,'minQuantity', minQuantityOperation);
 	scrapinode.use (path,'size', sizeOperation);
-	
+	scrapinode.use (path,'photo', photoOperation);
+
 };
 
 module.exports = PlusDeBulles;

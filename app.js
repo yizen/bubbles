@@ -37,6 +37,8 @@ app.configure(function(){
 	//app.use(express.logger({format: 'dev'}));
 	
 	app.use(express.static(__dirname + '/public'));
+	
+	global.photodir = __dirname + '/public' + '/photos';
 
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'jade');

@@ -70,7 +70,10 @@ var Nicolas = function ( scrapinode ) {
 	
 	var sizeOperation = function(window) {
 		return;
-		
+	}
+	
+	var photoOperation = function(window) {
+		return;
 	}
 	
 	scrapinode.use (path,'isValid', isValidOperation);	
@@ -82,6 +85,8 @@ var Nicolas = function ( scrapinode ) {
 	scrapinode.use (path,'options', optionsOperation);
 	scrapinode.use (path,'minQuantity', minQuantityOperation);
 	scrapinode.use (path,'size', sizeOperation);
+	scrapinode.use (path,'photo', photoOperation);
+
 };
 
 module.exports = Nicolas;

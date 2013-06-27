@@ -19,39 +19,43 @@ module.exports = function(app){
 	
 		var qryObj =
 		{
-		  "from": 0,
-		  "size": 100,
-		  
-		  "query": {
-		    "match" : {
-				"name" : {
-					"query" : q.toString(),
-					"operator" : "and",
-					"fuzziness": 0.4
-				}
-			}
-		  },
-		  "filter": {
-			  "range" : {
-				  "size" : {
-					  "from" : parseFloat(minSize),
-					  "to" : parseFloat(maxSize)
-				  }
-			  }
-		  },
-		  "sort": [
-		    {
-		      "price": {
-		        "order": "asc"
-		      }
+		    "from": 0,
+		    "size": 100,
+		
+		    "query": {
+		        "match": {
+		            "name": {
+		                "query": q.toString(),
+		                "operator": "and",
+		                "fuzziness": 0.4
+		            }
+		        }
+		    },
+		    "filter": {
+		        "and": [{
+		            "range": {
+		                "size": {
+		                    "from": parseFloat(minSize),
+		                    "to": parseFloat(maxSize)
+		                }
+		            }
+		        }, {
+		            "term": {
+		                "active": true
+		            }
+		        }]
+		    },
+		    "sort": [{
+		        "price": {
+		            "order": "asc"
+		        }
+		    }],
+		    "highlight": {
+		        "fields": {
+		            "producer": {},
+		            "wine": {}
+		        }
 		    }
-		  ],
-		  "highlight": {
-		    "fields": {
-		      "producer": {},
-		      "wine" : {}
-		    }
-		  }
 		};
 		
 			
@@ -86,6 +90,12 @@ module.exports = function(app){
 					wine.euro = formatEuro(item._source.price);
 					wine.options = _.capitalize(item._source.options);
 					wine.url = item._source.url;
+					if (item._source.photo) {
+						wine.photo = '/photos/'+item._source.photo;
+					} else {
+						wine.photo = '';
+					}
+					
 					wine.total = formatEuro(item._source.price + transportationFees.transportationFees(qty, item._source.website));
 
 					wines.push(wine);	

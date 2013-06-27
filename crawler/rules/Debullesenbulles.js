@@ -56,7 +56,11 @@ var Debullesenbulles = function ( scrapinode ) {
 	
 	var sizeOperation = function(window) {
 		return;
-		
+	}
+	
+	var photoOperation = function(window) {
+		//images de mauvaise qualitŽ > skip.
+		return;
 	}
 	
 	scrapinode.use (path,'isValid', isValidOperation);	
@@ -68,7 +72,8 @@ var Debullesenbulles = function ( scrapinode ) {
 	scrapinode.use (path,'options', optionsOperation);
 	scrapinode.use (path,'minQuantity', minQuantityOperation);
 	scrapinode.use (path,'size', sizeOperation);
-	
+	scrapinode.use (path,'photo', photoOperation);
+
 };
 
 module.exports = Debullesenbulles;
