@@ -2,7 +2,7 @@ extends layout
 
 block body
 	div.container
-		div.row
+		//div.row
 			div.span12
 				div.navbar
 					div.navbar-inner
@@ -17,41 +17,40 @@ block body
 									li
 										a About us
 		div.row.searchbar
-			div.span12
+			div.span2
+			div.span8
 				form.form-search#search-box
 					div.input-prepend
 						button.btn.btn-huge(type='submit')
 							span.fui-search
-						input#search-query.huge.search-query.search-query-rounded(type='search', placeholder='Search champagne',style='width:700px;', autocomplete='off' )
-		div.row
-			div.span8
+						input#search-query.huge.search-query.search-query-rounded.span6(type='search', placeholder='Search champagne', autocomplete='off' )
+			div.span2
+		div.row.optionsbar
+			.span12
 				fieldset
-						select#minimumSize(name='minimumSize')
-							option(value='0.5') Demi-bouteille
-							option(value='1', selected='selected') Bouteille
-							option(value='2') Magnum
-							option(value='4') Jeroboam
-							option(value='8') Mathusalem
-							option(value='12') Salmanazar
-							option(value='16') Balthazar
-							option(value='20') Nabuchodonosor
-							option(value='24') Salomon
-							option(value='36') Primat
-						select#maximumSize(name='maximumSize')
-							option(value='0.5') Demi-bouteille
-							option(value='1') Bouteille
-							option(value='2') Magnum
-							option(value='4') Jeroboam
-							option(value='8') Mathusalem
-							option(value='12') Salmanazar
-							option(value='16') Balthazar
-							option(value='20', selected='selected') Nabuchodonosor
-							option(value='24') Salomon
-							option(value='36') Primat
-	
-		div.row.wines
-			div.span12
-				table#results
+					select#minimumSize(name='minimumSize')
+						option(value='0.5') Demi-bouteille
+						option(value='1', selected='selected') Bouteille
+						option(value='2') Magnum
+						option(value='4') Jeroboam
+						option(value='8') Mathusalem
+						option(value='12') Salmanazar
+						option(value='16') Balthazar
+						option(value='20') Nabuchodonosor
+						option(value='24') Salomon
+						option(value='36') Primat
+					select#maximumSize(name='maximumSize')
+						option(value='0.5') Demi-bouteille
+						option(value='1') Bouteille
+						option(value='2') Magnum
+						option(value='4') Jeroboam
+						option(value='8') Mathusalem
+						option(value='12') Salmanazar
+						option(value='16') Balthazar
+						option(value='20', selected='selected') Nabuchodonosor
+						option(value='24') Salomon
+						option(value='36') Primat
+		div#results.row
 		
 	script(src='/js/ui/jquery-1.8.3.min.js')
 	script(src='/js/ui/jquery-ui-1.10.3.custom.min.js')

@@ -50,7 +50,9 @@
 	});
 	
 	//Searchbar fixed on top for scroll
-	$(document).scroll(function(){
+	
+	/*
+$(document).scroll(function(){
 		var elem = $('.searchbar');
 		if (!elem.attr('data-top')) {
 			if (elem.hasClass('searchbar-fixed-top'))
@@ -64,4 +66,5 @@
 		else
 			elem.removeClass('searchbar-fixed-top');
 	});
+*/
 })(jQuery);

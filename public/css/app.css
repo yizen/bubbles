@@ -8,7 +8,9 @@
     position:fixed;
 }
 
-table#results em {
+#results {margin-top: 40px;}
+
+#results em {
 	font-style: normal;
 	background-color: #dfdfdf;
 	padding-left: 4px;
@@ -25,5 +27,46 @@ table.smallTable {
 }
 
 .wines {
-	margin-top:40px;
+	margin: 0;	
+	list-style: none;
 }
+
+.wines li {
+	margin-bottom: 10px;
+	min-height: 450px;
+	height: 450px;	
+}
+
+.wine-image {
+	height: 180px;
+	max-height: 180px;
+}
+
+.caption {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #d9d9d9;
+	margin-bottom: 1.25em;
+	padding: 1.25em;
+	background: #f2f2f2;
+}
+
+.caption p{
+	line-height: 1;	
+}
+
+.wine-name {
+	font-size: 1.125em;
+	font-weight: bold;
+}
+
+.wine-producer {
+	font-size: 1.125em;
+}
+
+.wine-size, .wine-options {
+	font-size: 1em;
+}
+
+
+

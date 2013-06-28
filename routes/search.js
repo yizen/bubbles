@@ -92,8 +92,9 @@ module.exports = function(app){
 					wine.url = item._source.url;
 					if (item._source.photo) {
 						wine.photo = '/photos/'+item._source.photo;
+						wine.photostyle = 'background-image:url("'+wine.photo+'")';
 					} else {
-						wine.photo = '';
+						wine.photostyle = '';
 					}
 					
 					wine.total = formatEuro(item._source.price + transportationFees.transportationFees(qty, item._source.website));
