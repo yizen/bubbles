@@ -97,9 +97,14 @@ module.exports = function(app){
 						wine.photostyle = '';
 					}
 					
-					wine.total = formatEuro(item._source.price + transportationFees.transportationFees(qty, item._source.website));
+					wine.totalNoEuro = item._source.price + transportationFees.transportationFees(qty, item._source.website);
+					wine.total = formatEuro(wine.totalNoEuro);
 
 					wines.push(wine);	
+				});
+				
+				wines.sort(function(a, b){
+					return a.totalNoEuro-b.totalNoEuro;
 				});
 				
 				res.render('results', { wines : wines });

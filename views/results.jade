@@ -2,7 +2,7 @@ div#results.thumbnails
 	ul.wines
 		- each wine in wines
 				li.span2
-					div.thumbnail
+					div.thumbnail.wine
 						img.wine-image(src='#{wine.photo}')
 						.caption			
 							//div.wine-image.ratio(style='#{wine.photostyle}')
@@ -14,7 +14,7 @@ div#results.thumbnails
 								| !{wine.size}
 							p.wine-price
 								| !{wine.euro}
-							p.wine-total-price
+							span.wine-total-price
 								| !{wine.total}	
 							p.wine-options
 								= wine.options
