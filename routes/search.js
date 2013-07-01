@@ -27,7 +27,7 @@ module.exports = function(app){
 		            "name": {
 		                "query": q.toString(),
 		                "operator": "and",
-		                "fuzziness": 0.4
+		                "fuzziness": 0.2
 		            }
 		        }
 		    },
@@ -87,7 +87,6 @@ module.exports = function(app){
 					wine.size =  _.capitalize(sizes.sizeNumToText(item._source.size));
 
 					wine.website = item._source.website;						
-					wine.euro = formatEuro(item._source.price);
 					wine.options = _.capitalize(item._source.options);
 					wine.url = item._source.url;
 					if (item._source.photo) {
@@ -97,9 +96,16 @@ module.exports = function(app){
 						wine.photostyle = '';
 					}
 					
-					wine.totalNoEuro = item._source.price + transportationFees.transportationFees(qty, item._source.website);
-					wine.total = formatEuro(wine.totalNoEuro);
-
+					if (item._source.price) {
+						wine.euro = formatEuro(item._source.price);
+						wine.totalNoEuro = item._source.price + transportationFees.transportationFees(qty, item._source.website);
+						wine.total = formatEuro(wine.totalNoEuro);
+					} else {
+						wine.totalNoEuro = 100000; //push it to the end of the result list;
+						wine.euro = "Prix sur demande";
+						wine.total = "-";
+					}
+					
 					wines.push(wine);	
 				});
 				
