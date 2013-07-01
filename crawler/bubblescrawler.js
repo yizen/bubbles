@@ -24,7 +24,7 @@ var bubblescrawler = (function () {
 	var Nicolas = require("./rules/Nicolas")(scrapinode);
 	var Champagnepascher = require("./rules/Champagnepascher")(scrapinode);
 	var Lavinia = require("./rules/Lavinia")(scrapinode);
-	
+	var PopBulles = require("./rules/PopBulles")(scrapinode);
 	
 	var _log = function( job, message, level, url, website ) {
 	
@@ -67,8 +67,10 @@ var bubblescrawler = (function () {
 				});
 			} else {
 				db.Wine.find({ where: {url: url} }).success(function(wineFound) {
-					wineFound.active = true;
-					wineFound.save();
+					if (wineFound) {
+						wineFound.active = true;
+						wineFound.save();
+					}
 				});
 			}
 		});		
@@ -192,7 +194,8 @@ var bubblescrawler = (function () {
 								minQuantity: minQuantity,
 								size: size,
 								color: color,
-								options : options
+								options : options,
+								active: true
 							}).success( function( justCreated) {
 								justCreated.setWebsite(website);
 								justCreated.save();
@@ -251,11 +254,11 @@ var bubblescrawler = (function () {
      *
      * Param : website : a model/Website object
      */
-	var _crawl = function (webSite) {
-		webSite.lastCrawlStart = new Date();
-		webSite.save();
+	var _crawl = function (website, job) {
+		website.lastCrawlStart = new Date();
+		website.save();
 	
-		var mainCrawler = crawler.crawl(webSite.url);
+		var mainCrawler = crawler.crawl(website.url);
 		
 		mainCrawler.timeout = 5000;
 		mainCrawler.interval = 3600;
@@ -352,11 +355,11 @@ var bubblescrawler = (function () {
 		}, function(err){console.error("addFetchCondition", err);});
 		
 		mainCrawler.on("fetchstart",function(queueItem){
-		    //console.info("Started fetching resource:".green, queueItem.url);
+		    console.info("Started fetching resource:".green, queueItem.url);
 		});
 		
 		mainCrawler.on("fetchcomplete",function(queueItem){
-		  	explore(website, queueItem.url);
+		  	_explore(website, queueItem.url, job);
 		});
 		
 		mainCrawler.on("fetchheaders",function(queueItem){
@@ -364,21 +367,22 @@ var bubblescrawler = (function () {
 		});
 		
 		mainCrawler.on("fetchclienterror",function(queueItemi, errorData){
-		    console.error("Client Error fetching resource on "+queueItemi.url+" error :"+ errorData);
+			_log(job, "Client Error fetching resource on "+queueItemi.url+" error :"+ errorData, 'ERROR', queueItemi.url, website);	
 		});
 		
 		mainCrawler.on("fetchdataterror",function(queueItemi, errorData){
-		    console.error("Data Error fetching resource on "+queueItemi.url+" error :"+ errorData);
+			_log(job, "Data Error fetching resource on "+queueItemi.url+" error :"+ errorData, 'ERROR', queueItemi.url, website);	
 		});
 	
 		mainCrawler.on("fetchdataerror",function(queueItem){
-		    console.error("Error: fetching resource on "+ queueItem.url);
+			_log(job, "Fetchdataerror Error fetching resource on "+queueItem.url+" error :"+ errorData, 'ERROR', queueItem.url, website);	
 		});
 		
 		mainCrawler.on("complete", function(){
-			console.info("Scanning complete for "+ mainCrawler.initialPath);
-			webSite.lastCrawlEnd = new Date();
-			webSite.save();
+			_log(job, "Scanning complete for "+mainCrawler.initialPath, 'INFO', mainCrawler.initialPath, website);			
+			website.lastCrawlEnd = new Date();
+			website.save();
+			return;
 		});
 		
 		mainCrawler.start();
@@ -488,6 +492,9 @@ var bubblescrawler = (function () {
 	return {
 		explore: function( website, url, job) {
 			_explore( website, url, job );
+		},
+		crawl: function (website, job) {
+			_crawl(website, job);
 		}
 	}
 })();
