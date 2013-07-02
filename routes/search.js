@@ -48,8 +48,8 @@ module.exports = function(app){
 		var filter 	 	= ejs.AndFilter([
 		
 										ejs.AndFilter([
-											ejs.RangeFilter('price').from(minPrice).to(maxPrice),
-											ejs.RangeFilter('size').from(minSize).to(maxSize)
+											ejs.RangeFilter('price').from(parseFloat(minPrice)).to(parseFloat(maxPrice)),
+											ejs.RangeFilter('size').from(parseFloat(minSize)).to(parseFloat(maxSize))
 										]),
 										
 										ejs.AndFilter([
@@ -83,7 +83,8 @@ module.exports = function(app){
 			
 			if (!results.hits) {
 				console.log('Error executing search');
-				process.exit(1);
+				console.log(request.toString());
+				return;
 			}
 			
 			hits = results.hits;
@@ -96,7 +97,7 @@ module.exports = function(app){
 			
 					if (!results.hits) {
 						console.log('Error executing search');
-						process.exit(1);
+						return;
 					}
 					
 					hits = results.hits;
@@ -108,7 +109,7 @@ module.exports = function(app){
 					
 							if (!results.hits) {
 								console.log('Error executing search');
-								process.exit(1);
+								return;
 							}
 							
 							hits = results.hits;
