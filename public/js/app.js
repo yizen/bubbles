@@ -1,5 +1,10 @@
 (function($) {
 	 $(function() {
+	 
+	 	$("#optionsOn").click(function () {
+		 	$("#refine-container").toggle();
+		 });
+		 
 	 	$('select#minimumSize, select#maximumSize').selectToUISlider({
 				labels: 12,
 				labelSrc: 'text',
@@ -12,6 +17,30 @@
 					}
 				}
 		}).hide();
+		
+		 var tooltip = function(sliderObj, ui){
+         	val1            = '<div id="slider_tooltip">&euro; '+ sliderObj.slider("values", 0) +'</div>';
+            val2            = '<div id="slider_tooltip">&euro; '+ sliderObj.slider("values", 1) +'</div>';
+            sliderObj.children('.ui-slider-handle').first().html(val1);
+            sliderObj.children('.ui-slider-handle').last().html(val2);                  
+          };
+
+       		
+		$( "#price-range" ).slider({
+			range: true,
+			min: 0,
+			max: 500,
+			values: [ 10, 300 ],
+			slide: function( e, ui ) {
+                tooltip($(this),ui);                    
+              },              
+              create:function(e,ui){
+                tooltip($(this),ui);                    
+             },
+              stop:function(e,ui) {
+	             launchSearch(); 
+              }
+		});
 	 
 		// Focus state for append/prepend inputs
 		$('.input-prepend, .input-append').on('focus', 'input', function () {
@@ -20,24 +49,44 @@
 				$(this).closest('.control-group, form').removeClass('focus');
 		}); 
 		
-		$('#search-box').on('submit', function(event) {	
+		$('#search-box').on('submit', function(event) {
+			if ($('#search-query').val().length < 3) { return }	
 			launchSearch();
 			return false;
 		});
 		
 		$('#search-query').on('keyup', function(event) {
+			if ($('#search-query').val().length < 3) { return }
 			launchSearch();
 		});
 		
+		var color='whiteAndPink';
+		
+		$('#white').on('click', function(event) {
+			color='White';
+			launchSearch();
+		});
+		
+		$('#pink').on('click', function(event) {
+			color='Pink';
+			launchSearch();
+		});
+		
+		$('#whiteAndPink').on('click', function(event) {
+			color='whiteAndPink';
+			launchSearch();
+		});
+						
 		var launchSearch = function() {
-			if ($('#search-query').val().length < 3) { return }
-			
 			var minSize = $('select#minimumSize').val();
 			var maxSize = $('select#maximumSize').val();
 			
+			var minPrice = $("#price-range").slider("values")[0];
+			var maxPrice = $("#price-range").slider("values")[1];
+
 			
 			$.ajax({
-				url: '/search?' + 'q='+ $('#search-query').val()+'&minSize='+minSize+'&maxSize='+maxSize
+				url: '/search?' + 'q='+ $('#search-query').val()+'&minSize='+minSize+'&maxSize='+maxSize+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&color='+color
 			}).success(function(wines) {
 				$('#results').replaceWith(wines);
 			});

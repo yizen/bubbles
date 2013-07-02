@@ -1,56 +1,90 @@
 extends layout
 
 block body
+	div.superheader
+		div.container
+			div.row.logobar
+				div.span12
+					div.span3
+					//div.navbar
+						div.navbar-inner
+							div.container
+								a.brand Champagne
+								div#nav-collapse01.nav-collapse.collapse
+									ul.nav
+										li.active 
+											a Search
+										li
+											a Stats
+										li
+											a About us
+			div.row.searchbar
+				div.span2
+				div.span8
+					form.form-search#search-box.span8
+						div.input-prepend
+							button.btn.btn-huge(type='submit')
+								span.fui-search
+							input#search-query.huge.search-query.search-query-rounded.span6(type='search', placeholder='Search champagne', autocomplete='off' )
+				div.span2
 	div.container
-		div.row
-			div.span12
-				div.navbar
-					div.navbar-inner
-						div.container
-							a.brand Champagne
-							div#nav-collapse01.nav-collapse.collapse
-								ul.nav
-									li.active 
-										a Search
-									li
-										a Stats
-									li
-										a About us
-		div.row.searchbar
-			div.span2
-			div.span8
-				form.form-search#search-box
-					div.input-prepend
-						button.btn.btn-huge(type='submit')
-							span.fui-search
-						input#search-query.huge.search-query.search-query-rounded.span6(type='search', placeholder='Search champagne', autocomplete='off' )
-			div.span2
-		div.row.optionsbar
-			.span12
-				fieldset
-					select#minimumSize(name='minimumSize')
-						option(value='0.5') Demi-bouteille
-						option(value='1', selected='selected') Bouteille
-						option(value='2') Magnum
-						option(value='4') Jeroboam
-						option(value='8') Mathusalem
-						option(value='12') Salmanazar
-						option(value='16') Balthazar
-						option(value='20') Nabuchodonosor
-						option(value='24') Salomon
-						option(value='36') Primat
-					select#maximumSize(name='maximumSize')
-						option(value='0.5') Demi-bouteille
-						option(value='1') Bouteille
-						option(value='2') Magnum
-						option(value='4') Jeroboam
-						option(value='8') Mathusalem
-						option(value='12') Salmanazar
-						option(value='16') Balthazar
-						option(value='20', selected='selected') Nabuchodonosor
-						option(value='24') Salomon
-						option(value='36') Primat
-		div#results.row
+		div#optionsOn.row
+			.offset10.span2
+				span#more.fui-plus-inverted
+					Plus d'options		
+		div#optionsOff.row
+			.offset10.span2
+				span#more.fui-cross-inverted
+					Moins d'options						
+		div#refine-container.row
+			div#refine.span12
+				.row
+					h4.span2 Contenance
+					fieldset.span9.slider
+						select#minimumSize(name='minimumSize')
+							option(value='0.5') Demi-bouteille
+							option(value='1', selected='selected') Bouteille
+							option(value='2') Magnum
+							option(value='4') Jeroboam
+							option(value='8') Mathusalem
+							option(value='12') Salmanazar
+							option(value='16') Balthazar
+							option(value='20') Nabuchodonosor
+							option(value='24') Salomon
+							option(value='36') Primat
+						select#maximumSize(name='maximumSize')
+							option(value='0.5') Demi-bouteille
+							option(value='1') Bouteille
+							option(value='2') Magnum
+							option(value='4') Jeroboam
+							option(value='8') Mathusalem
+							option(value='12') Salmanazar
+							option(value='16') Balthazar
+							option(value='20', selected='selected') Nabuchodonosor
+							option(value='24') Salomon
+							option(value='36') Primat
+						.span1
+				.row
+					h4.span2 Prix	
+					#price-range.span9.slider
+					.span1
+				.row
+					h4.span2 Couleur
+					label.radio.span2#whiteAndPink
+						input(type='radio', name='optionsRadios', value='whiteAndPink', data-toggle='radio',	 checked='')
+						| Blancs et rosés
+					label.radio.span2#white
+						input(type='radio', name='optionsRadios', value='white', data-toggle='radio')
+						| Uniquement blancs
+					label.radio.span2#pink
+						input(type='radio', name='optionsRadios', value='pink', data-toggle='radio')
+						| Uniquement rosés
+
+		div#results-container.row
+			div#results.span12
+			
+
+				
 		
 	script(src='/js/ui/jquery-1.8.3.min.js')
 	script(src='/js/ui/jquery-ui-1.10.3.custom.min.js')

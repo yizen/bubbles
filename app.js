@@ -3,8 +3,9 @@ var express 		= require('express'),
   	expressWinston 	= require('express-winston'),
   	winston			= require('winston'),
   	db 				= require('./models'),  	
-  	elasticSearchClient = require('elasticsearchclient'),
   	bubblescrawler	= require('./crawler/bubblescrawler');
+  	
+
   	
 var routes 			= require('./routes');  	
 
@@ -12,16 +13,6 @@ var app = module.exports = express();
 var port = 3000;
 
 //TODO : remove all jobs
-
-//Connect to Elasticsearch
-var elasticSearchserverOptions = {
-    host: 'localhost',
-    port: 9200,
-    pathPrefix:'',
-    secure: false,
-};
-
-app.es = new elasticSearchClient(elasticSearchserverOptions);
 
 //Init models
 db.sequelize.sync().complete(function(err) {
@@ -53,8 +44,7 @@ app.configure(function(){
 	}));
 
 	app.use(express.bodyParser());
-	app.use(express.cookieParser());
-	app.use(express.session({secret: 'Gpe3YY88WGtxzizVh'}));
+	app.use(express.cookieParser( 'Gpe3YY88WGtxzizVh' ));
 	app.use(express.methodOverride());
 	
 	// express-winston logger makes sense BEFORE the router.
