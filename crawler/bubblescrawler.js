@@ -439,9 +439,9 @@ var bubblescrawler = (function () {
 	}
 	
 	var extractColorFromName = function(name) {
-		if (name.match(/rosé/i)) return "Rosé";
-		if (name.match(/rose/i)) return "Rosé";
-		if (name.match(/pink/i)) return "Rosé";
+		if (name.match(/rosé/i)) return "Pink";
+		if (name.match(/rose/i)) return "Pink";
+		if (name.match(/pink/i)) return "Pink";
 
 		else return "White";
 	}
