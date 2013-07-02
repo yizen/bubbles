@@ -66,6 +66,32 @@ module.exports = function(app){
 		}); //db.Website.find
 	});
 	
+	app.get('/admin/crawl/:website', function (req, res) {	
+		var websiteId = req.param('website');
+
+		db.Website.find(websiteId).success(function(website) {
+			website.lastCrawlStart = new Date();
+						
+			var timeout = 4500;
+			
+			db.Job.create ({
+				type: "CRAWL",
+				status: "RUNNING"
+			}).success( function( job) {
+				job.setWebsite(website);
+				job.save();
+			
+				website.save().success(function() {
+					res.redirect('/admin/');
+				});
+						 		
+				bubblescrawler.crawl(website, job);		 		
+						 								
+			}); //Job Create		
+		}); //db.Website.find
+	});
+
+	
 	app.get('/admin/job/:job', function (req, res) {
 		var jobId = req.param('job');
 		
