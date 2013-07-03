@@ -16,13 +16,15 @@ block body
 										a(href='/admin/elasticsearch/') Elastic Search
 		div.row
 			div.span12
-				h3	Status Ok = #{status.ok}
-				-  if ((typeof(status.indices) !== 'undefined')&&(typeof(status.indices.bubbles) !== 'undefined')) {
-				h5  Documents = #{status.indices.bubbles.docs.num_docs}
+				h3	#{status.cluster_name}
+				ul
+					each node in status.nodes
+						li= node.name
+						li= node.indices.docs.count
+
 				a.btn.btn-mini.btn-danger.mlm(href='/admin/elasticsearch/reindex/')
 					i(style='font-size:11px').fui-trash
 					|	Reindex
-				-}
 				
 												
 						

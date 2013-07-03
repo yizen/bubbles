@@ -1,6 +1,9 @@
 async 			= require('async');
 bubblescrawler	= require('../crawler/bubblescrawler');
 
+var ejs 			= require('elastic.js'),
+    nc 				= require('elastic.js/elastic-node-client');  	
+
 module.exports = function(app){
 	app.get('/admin/', function (req, res) {
 		//Admin login page
@@ -149,32 +152,40 @@ module.exports = function(app){
 	});
 	
 	app.get('/admin/elasticsearch/', function (req, res) {
-		var status = app.es.status('bubbles')
-		.on('data', function(data) {
-			status = JSON.parse(data);
-        	res.render('elasticsearchstatus', {status : status});
-		})
-		.exec();
+		ejs.client = nc.NodeClient('localhost', '9200');
+		
+		var info = ejs.NodeStats();
+		
+		info.doStats(function success(status){
+			console.log(JSON.stringify(status));
+			res.render('elasticsearchstatus', {status : status});
+		}, function error(status){
+			res.render('elasticsearchstatus', {status : status});
+		});
 	});
 	
 	app.get('/admin/elasticsearch/reindex/', function (req, res) {
-		app.es.deleteIndex('bubbles')
-		.on('data', function(data) {
-			res.redirect('/admin/elasticsearch/');
+
 			db.Wine.findAll().success(function(wines) {
 				wines.forEach(function(wine, index) {
 					wine.getWebsite().success(function(website) {
 						var copy = JSON.parse(JSON.stringify(wine));
 						copy.website = website.name;
-						app.es.index('bubbles', 'wine', copy, copy.id)
-							.on('data', function(data) {
-								console.log(data)
-							})
-							.exec();
+						
+						var doc = ejs.Document('bubbles', 'wine');
+						doc.source(copy);
+						
+						doc.doUpdate(function(data) {
+							console.log("Index "+JSON.stringify(data));
+						}, function(error) {
+							console.error("Index "+JSON.stringify(error));
+						}
+						);
 					});
-	   			}); 
+	   			});
+	   			
+	   			res.redirect('/admin/elasticsearch/');
+ 
 			});
-		})
-		.exec();
 	});
 };

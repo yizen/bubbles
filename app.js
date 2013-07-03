@@ -5,14 +5,10 @@ var express 		= require('express'),
   	db 				= require('./models'),  	
   	bubblescrawler	= require('./crawler/bubblescrawler');
   	
-
-  	
 var routes 			= require('./routes');  	
 
 var app = module.exports = express();
 var port = 3000;
-
-//TODO : remove all jobs
 
 //Init models
 db.sequelize.sync().complete(function(err) {
@@ -20,7 +16,6 @@ db.sequelize.sync().complete(function(err) {
 	   	throw err
 	}
 });
-
 
 // Configuration
 

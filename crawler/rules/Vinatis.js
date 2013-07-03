@@ -1,5 +1,3 @@
-/* scrapinode callbacks */
-
 var Vinatis = function ( scrapinode ) {
 	var path = /http:\/\/www.vinatis.com/;
 	

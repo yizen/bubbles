@@ -1,5 +1,3 @@
-/* scrapinode callbacks */
-
 var PlusDeBulles = function ( scrapinode ) {
 	var path = /http:\/\/www.plus-de-bulles.com/;
 	

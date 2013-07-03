@@ -1,5 +1,3 @@
-/* scrapinode callbacks */
-
 var Champmarket = function ( scrapinode ) {
 	var path = /http:\/\/www.champmarket.com/;
 	

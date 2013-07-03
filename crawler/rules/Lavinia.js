@@ -3,6 +3,7 @@ _.str 			= require('underscore.string');
 _.mixin(_.str.exports());
 _.str.include('Underscore.string', 'string');
 
+
 var Lavinia = function ( scrapinode ) {
 	var path = /http:\/\/www.lavinia.fr/;
 	

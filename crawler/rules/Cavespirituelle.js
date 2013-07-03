@@ -1,5 +1,3 @@
-/* scrapinode callbacks */
-
 var Cavespirituelle = function ( scrapinode ) {
 	var path = /http:\/\/www.cave-spirituelle.com/;
 	

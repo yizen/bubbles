@@ -1,5 +1,3 @@
-/* scrapinode callbacks */
-
 var Lerepairedebacchus = function ( scrapinode ) {
 	var path = /http:\/\/www.lerepairedebacchus.com/;
 	

@@ -1,5 +1,3 @@
-/* scrapinode callbacks */
-
 var PopBulles = function ( scrapinode ) {
 	var path = /http:\/\/popbulles.com/;
 	

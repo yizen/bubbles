@@ -1,5 +1,3 @@
-/* scrapinode callbacks */
-
 var Champagnepascher = function ( scrapinode ) {
 	var path = /http:\/\/www.champagnepascher.fr/;
 	

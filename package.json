@@ -9,6 +9,18 @@
     "less" : "",
     "mysql" : "",
     "sequelize" : "",
-    "jade": ">= 0.0.1"
+    "jade": ">= 0.0.1",
+    "async" : "",
+    "elastic.js" : "",
+    "express" : "",
+    "express-winston" : "",
+    "http-get": "",
+    "request" : "",
+    "scrapinode" : "",
+    "simplecrawler" : "",
+    "supervisor" : "",
+    "underscore" : "",
+    "underscore.string" : "",
+    "winston" : ""
   }
 }

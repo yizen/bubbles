@@ -12,7 +12,6 @@ var bubblescrawler = (function () {
 	var crypto = require('crypto');
 	var fs = require('fs'); 
 		
-    /* Specific sites rules */
 	var PlusDeBulles = require("./rules/PlusDeBulles")(scrapinode);
 	var Champmarket = require("./rules/Champmarket")(scrapinode);
 	var Cavespirituelle = require("./rules/Cavespirituelle")(scrapinode);

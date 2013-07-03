@@ -1,5 +1,3 @@
-/* scrapinode callbacks */
-
 var Cavagogo = function ( scrapinode ) {
 	var path = /http:\/\/www.cavagogo.com/;
 	

@@ -1,5 +1,3 @@
-/* scrapinode callbacks */
-
 var Debullesenbulles = function ( scrapinode ) {
 	var path = /http:\/\/www.debullesenbulles.com/;
 	
