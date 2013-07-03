@@ -14,9 +14,7 @@ module.exports = function(app){
 	
 		//Connect to Elasticsearch
 		ejs.client = nc.NodeClient('localhost', '9200');
-		
-		console.log(req.query);
-  
+		  
 		var q 		= req.query.q;
 		var qty 	= req.query.qty || 1;
 
