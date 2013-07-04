@@ -165,27 +165,25 @@ module.exports = function(app){
 	});
 	
 	app.get('/admin/elasticsearch/reindex/', function (req, res) {
+		ejs.client = nc.NodeClient('localhost', '9200');
 
-			db.Wine.findAll().success(function(wines) {
-				wines.forEach(function(wine, index) {
-					wine.getWebsite().success(function(website) {
-						var copy = JSON.parse(JSON.stringify(wine));
-						copy.website = website.name;
-						
-						var doc = ejs.Document('bubbles', 'wine');
-						doc.source(copy);
-						
-						doc.doUpdate(function(data) {
-							console.log("Index "+JSON.stringify(data));
-						}, function(error) {
-							console.error("Index "+JSON.stringify(error));
-						}
-						);
-					});
-	   			});
-	   			
-	   			res.redirect('/admin/elasticsearch/');
- 
-			});
+		db.Wine.findAll().success(function(wines) {
+			wines.forEach(function(wine, index) {
+				wine.getWebsite().success(function(website) {
+					
+					copy = JSON.parse(JSON.stringify(wine));
+					copy.website = website.name;
+					var doc = ejs.Document('bubbles', 'wine', copy.id).source(copy).upsert(copy).doUpdate(function(data) {
+						console.log("Index "+JSON.stringify(data));
+					}, function(error) {
+						console.error("Index "+JSON.stringify(error));
+					}
+					);
+				});
+   			});
+   			
+   			res.redirect('/admin/elasticsearch/');
+
+		});
 	});
 };
