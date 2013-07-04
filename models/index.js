@@ -3,7 +3,7 @@ if (!global.hasOwnProperty('db')) {
     , sequelize = null
 
   if (process.env.NODE_ENV == 'production') {
-    sequelize = new Sequelize('node', 'iUcdibPJ7fTN7l', 'node', {
+    sequelize = new Sequelize('node', 'node', 'iUcdibPJ7fTN7l', {
 	    logging: false
     })
   } else {
