@@ -19,9 +19,7 @@ db.sequelize.sync().complete(function(err) {
 
 // Configuration
 
-app.configure(function(){
-	//app.use(express.logger({format: 'dev'}));
-	
+app.configure(function(){	
 	app.use(express.static(__dirname + '/public'));
 	
 	global.photodir = __dirname + '/public' + '/photos';
