@@ -12,18 +12,18 @@ var bubblescrawler = (function () {
 	var crypto = require('crypto');
 	var fs = require('fs'); 
 		
-	var PlusDeBulles 		= require(__dirname+"/rules/PlusDeBulles")(scrapinode);
-	var Champmarket 		= require(__dirname+"/rules/Champmarket")(scrapinode);
-	var Cavespirituelle 	= require(__dirname+"/rules/Cavespirituelle")(scrapinode);
-	var Debullesenbulles 	= require(__dirname+"/rules/Debullesenbulles")(scrapinode);
-	var Lerepairedebacchus 	= require(__dirname+"/rules/Lerepairedebacchus")(scrapinode);
-	var Vinatis 			= require(__dirname+"/rules/Vinatis")(scrapinode);
-	var Cavagogo 			= require(__dirname+"/rules/Cavagogo")(scrapinode);
-	var Champagneendirect 	= require(__dirname+"/rules/Champagneendirect")(scrapinode);
-	var Nicolas 			= require(__dirname+"/rules/Nicolas")(scrapinode);
-	var Champagnepascher 	= require(__dirname+"/rules/Champagnepascher")(scrapinode);
-	var Lavinia 			= require(__dirname+"/rules/Lavinia")(scrapinode);
-	var PopBulles 			= require(__dirname+"/rules/PopBulles")(scrapinode);
+	var PlusDeBulles 		= require(__dirname+"/rules/plusdebulles")(scrapinode);
+	var Champmarket 		= require(__dirname+"/rules/champmarket")(scrapinode);
+	var Cavespirituelle 	= require(__dirname+"/rules/cavespirituelle")(scrapinode);
+	var Debullesenbulles 	= require(__dirname+"/rules/debullesenbulles")(scrapinode);
+	var Lerepairedebacchus 	= require(__dirname+"/rules/lerepairedebacchus")(scrapinode);
+	var Vinatis 			= require(__dirname+"/rules/vinatis")(scrapinode);
+	var Cavagogo 			= require(__dirname+"/rules/cavagogo")(scrapinode);
+	var Champagneendirect 	= require(__dirname+"/rules/champagneendirect")(scrapinode);
+	var Nicolas 			= require(__dirname+"/rules/nicolas")(scrapinode);
+	var Champagnepascher 	= require(__dirname+"/rules/champagnepascher")(scrapinode);
+	var Lavinia 			= require(__dirname+"/rules/lavinia")(scrapinode);
+	var PopBulles 			= require(__dirname+"/rules/popbulles")(scrapinode);
 	
 	var _log = function( job, message, level, url, website ) {
 	
