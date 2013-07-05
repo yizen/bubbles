@@ -41,6 +41,7 @@ app.configure(function(){
 	app.use(express.methodOverride());
 	
 	// express-winston logger makes sense BEFORE the router.
+	/*
     app.use(expressWinston.logger({
       transports: [
         new winston.transports.Console({
@@ -49,6 +50,7 @@ app.configure(function(){
         })
       ]
     }));
+   */
 
     app.use(app.router);
 
@@ -69,8 +71,6 @@ app.configure(function(){
       showStack: true
     }));
     */
-  
-	app.use(app.router);
 });
 
 app.configure('development', function(){
