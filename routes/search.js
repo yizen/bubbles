@@ -56,6 +56,8 @@ module.exports = function(app){
 										])
 
 										]);
+										
+		var sort 		= ejs.Sort('price');
 		
 		var query1 = new Object;
 		if ( q!= '')
@@ -77,7 +79,7 @@ module.exports = function(app){
 			
 		var hits = null;		
 		
-		request.query(query1).filter(filter).highlight(highlight).doSearch(function(results){
+		request.query(query1).filter(filter).sort(sort).highlight(highlight).doSearch(function(results){
 			
 			if (!results.hits) {
 				console.log('Error executing search');
@@ -160,20 +162,22 @@ module.exports = function(app){
 				
 				if (item._source.price) {
 					wine.euro = formatEuro(item._source.price);
-					wine.totalNoEuro = item._source.price + transportationFees.transportationFees(qty, item._source.website);
-					wine.total = formatEuro(wine.totalNoEuro);
+					/*wine.totalNoEuro = item._source.price + transportationFees.transportationFees(qty, item._source.website);
+					wine.total = formatEuro(wine.totalNoEuro);*/
+					wine.sixNoEuro = (6*item._source.price) + transportationFees.transportationFees(6, item._source.website, (6*item._source.price));
+					wine.six = formatEuro(wine.sixNoEuro);
 				} else {
 					wine.totalNoEuro = 100000; //push it to the end of the result list;
 					wine.euro = "Prix sur demande";
-					wine.total = "-";
+					wine.six = "-";
 				}
 				
 				wines.push(wine);	
 			});
 			
-			wines.sort(function(a, b){
+			/*wines.sort(function(a, b){
 				return a.totalNoEuro-b.totalNoEuro;
-			});
+			});*/
 			
 			res.render('results', { wines : wines });
 		}
