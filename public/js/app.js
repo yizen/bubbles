@@ -1,10 +1,30 @@
 (function($) {
 	 $(function() {
 	 
-	 	$("#optionsOn").click(function () {
-		 	$("#refine-container").toggle();
-		 });
-		 
+	 	$("span#more").on("click", function(){
+	 		$("#refine").slideToggle(200);
+		});
+	 	
+	 	//setup before functions
+		var typingTimer;                //timer identifier
+		var doneTypingInterval = 500;  //time in ms
+		
+		//on keyup, start the countdown
+		$('#search-query').keyup(function(){
+		    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+		});
+		
+		//on keydown, clear the countdown 
+		$('#search-query').keydown(function(){
+		    clearTimeout(typingTimer);
+		});
+		
+		//user is "finished typing," do something
+		function doneTyping () {
+		    if ($('#search-query').val().length < 3) { return }
+			launchSearch();
+		}
+		
 	 	$('select#minimumSize, select#maximumSize').selectToUISlider({
 				labels: 12,
 				labelSrc: 'text',
@@ -55,11 +75,6 @@
 			return false;
 		});
 		
-		$('#search-query').on('keyup', function(event) {
-			if ($('#search-query').val().length < 3) { return }
-			launchSearch();
-		});
-		
 		var color='whiteAndPink';
 		
 		$('#white').on('click', function(event) {
@@ -78,6 +93,10 @@
 		});
 						
 		var launchSearch = function() {
+			
+			//launch spinner
+			$('#spinner').spin();
+			
 			var minSize = $('select#minimumSize').val();
 			var maxSize = $('select#maximumSize').val();
 			
@@ -87,33 +106,15 @@
 			
 			$.ajax({
 				url: '/search?' + 'q='+ $('#search-query').val()+'&minSize='+minSize+'&maxSize='+maxSize+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&color='+color
-			}).success(function(wines) {
+			}).done(function(wines) {
 				$('#results').replaceWith(wines);
+			}).always(function() {
+				$('#spinner').spin(false);
 			});
 		}; 
 		
 		
-		$('#search-query').focus();
-		
+		$('#search-query').focus();	
 
 	});
-	
-	//Searchbar fixed on top for scroll
-	
-	/*
-$(document).scroll(function(){
-		var elem = $('.searchbar');
-		if (!elem.attr('data-top')) {
-			if (elem.hasClass('searchbar-fixed-top'))
-				return;
-			var offset = elem.offset();
-			elem.attr('data-top', offset.top);
-		}
-		
-		if (elem.attr('data-top') - elem.outerHeight() <= $(this).scrollTop() - $(elem).outerHeight())
-			elem.addClass('searchbar-fixed-top');
-		else
-			elem.removeClass('searchbar-fixed-top');
-	});
-*/
 })(jQuery);

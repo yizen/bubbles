@@ -152,10 +152,14 @@ a.ui-slider-handle:hover span.Slider_Value{
     display: block;
 }   
 
-#refine-container, #optionsOff{
+#refine{
 	display: none;
 }
 
 #optionsOn {
 	cursor: pointer;
+}
+
+#spinner {
+	margin-top: 50px;
 }
