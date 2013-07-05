@@ -1,6 +1,6 @@
 {
-  "name": "bubbles",
-  "description": "Bubbles web application",
+  "name": "bulles.me",
+  "description": "Bulles.me web application",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -21,6 +21,7 @@
     "supervisor" : "",
     "underscore" : "",
     "underscore.string" : "",
-    "winston" : ""
+    "winston" : "",
+    "connect-thumbs" : ""
   }
 }

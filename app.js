@@ -3,7 +3,8 @@ var express 		= require('express'),
   	expressWinston 	= require('express-winston'),
   	winston			= require('winston'),
   	db 				= require('./models'),  	
-  	bubblescrawler	= require('./crawler/bubblescrawler');
+  	bubblescrawler	= require('./crawler/bubblescrawler'),
+  	thumbs			= require('connect-thumbs');
   	
 var routes 			= require('./routes');  	
 
@@ -20,6 +21,26 @@ db.sequelize.sync().complete(function(err) {
 // Configuration
 
 app.configure(function(){	
+	 app.use(thumbs({
+		 "ttl": 92000
+		, "tmpCacheTTL": 86400
+		, "tmpDir": "./tmp/thumbnails"
+	    , "presets": {
+	        small: {
+	          width: 180
+	          , compression:.5
+	        }
+	        , medium: {
+	          width: 300
+	          , compression:.7
+	        }
+	        , large: {
+	          width: 900
+	          , compression:.85
+	        }
+		}
+	}));
+	
 	app.use(express.static(__dirname + '/public'));
 	
 	global.photodir = __dirname + '/public' + '/photos';
@@ -33,27 +54,27 @@ app.configure(function(){
   		prefix: "/css",
 		// force true recompiles on every request... not the best
 		// for production, but fine in debug while working through changes
-		force: true
+		force: false
 	}));
-
-	app.use(express.bodyParser());
-	app.use(express.cookieParser( 'Gpe3YY88WGtxzizVh' ));
-	app.use(express.methodOverride());
 	
-	// express-winston logger makes sense BEFORE the router.
 	/*
-    app.use(expressWinston.logger({
+	app.use(expressWinston.logger({
       transports: [
         new winston.transports.Console({
-          json: true,
+          json: false,
           colorize: true
         })
       ]
     }));
-   */
+    */
+    
+	app.use(express.bodyParser());
+	app.use(express.cookieParser( 'Gpe3YY88WGtxzizVh' ));
+	app.use(express.methodOverride());
+
 
     app.use(app.router);
-
+    
     // express-winston errorHandler makes sense AFTER the router.
     app.use(expressWinston.errorLogger({
       transports: [
@@ -65,12 +86,12 @@ app.configure(function(){
     }));
 
     // Optionally you can include your custom error handler after the logging.
-    /*
+    
     app.use(express.errorHandler({
       dumpExceptions: true,
       showStack: true
     }));
-    */
+    
 });
 
 app.configure('development', function(){

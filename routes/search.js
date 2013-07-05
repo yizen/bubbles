@@ -144,14 +144,18 @@ module.exports = function(app){
 	
 				wine.website = item._source.website;						
 				wine.options = _.capitalize(item._source.options);
-				//wine.url = item._source.url;
+
 				wine.url = '/out/'+item._source.id;
 				
 				if (item._source.photo) {
-					wine.photo = '/photos/'+item._source.photo;
-					wine.photostyle = 'background-image:url("'+wine.photo+'")';
+					//wine.photo = '/photos/'+item._source.photo;
+					var photo = '/photos/'+item._source.photo;
+					var fullURL = req.protocol + "://" + req.get('host') + photo;
+
+					var base64photo = new Buffer(fullURL).toString('base64')
+					wine.photo = '/thumbs/small/images/'+base64photo+".jpg";
 				} else {
-					wine.photostyle = '';
+					wine.photo = '/images/no-image.png';
 				}
 				
 				if (item._source.price) {
