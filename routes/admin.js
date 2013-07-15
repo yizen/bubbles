@@ -157,7 +157,6 @@ module.exports = function(app){
 		var info = ejs.NodeStats();
 		
 		info.doStats(function success(status){
-			console.log(JSON.stringify(status));
 			res.render('elasticsearchstatus', {status : status});
 		}, function error(status){
 			res.render('elasticsearchstatus', {status : status});
@@ -174,9 +173,8 @@ module.exports = function(app){
 					copy = JSON.parse(JSON.stringify(wine));
 					copy.website = website.name;
 					var doc = ejs.Document('bubbles', 'wine', copy.id).source(copy).upsert(copy).doUpdate(function(data) {
-						console.log("Index "+JSON.stringify(data));
 					}, function(error) {
-						console.error("Index "+JSON.stringify(error));
+						console.error("Error at index "+JSON.stringify(error));
 					}
 					);
 				});
