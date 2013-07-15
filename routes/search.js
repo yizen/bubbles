@@ -73,14 +73,13 @@ module.exports = function(app){
 			
 		var query3 = new Object;
 		if ( q!= '')
-			query3  = ejs.FuzzyQuery('name', q.toString());
+			query3  = ejs.FuzzyQuery('name', q.toString()).minSimilarity(0.7);
 		else
 			query3	= ejs.MatchAllQuery();
 			
 		var hits = null;		
 		
-		request.query(query1).filter(filter).sort(sort).highlight(highlight).doSearch(function(results){
-			
+		request.query(query1).filter(filter).sort(sort).highlight(highlight).size(100).doSearch(function(results){
 			if (!results.hits) {
 				console.log('Error executing search');
 				console.log(request.toString());
@@ -93,7 +92,7 @@ module.exports = function(app){
 				renderSearchResults(hits);	
 			} else {
 			
-				request.query(query2).filter(filter).highlight(highlight).doSearch(function(results){
+				request.query(query2).filter(filter).highlight(highlight).size(100).doSearch(function(results){
 			
 					if (!results.hits) {
 						console.log('Error executing search');
@@ -105,7 +104,7 @@ module.exports = function(app){
 					if (hits && hits.total > 0) {
 						renderSearchResults(hits);	
 					} else {
-						request.query(query3).filter(filter).highlight(highlight).doSearch(function(results){
+						request.query(query3).filter(filter).highlight(highlight).size(100).doSearch(function(results){
 					
 							if (!results.hits) {
 								console.log('Error executing search');
@@ -113,7 +112,7 @@ module.exports = function(app){
 							}
 							
 							hits = results.hits;
-					
+																			
 							if (hits && hits.total > 0) {
 								renderSearchResults(hits);	
 							} else {
