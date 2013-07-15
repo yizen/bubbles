@@ -12,24 +12,46 @@ block body
 								ul.nav
 									li 
 										a(href='/admin/') Websites
-									li.active
-										a(href='/admin/elasticsearch/') Elastic Search
 									li
+										a(href='/admin/elasticsearch/') Elastic Search
+									li.active
 										a(href='/admin/clics/') Outbound	
 		div.row
 			div.span12
-				h3	#{status.cluster_name}
-				ul
-					each node in status.nodes
-						li= node.name
-						li= node.indices.docs.count
-
-				a.btn.btn-mini.btn-danger.mlm(href='/admin/elasticsearch/reindex/')
-					i(style='font-size:11px').fui-trash
-					|	Reindex
-				
-												
-						
+				table.table.table-bordered
+					thead
+						tr
+							th Date
+							th Query
+							th Qty
+							th Min Size
+							th Max Size
+							th Min Price
+							th Max Price
+							th Color
+							th Wine
+					tbdody
+						- each clic in clics
+							tr
+								td	
+									=clic.createdAt
+								td
+									=clic.query
+								td
+									=clic.qty
+								td
+									=clic.minSize
+								td
+									=clic.maxSize
+								td
+									=clic.minPrice
+								td
+									=clic.maxPrice
+								td
+									=clic.color
+								td
+									=clic.wine
+														
 	script(src='/js/ui/jquery-1.8.3.min.js')
 	script(src='/js/ui/jquery-ui-1.10.3.custom.min.js')
 	script(src='/js/ui/jquery.ui.touch-punch.min.js')

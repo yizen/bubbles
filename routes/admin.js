@@ -23,6 +23,20 @@ module.exports = function(app){
 		});
 	});
 	
+	app.get('/admin/clics/', function (req, res) {
+		db.Clic.findAll().success(function(clics){
+			async.each(clics, function(clic, callback) {
+				clic.getWine().success(function(wine) {
+					clic['wine'] = wine.wine;
+					callback();
+				});
+				}, function(err) {
+					res.render('clics', { clics : clics });				
+			});	
+
+		});
+	});
+	
 	app.get('/admin/refresh/:website', function (req, res) {	
 		var websiteId = req.param('website');
 
