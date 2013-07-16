@@ -4,7 +4,8 @@ var express 		= require('express'),
   	winston			= require('winston'),
   	db 				= require('./models'),  	
   	bubblescrawler	= require('./crawler/bubblescrawler'),
-  	thumbs			= require('connect-thumbs');
+  	thumbs			= require('connect-thumbs'),
+  	later			= require('later');
   	
 var routes 			= require('./routes');  	
 
@@ -17,6 +18,14 @@ db.sequelize.sync().complete(function(err) {
 	   	throw err
 	}
 });
+
+//setup later configuration
+later.date.localTime();
+//var refreshSchedule = later.parse.text('at 17:36 every day');
+
+var refreshSchedule = later.parse.recur().on('17:42:00').time();
+var refreshTask 	= later.setInterval(bubblescrawler.refreshAllWebsites, refreshSchedule);
+
 
 // Configuration
 
@@ -110,5 +119,5 @@ app.get('*', require('./routes/home'));
 // Start server
 
 app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+  console.log("Express server listening on port %d in %s mode, started at %s", this.address().port, app.settings.env, new Date());
 });

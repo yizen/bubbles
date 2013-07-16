@@ -488,14 +488,75 @@ var bubblescrawler = (function () {
 		return value.replace(regEx, replaceMask);
 	}
 	
+	var _refreshAllWebsites = function() {
+		db.Website.findAll( {where: {active: true}} ).success(function (websites) {
+			async.each(websites, function(website, callback) {
+				_refreshWebsite(website);
+				callback();
+			},
+			function(err) {
+				
+			});
+		});
+	};
+	
+	var _refreshWebsite = function(website) {
+		website.lastRefreshStart = new Date();
+		website.save();
+						
+		var timeout = 4500;
+		
+		db.Job.create ({
+			type: "REFRESH",
+			status: "RUNNING"
+		}).success( function( job) {
+			job.setWebsite(website);
+			job.save();
+					 								
+			website.getWines().success(function(wines) {		
+				async.eachSeries(
+					wines, 
+					function (wine, callback){				
+						console.log("Starting "+wine.name);
+						setTimeout(function () {
+							_explore(website, wine.url, job);
+							callback();
+							}, timeout);
+						},
+						
+						function(err) {				
+							website.lastRefreshEnd = new Date();
+							
+							if (err) {
+								job.status = "ERROR";
+							} else {
+								job.status = "OK";
+							}
+							job.save();
+							website.save();
+						}
+				); //async
+			}); //get Wines	
+		}); //Job Create		
+	};
+	
 	return {
 		explore: function( website, url, job) {
 			_explore( website, url, job );
 		},
 		crawl: function (website, job) {
 			_crawl(website, job);
+		},
+		refreshAllWebsites: function() {
+			_refreshAllWebsites();
+		},
+		refreshWebsite: function(website) {
+			_refreshWebsite(website);
 		}
 	}
+	
+
+
 })();
 
 module.exports = bubblescrawler;

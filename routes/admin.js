@@ -63,67 +63,20 @@ module.exports = function(app){
 		
 	});
 	
-	app.get('/admin/refresh-all/', function (res, res) { 
-		db.Website.findAll( {where: {active: true}} ).success(function (websites) {
-			async.each(websites, function(website, callback) {
-				refreshWebsite(website);
-				callback();
-			},
-			function(err) {
-				res.redirect('/admin/');
-			});
-		});
+	app.get('/admin/refresh-all/', function (res, res) {
+		bubblescrawler.resfreshAllWebsites(); 
+		res.redirect('/admin/');
 	});
 	
 	app.get('/admin/refresh/:website', function (req, res) {	
 		var websiteId = req.param('website');
 
 		db.Website.find(websiteId).success(function(website) {
-			refreshWebsite(website);
+			bubblescrawler.refreshWebsite(website);
 			res.redirect('/admin/');
 		}); 
 	});
-	
-	var refreshWebsite = function(website) {
-		website.lastRefreshStart = new Date();
-		website.save();
-						
-		var timeout = 4500;
 		
-		db.Job.create ({
-			type: "REFRESH",
-			status: "RUNNING"
-		}).success( function( job) {
-			job.setWebsite(website);
-			job.save();
-					 								
-			website.getWines().success(function(wines) {		
-				async.eachSeries(
-					wines, 
-					function (wine, callback){				
-						console.log("Starting "+wine.name);
-						setTimeout(function () {
-							bubblescrawler.explore(website, wine.url, job);
-							callback();
-							}, timeout);
-						},
-						
-						function(err) {				
-							website.lastRefreshEnd = new Date();
-							
-							if (err) {
-								job.status = "ERROR";
-							} else {
-								job.status = "OK";
-							}
-							job.save();
-							website.save();
-						}
-				); //async
-			}); //get Wines	
-		}); //Job Create		
-	}
-	
 	app.get('/admin/crawl/:website', function (req, res) {	
 		var websiteId = req.param('website');
 

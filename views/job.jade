@@ -26,12 +26,15 @@ block body
 				table.table.table-striped.smallTable
 					thead
 						tr
+							th Timestamp
 							th Message
 							th Level
 							th URL
 					tbdody
 						- each log in logs
 							tr
+								td
+									=log.createdAt
 								td	
 									=log.message
 								td	
