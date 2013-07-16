@@ -52,10 +52,18 @@ block body
 															i(style='font-size:11px').fui-power
 													a.btn.btn-mini.btn-danger.mlm.confirm-delete(data-id=job.id)
 														i(style='font-size:11px').fui-trash
+	
 								td
 									div.actions		
 										a.btn.btn-mini.btn-primary(href=website.refresh) Run Refresh
-										a.btn.btn-mini.btn-primary(href=website.crawl) Run Crawl					
+										a.btn.btn-mini.btn-primary(href=website.crawl) Run Crawl
+									div.status
+										if (website.active == true)
+											input.switchStatus(type='checkbox', checked='checked', data-toggle='switch', data-website=website.id)
+										else
+											input.switchStatus(type='checkbox', data-toggle='switch', data-website=website.id)
+
+					
 												
 	#modal-from-dom.modal.hide.fade.alert.alert-error
 		button.close.fui-cross(type='button', data-dismiss='alert')

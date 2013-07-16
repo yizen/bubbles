@@ -163,3 +163,7 @@ a.ui-slider-handle:hover span.Slider_Value{
 #spinner {
 	margin-top: 50px;
 }
+
+.status {
+	margin-top: 5px;
+}
