@@ -22,6 +22,7 @@
     "underscore" : "",
     "underscore.string" : "",
     "winston" : "",
-    "connect-thumbs" : ""
+    "connect-thumbs" : "",
+    "later" : ""
   }
 }
