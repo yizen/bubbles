@@ -23,6 +23,30 @@ module.exports = function(app){
 		});
 	});
 	
+	app.get('/admin/wines/', function (req, res) {
+		db.Wine.findAll().success(function(wines) {
+			async.each(wines, function(wine, callback) {
+				wine.getWebsite().success(function(website) {
+					wine['website'] = website.name;
+					
+					if (wine.photo) {
+						var photo = '/photos/'+wine.photo;
+						var fullURL = req.protocol + "://" + req.get('host') + photo;
+	
+						var base64photo = new Buffer(fullURL).toString('base64')
+						wine['photo'] = '/thumbs/small/images/'+base64photo+".jpg";
+					} else {
+						wine['photo'] = '/images/no-image.png';
+					}
+					
+					callback();
+				});
+				}, function(err) {
+					res.render('wines', { wines : wines });				
+			});	
+		});
+	});
+	
 	app.get('/admin/clics/', function (req, res) {
 		db.Clic.findAll().success(function(clics){
 			async.each(clics, function(clic, callback) {

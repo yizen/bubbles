@@ -12,26 +12,51 @@ block body
 								ul.nav
 									li 
 										a(href='/admin/') Websites
-									li
-										a(href='/admin/wines/') Wines	
 									li.active
+										a(href='/admin/wines/') Wines	
+									li
 										a(href='/admin/elasticsearch/') Elastic Search
 									li
 										a(href='/admin/clics/') Outbound		
 		div.row
 			div.span12
-				h3	#{status.cluster_name}
-				ul
-					each node in status.nodes
-						li= node.name
-						li= node.indices.docs.count
-
-				a.btn.btn-mini.btn-danger.mlm(href='/admin/elasticsearch/reindex/')
-					i(style='font-size:11px').fui-trash
-					|	Reindex
-				
-												
-						
+				table.table.table-bordered
+					thead
+						tr
+							th Id
+							th Website
+							th Name
+							th Producer
+							th Wine
+							th Size
+							th Options
+							th Color
+							th Image
+							th Active
+					tbdody
+						- each wine in wines
+							tr
+								td
+									=wine.id
+								td	
+									=wine.website
+								td
+									=wine.name
+								td
+									=wine.producer
+								td
+									=wine.wine
+								td
+									=wine.size
+								td
+									=wine.options
+								td
+									=wine.color
+								td
+									img(src='#{wine.photo}')
+								td
+									=wine.active
+														
 	script(src='/js/ui/jquery-1.8.3.min.js')
 	script(src='/js/ui/jquery-ui-1.10.3.custom.min.js')
 	script(src='/js/ui/jquery.ui.touch-punch.min.js')
