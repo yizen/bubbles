@@ -21,9 +21,7 @@ db.sequelize.sync().complete(function(err) {
 
 //setup later configuration
 later.date.localTime();
-//var refreshSchedule = later.parse.text('at 17:36 every day');
-
-var refreshSchedule = later.parse.recur().on('17:42:00').time();
+var refreshSchedule = later.parse.recur().on('02:00:00').time();
 var refreshTask 	= later.setInterval(bubblescrawler.refreshAllWebsites, refreshSchedule);
 
 
