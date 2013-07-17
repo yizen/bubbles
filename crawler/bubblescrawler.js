@@ -24,6 +24,8 @@ var bubblescrawler = (function () {
 	var Champagnepascher 	= require(__dirname+"/rules/champagnepascher")(scrapinode);
 	var Lavinia 			= require(__dirname+"/rules/lavinia")(scrapinode);
 	var PopBulles 			= require(__dirname+"/rules/popbulles")(scrapinode);
+	var Auchan 				= require(__dirname+"/rules/auchan")(scrapinode);
+	
 	
 	var _log = function( job, message, level, url, website ) {
 	
@@ -313,7 +315,122 @@ var bubblescrawler = (function () {
 			parsedURL.path.match(/\/catalogsearch/i) ||
 			parsedURL.path.match(/\/search/i) ||
 			parsedURL.path.match(/\/vins-etiquettes-abimees/i) ||
-	    
+
+			/* Auchan */
+			parsedURL.path.match(/\/magasins/i) ||
+			parsedURL.path.match(/\/achat7/i) ||
+			parsedURL.path.match(/\/espaceCarte/i) ||
+			parsedURL.path.match(/\/auchan-fr-et-vous/i) ||
+			parsedURL.path.match(/\/inscription/i) ||
+			parsedURL.path.match(/\/id2/i) ||
+			parsedURL.path.match(/\/traiteur/i) ||
+			parsedURL.path.match(/\/enfant/i) ||
+			parsedURL.path.match(/\/lingerie/i) ||
+			parsedURL.path.match(/\/jardin/i) ||
+			parsedURL.path.match(/\/deco/i) ||
+			parsedURL.path.match(/\/literie/i) ||
+			parsedURL.path.match(/\/chambre/i) ||
+			parsedURL.path.match(/\/bricolage/i) ||
+			parsedURL.path.match(/\/guide-achat/i) ||
+			parsedURL.path.match(/\/electromenager/i) ||
+			parsedURL.path.match(/\/informatique/i) ||
+			parsedURL.path.match(/\/image--son/i) ||
+			parsedURL.path.match(/\/jeux--jouets/i) ||
+			parsedURL.path.match(/\/jeux-video/i) ||
+			parsedURL.path.match(/\/edito/i) ||
+			parsedURL.path.match(/\/poster/i) ||
+			parsedURL.path.match(/\/bebe-/i) ||
+			parsedURL.path.match(/\/puericulture/i) ||
+			parsedURL.path.match(/\/vetement/i) ||
+			parsedURL.path.match(/\/recherche/i) ||
+			parsedURL.path.match(/\/cuisine/i) ||
+			parsedURL.path.match(/\/salon/i) ||
+			parsedURL.path.match(/\/mariage/i) ||
+			parsedURL.path.match(/\/auto-moto/i) ||
+			parsedURL.path.match(/\/rangement/i) ||
+			parsedURL.path.match(/\/cartable/i) ||
+			parsedURL.path.match(/\/sport/i) ||
+			parsedURL.path.match(/\/sejour/i) ||
+			parsedURL.path.match(/\/preparer/i) ||
+			parsedURL.path.match(/\/linge-de-maison/i) ||
+			parsedURL.path.match(/\/patisserie/i) ||
+			parsedURL.path.match(/\/espace-enfant/i) ||
+			parsedURL.path.match(/\/gros-electromenager/i) ||
+			parsedURL.path.match(/\/petit-electromenager/i) ||
+			parsedURL.path.match(/\/portal/i) ||
+			parsedURL.path.match(/\/marque-auchan/i) ||
+			parsedURL.path.match(/\/gps-equipement/i) ||
+			parsedURL.path.match(/\/soldes--/i) ||
+			parsedURL.path.match(/\/boutique\./i) ||
+			parsedURL.path.match(/\/sousunivers/i) ||
+			parsedURL.path.match(/\/promo-bebe/i) ||
+			parsedURL.path.match(/\/tenues-de-/i) ||
+			parsedURL.path.match(/\/fille-ou/i) ||
+			parsedURL.path.match(/\/nos-essentiels/i) ||
+			parsedURL.path.match(/\/ficheproduit\./i) ||
+			parsedURL.path.match(/\/accueil\?/i) ||			
+			parsedURL.path.match(/\/gainant/i) ||
+			parsedURL.path.match(/\/quotidien--/i) ||
+			parsedURL.path.match(/\/dim\//i) ||
+			parsedURL.path.match(/\/envie-d-ete/i) ||
+			parsedURL.path.match(/\/boutique-du-sommeil/i) ||
+			parsedURL.path.match(/\/silicone/i) ||
+			parsedURL.path.match(/\/marque-tefal/i) ||
+			parsedURL.path.match(/\/les-unis/i) ||
+			parsedURL.path.match(/\/le-linge-green/i) ||
+			parsedURL.path.match(/\/envie-de-fraicheur/i) ||
+			parsedURL.path.match(/\/offres-de-remboursement/i) ||
+			parsedURL.path.match(/\/apple/i) ||
+			parsedURL.path.match(/\/wiko/i) ||
+			parsedURL.path.match(/\/rec\.searchcore/i) ||
+			parsedURL.path.match(/\/velos-loisirs/i) ||
+			parsedURL.path.match(/\/la-boutique-des-marques/i) ||
+			parsedURL.path.match(/\/rec\//i) ||
+			parsedURL.path.match(/\/emailcontact/i) ||
+			parsedURL.path.match(/\/\?t\%/i) ||
+			parsedURL.path.match(/\/matelas/i) ||
+			parsedURL.path.match(/\/les-cadeaux-de-naissance/i) ||
+			parsedURL.path.match(/\/nuit-enfant/i) ||
+			parsedURL.path.match(/\/quotidien/i) ||
+			parsedURL.path.match(/\/sexy/i) ||
+			parsedURL.path.match(/\/mode-/i) ||
+			parsedURL.path.match(/\/poitrine/i) ||
+			parsedURL.path.match(/\/meubles/i) ||
+			parsedURL.path.match(/\/photo-camescope/i) ||
+			parsedURL.path.match(/\/telephonie/i) ||
+			parsedURL.path.match(/\/jouets-/i) ||
+			parsedURL.path.match(/\/reherche/i) ||
+			parsedURL.path.match(/\/multimedia/i) ||
+			parsedURL.path.match(/\/nos-heros/i) ||
+			parsedURL.path.match(/\/nos-services/i) ||
+			parsedURL.path.match(/\/jeux-/i) ||
+			parsedURL.path.match(/\/image-et-son/i) ||
+			parsedURL.path.match(/\/petit-bateau/i) ||
+			parsedURL.path.match(/\/bonnes-affaires-enfant/i) ||
+			parsedURL.path.match(/\/bureau/i) ||
+			parsedURL.path.match(/\/idees-cadeaux-fete-des-meres/i) ||
+			parsedURL.path.match(/\/destockage-mobilier/i) ||
+			parsedURL.path.match(/\/blanc-dete/i) ||
+			parsedURL.path.match(/\/marque-sitram/i) ||
+			parsedURL.path.match(/\/marque-seb/i) ||
+			parsedURL.path.match(/\/photo-et-video/i) ||
+			parsedURL.path.match(/\/bureau/i) ||
+			parsedURL.path.match(/\/televiseur/i) ||
+			parsedURL.path.match(/\/appareil-photo/i) ||
+			parsedURL.path.match(/\/reservations-/i) ||
+			parsedURL.path.match(/\/maternite/i) ||
+			parsedURL.path.match(/\/petits-prix/i) ||
+			parsedURL.path.match(/\/collection-bio/i) ||
+			parsedURL.path.match(/\/les-bonnes-affaires/i) ||
+			parsedURL.path.match(/\/promos-du-moment/i) ||
+			parsedURL.path.match(/\/corner\./i) ||
+			parsedURL.path.match(/\/sims-3/i) ||
+			parsedURL.path.match(/\/servicepage\./i) ||
+			parsedURL.path.match(/\/bonnes-affaires/i) ||
+
+
+			
+
 		    parsedURL.path.match(/\/back=/i) ||
 		    parsedURL.path.match(/add&amp/i) ||
 		    parsedURL.path.match(/cart.php/i) ||
