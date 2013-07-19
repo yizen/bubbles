@@ -4,7 +4,8 @@ if (!global.hasOwnProperty('db')) {
 
   if (process.env.NODE_ENV == 'production') {
     sequelize = new Sequelize('node', 'node', 'iUcdibPJ7fTN7l', {
-	    logging: false
+	    logging: false,
+	    port: 5123
     })
   } else {
     // the application is executed on the local machine ... use mysql
