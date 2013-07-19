@@ -46,7 +46,7 @@ module.exports = function(app){
 			});	
 		});
 	});
-	
+		
 	app.get('/admin/clics/', function (req, res) {
 		db.Clic.findAll().success(function(clics){
 			async.each(clics, function(clic, callback) {
