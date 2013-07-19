@@ -113,7 +113,7 @@ var bubblescrawler = (function () {
 			    if (!size) size= extractSizeFromName(name);
 			    
 			    color = extractColorFromName(name);			    
-			    name = removeExtrasfromName(name);
+			    //name = removeExtrasfromName(name);
 			    			    				    	
 		    	db.Wine.find({ where: {url: url} }).success(function(wineFound) {
 			    	if (wineFound) {
@@ -181,7 +181,17 @@ var bubblescrawler = (function () {
 			    	} else {
 			    	    db.Wine.find({where: {name:name, WebsiteId:website.id}}).success(function(duplicate) {
 				    	   if (duplicate) { 
-				    			_log(job, 'Duplicate on '+name, 'INFO', url, website);					
+				    			_log(job, 'Duplicate on '+name, 'INFO', url, website);
+				    			
+				    			if (!duplicate.active) {
+					    			//Duplicate is not active, we need to update the URL and reactivate it.
+					    			duplicate.url = url;
+					    			duplicate.active = true;
+					    			duplicate.save().success(function(){
+						    			_log(job, 'Duplicate '+name+ ' was reactivated with new URL', 'INFO', url, website);
+					    			})
+				    			}
+				    							
 				    	   } 
 				    	   else {
 				    	   	 	_log(job, 'New wine '+name, 'INFO', url, website);					
@@ -429,7 +439,15 @@ var bubblescrawler = (function () {
 			parsedURL.path.match(/\/bonnes-affaires/i) ||
 
 
-			
+		    parsedURL.path.match(/accompagnement/i) ||
+		    parsedURL.path.match(/dossiers-videos/i) ||
+		    parsedURL.path.match(/sendfriend/i) ||
+		    parsedURL.path.match(/bouche_filtre/i) ||
+		    parsedURL.path.match(/vacances-by-bacchus/i) ||
+		    parsedURL.path.match(/catalog\/product\/gallery/i) ||
+		    parsedURL.path.match(/\/france.html\?cat=/i) ||
+		    parsedURL.path.match(/3Border=price/i) ||
+		    parsedURL.path.match(/mode=list/i) ||
 
 		    parsedURL.path.match(/\/back=/i) ||
 		    parsedURL.path.match(/add&amp/i) ||
@@ -462,6 +480,22 @@ var bubblescrawler = (function () {
 			parsedURL.path.match(/provence/i) ||
 			parsedURL.path.match(/sud-ouest/i) ||
 			parsedURL.path.match(/corse/i) ||
+			parsedURL.path.match(/loire/i) ||
+			parsedURL.path.match(/autre-regions/i) ||
+			parsedURL.path.match(/accessoires/i) ||
+			parsedURL.path.match(/wishlist/i) ||
+			parsedURL.path.match(/vins-etrangers/i) ||
+			parsedURL.path.match(/autres-regions/i) ||
+			
+			parsedURL.path.match(/\/whisky/i) ||
+			parsedURL.path.match(/rhum/i) ||
+			parsedURL.path.match(/armagnac/i) ||
+			parsedURL.path.match(/liqueur/i) ||
+			parsedURL.path.match(/eau-de-vie/i) ||
+			parsedURL.path.match(/armagnac/i) ||
+			
+			parsedURL.path.match(/\/design\/quantity/i) ||
+			
 			
 			parsedURL.path.match(/\/vins-du-monde/i) ||
 			parsedURL.path.match(/\/vins-de-loire/i) ||
@@ -498,6 +532,7 @@ var bubblescrawler = (function () {
 			_log(job, "Scanning complete for "+mainCrawler.initialPath, 'INFO', mainCrawler.initialPath, website);			
 			website.lastCrawlEnd = new Date();
 			website.save();
+			mainCrawler.stop();
 			return;
 		});
 		
