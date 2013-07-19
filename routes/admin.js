@@ -18,7 +18,7 @@ module.exports = function(app){
 					callback();
 				});
 				}, function(err) {
-					res.render('admin', { websites : websites });				
+					res.render('admin/admin', { websites : websites });				
 			});	
 		});
 	});
@@ -42,7 +42,7 @@ module.exports = function(app){
 					callback();
 				});
 				}, function(err) {
-					res.render('wines', { wines : wines });				
+					res.render('admin/wines', { wines : wines });				
 			});	
 		});
 	});
@@ -55,7 +55,7 @@ module.exports = function(app){
 					callback();
 				});
 				}, function(err) {
-					res.render('clics', { clics : clics });				
+					res.render('admin/clics', { clics : clics });				
 			});	
 
 		});
@@ -132,7 +132,7 @@ module.exports = function(app){
 		
 		db.Job.find(jobId).success(function(job) {
 			job.getLogs().success(function(logs){
-				res.render('job', { job: job, logs : logs });				
+				res.render('admin/job', { job: job, logs : logs });				
 			});	
 		}); //db.Job.find
 	});
@@ -189,9 +189,9 @@ module.exports = function(app){
 		var info = ejs.NodeStats();
 		
 		info.doStats(function success(status){
-			res.render('elasticsearchstatus', {status : status});
+			res.render('admin/elasticsearch', {status : status});
 		}, function error(status){
-			res.render('elasticsearchstatus', {status : status});
+			res.render('admin/elasticsearch', {status : status});
 		});
 	});
 	
