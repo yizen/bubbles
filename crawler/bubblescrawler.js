@@ -612,6 +612,9 @@ var bubblescrawler = (function () {
 	}
 	
 	var removeExtrasfromName = function (value) {
+	
+		if (!value) return value;
+	
 		value = removeString( value, 'champagne', 
 			[	'Les Demoiselles de Champagne', 
 				'Ratafia de Champagne', 
