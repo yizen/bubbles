@@ -113,7 +113,7 @@ var bubblescrawler = (function () {
 			    if (!size) size= extractSizeFromName(name);
 			    
 			    color = extractColorFromName(name);			    
-			    //name = removeExtrasfromName(name);
+			    producer = removeExtrasfromName(producer); 
 			    			    				    	
 		    	db.Wine.find({ where: {url: url} }).success(function(wineFound) {
 			    	if (wineFound) {
@@ -494,6 +494,14 @@ var bubblescrawler = (function () {
 			parsedURL.path.match(/eau-de-vie/i) ||
 			parsedURL.path.match(/armagnac/i) ||
 			
+			parsedURL.path.match(/var\/options/i) ||
+			parsedURL.path.match(/\/\?p/i) ||
+			parsedURL.path.match(/category/i) ||
+			parsedURL.path.match(/vieux-millesimes/i) ||
+
+			parsedURL.path.match(/amp/i) ||
+
+
 			parsedURL.path.match(/\/design\/quantity/i) ||
 			
 			
