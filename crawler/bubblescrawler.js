@@ -279,7 +279,9 @@ var bubblescrawler = (function () {
 		mainCrawler.maxConcurrency = 1;
 		mainCrawler.userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36";
 		
-		var conditionID = mainCrawler.addFetchCondition(function(parsedURL) {
+		var conditionID = mainCrawler.addFetchCondition(function(parsedURL) {  
+			if (parsedURL.path != parsedURL.uriPath) return false; //if we have parameters, reject.
+		
 		    return !(
 		    parsedURL.path.match(/\.css/i) || 
 		    parsedURL.path.match(/\.pdf/i) ||
@@ -495,7 +497,6 @@ var bubblescrawler = (function () {
 			parsedURL.path.match(/armagnac/i) ||
 			
 			parsedURL.path.match(/var\/options/i) ||
-			parsedURL.path.match(/\?p=/i) ||
 			parsedURL.path.match(/category/i) ||
 			parsedURL.path.match(/vieux-millesimes/i) ||
 
