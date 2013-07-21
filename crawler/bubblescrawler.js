@@ -629,7 +629,7 @@ var bubblescrawler = (function () {
 	}
 	
 	var removeString = function(value, searchMask, exceptions) {
-		
+		if (value == "") return;
 		var doNotProcess = false;
 		
 		if (typeof(exceptions) != "undefined") {
