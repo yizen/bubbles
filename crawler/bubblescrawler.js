@@ -495,7 +495,7 @@ var bubblescrawler = (function () {
 			parsedURL.path.match(/armagnac/i) ||
 			
 			parsedURL.path.match(/var\/options/i) ||
-			parsedURL.path.match(/\/\?p/i) ||
+			parsedURL.path.match(/\?p=/i) ||
 			parsedURL.path.match(/category/i) ||
 			parsedURL.path.match(/vieux-millesimes/i) ||
 
