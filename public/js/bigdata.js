@@ -12,11 +12,6 @@
  	y: height / 2
  };
  
-/*
-var fill_color = d3.scale.ordinal()
-                  .domain(["low", "medium", "high"])
-                  .range(["#d84b2a", "#beccae", "#7aa25c"]);
-*/
  var fill_color = d3.scale.linear().domain([2,100]).range(['white', 'yellow']);             
                   
  var year_centers = {
@@ -36,7 +31,7 @@ var fill_color = d3.scale.ordinal()
 
  function custom_chart(data) {
  	var max_amount = d3.max(data, function (d) {
- 		return parseInt(d.value, 10);
+ 		return parseInt(d.volume, 10);
  	});
 
  	radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 50]);
@@ -48,18 +43,19 @@ var fill_color = d3.scale.ordinal()
  	data.forEach(function (d) {
  		var node = {
  			id: d.id,
- 			radius: radius_scale(parseInt(d.value, 10)),
- 			value: d.value,
+ 			radius: radius_scale(parseInt(d.volume, 10)),
+ 			volume: d.volume,
+ 			price: d.price,
  			name: d.producer,
  			x: Math.random() * 900,
  			y: Math.random() * 800
  		};
 
- 		if (d.producer && d.value > 5) nodes.push(node); // FIXME : should do this with a filter in D3
+ 		if (d.producer && d.volume > 5) nodes.push(node); // FIXME : should do this with a filter in D3
  	});
 
  	nodes.sort(function (a, b) {
- 		return b.value - a.value;
+ 		return b.volume - a.volume;
  	});
 
  	vis = d3.select("#chart1 div.svg").append("svg")
@@ -77,11 +73,11 @@ var fill_color = d3.scale.ordinal()
  	var circle = elem.append("circle")
  		.attr("r", 0)
  		.attr("fill", function (d) {
- 			return fill_color(d.value);
+ 			return fill_color(d.volume);
  		})
  		.attr("stroke-width", 2)
  		.attr("stroke", function (d) {
- 			return d3.rgb(fill_color(d.value)).darker();
+ 			return d3.rgb(fill_color(d.volume)).darker();
  		})
  		.attr("id", function (d) {
  			return "bubble_" + d.id;
@@ -172,6 +168,7 @@ var fill_color = d3.scale.ordinal()
  		"2009": width / 2,
  		"2010": width - 160
  	};
+ 	
  	var years_data = d3.keys(years_x);
  	var years = vis.selectAll(".years")
  		.data(years_data);
@@ -196,16 +193,18 @@ var fill_color = d3.scale.ordinal()
 
  function show_details(data, i, element) {
  	d3.select(element).attr("fill", function (d) {
- 		return d3.rgb(fill_color(d.value)).darker();
+ 		return d3.rgb(fill_color(d.volume)).darker();
  	});
  	var content = "<span class=\"name\">Producteur :</span><span class=\"value\"> " + data.name + "</span><br/>";
- 	content += "<span class=\"name\">Nombre de r&eacute;f&eacute;rences vendues :</span><span class=\"value\">" + data.value + "</span><br/>";
+ 	content += "<span class=\"name\">Nombre de r&eacute;f&eacute;rences vendues : </span><span class=\"value\">" + data.volume + "</span><br/>";
+ 	content += "<span class=\"name\">Prix moyen de vente : </span><span class=\"value\">" + data.price + "</span><br/>";
+
  	tooltip.showTooltip(content, d3.event);
  }
 
  function hide_details(data, i, element) {
  	d3.select(element).attr("fill", function (d) {
- 		return d3.rgb(fill_color(d.value));
+ 		return d3.rgb(fill_color(d.volume));
  	});
  	tooltip.hideTooltip();
  }

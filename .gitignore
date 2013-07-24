@@ -20,3 +20,4 @@ node_modules
 /public/bootstrap/.DS_Store
 /node.sql
 /tmp/
+/public/less/modules/.DS_Store

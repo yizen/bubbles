@@ -38,12 +38,11 @@
 @concrete:      #95a5a6;
 @asbestos:      #7f8c8d;
 
-
 //
 // Main Colors
 // -------------------------
 @base:             @wet-asphalt;
-@firm:             @belize-hole;
+@firm:             @turquoise;
 
 @gray:             @concrete;
 @lightgray:        @silver;
@@ -54,14 +53,17 @@
 @warning:          @sun-flower;
 @info:             @peter-river;
 
-@link-color:       @peter-river;
+@link-color:       @green-sea;
 @link-hover-color: @turquoise;
 
 // Typography
 // -------------------------
-@base-font-family: "Lato", sans-serif;
-@base-font-size: 14px;
-@base-line-height: 1.231;
+@base-font-family:  'Lato', sans-serif;
+@base-font-size:    14px;
+@base-line-height:  1.231;
+@pre-border-radius: 6px;
+@pre-background:    transparent;
+@pre-border-color:  mix(@base, @inverse, 12%);
 
 // Headings
 @h1: @base-font-size * 4.429; /* 62px */
@@ -174,3 +176,16 @@
 // -------------------------
 @rwd-container-space: 20px;
 
+// Modals
+// -------------------------
+@modal-backdrop-background: mix(@base, black, 70%);
+@modal-background:          lighten(@base, 69.4%);
+@modal-border-color:        mix(@base, white, 10%);
+@modal-footer-background:   mix(@base, white, 10%);
+@modal-backdrop-zindex:     1040;
+@modal-zindex:              1050;
+
+// Carousel
+// -------------------------
+@carousel-background: mix(@base, black, 70%);
+@carousel-controls-background: @midnight-blue;
