@@ -1,31 +1,24 @@
 extends layout
+block menu
+	ul.nav
+		li.active 
+			a(href="/") Search
+		li
+			a(href="/bigdata/") Big Data
+		li
+			a Blog
 
 block body
-	div.superheader
-		div.container
-			div.row.logobar
-				div.span12
-					div.navbar
-						div.navbar-inner
-							div.container
-								a.brand Bulles.me
-								div#nav-collapse01.nav-collapse.collapse
-									ul.nav
-										li.active 
-											a Search
-										li
-											a Big Data
-										li
-											a Blog
-			div.row.searchbar
-				div.span2
-				div.span8
-					form.form-search#search-box.span8
-						div.input-prepend
-							button.btn.btn-huge(type='submit')
-								span.fui-search
-							input#search-query.huge.search-query.search-query-rounded.span6(type='search', placeholder='Search champagne', autocomplete='off' )
-				div.span2
+	div.container
+		div.row.searchbar
+			div.span2
+			div.span8
+				form.form-search#search-box.span8
+					div.input-prepend
+						button.btn.btn-huge(type='submit')
+							span.fui-search
+						input#search-query.huge.search-query.search-query-rounded.span6(type='search', placeholder='Search champagne', autocomplete='off' )
+			div.span2
 					
 	div.container
 		div#optionsOn.row
@@ -79,32 +72,6 @@ block body
 		div#results-container.row
 			div#spinner		
 			div#results.span12
-	
-		
-	script(src='/js/ui/jquery-1.8.3.min.js')
-	script(src='/js/ui/jquery-ui-1.10.3.custom.min.js')
-	script(src='/js/ui/jquery.ui.touch-punch.min.js')
-	script(src='/js/ui/jquery.ui.selecttoslider.js')
-	
-	script(src='/js/ui/bootstrap.min.js')
-	script(src='/js/ui/bootstrap-select.js')
-	script(src='/js/ui/bootstrap-switch.js')
-	script(src='/js/ui/flatui-checkbox.js')
-	script(src='/js/ui/flatui-radio.js')
-	script(src='/js/ui/jquery.tagsinput.js')
-	script(src='/js/ui/jquery.placeholder.js')
-	script(src='/js/ui/jquery.stacktable.js')
-	
-	script(src='/js/plugins/spin.min.js')
-	script(src='/js/plugins/jquery.spin.js')
-
-	
-	script(src='/js/app.js')
-	script.
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		ga('create', 'UA-42238568-1', 'bulles.me');
-		ga('send', 'pageview');
-
+			
+block append scripts
+	script(src='/js/search.js')

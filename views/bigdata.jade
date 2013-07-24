@@ -1,0 +1,23 @@
+extends layout
+
+block menu
+	ul.nav
+		li
+			a(href="/") Search
+		li.active 
+			a(href="/bigdata/") Big Data
+		li
+			a Blog
+
+
+
+block body
+	div.container
+		div.row
+			div.span12#chart1
+				h4 Les marques les plus représentées en vente en ligne
+				div.svg
+			
+block append scripts
+	script(src='/js/d3/d3.v3.min.js')
+	script(src='/js/bigdata.js')
