@@ -1,5 +1,5 @@
 var bubblescrawler = (function () {
-	var crawler 	= require("simplecrawler");
+    var Crawler = require("simplecrawler").Crawler;
 	var scrapinode 	= require("scrapinode");
 	var request 	= require('request');
 	var db      	= require('../models');
@@ -266,10 +266,11 @@ var bubblescrawler = (function () {
      * Param : website : a model/Website object
      */
 	var _crawl = function (website, job) {
+	
 		website.lastCrawlStart = new Date();
 		website.save();
 	
-		var mainCrawler = crawler.crawl(website.url);
+		var mainCrawler = new Crawler(website.url);
 		
 		mainCrawler.timeout = 5000;
 		mainCrawler.interval = 3600;
@@ -513,6 +514,8 @@ var bubblescrawler = (function () {
 		    parsedURL.path.match(/\/en\//i)); 
 		}, function(err){console.error("addFetchCondition", err);});
 		
+		mainCrawler.start();
+		
 		mainCrawler.on("fetchstart",function(queueItem){
 		    console.info("Started fetching resource:".green, queueItem.url);
 		});
@@ -541,8 +544,12 @@ var bubblescrawler = (function () {
 			_log(job, "Scanning complete for "+mainCrawler.initialPath, 'INFO', mainCrawler.initialPath, website);			
 			website.lastCrawlEnd = new Date();
 			website.save();
+			
+			job.status = "OK";
+			job.save();
+			
 			mainCrawler.stop();
-			return;
+
 		});
 		
 		mainCrawler.start();

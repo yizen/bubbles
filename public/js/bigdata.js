@@ -1,16 +1,24 @@
  var width = 940,
  	height = 600,
  	layout_gravity = -0.01,
+ 	tooltip = CustomTooltip("gates_tooltip", 240),
  	damper = 0.1,
  	nodes = [],
- 	color = d3.scale.category20c(),
+ 	color = d3.scale.category20b(),
  	vis, force, circles, radius_scale;
 
  var center = {
  	x: width / 2,
  	y: height / 2
  };
-
+ 
+/*
+var fill_color = d3.scale.ordinal()
+                  .domain(["low", "medium", "high"])
+                  .range(["#d84b2a", "#beccae", "#7aa25c"]);
+*/
+ var fill_color = d3.scale.linear().domain([2,100]).range(['white', 'yellow']);             
+                  
  var year_centers = {
  	"2008": {
  		x: width / 3,
@@ -69,11 +77,11 @@
  	var circle = elem.append("circle")
  		.attr("r", 0)
  		.attr("fill", function (d) {
- 			return color(d.value);
+ 			return fill_color(d.value);
  		})
  		.attr("stroke-width", 2)
  		.attr("stroke", function (d) {
- 			return d3.rgb(color(d.value)).darker();
+ 			return d3.rgb(fill_color(d.value)).darker();
  		})
  		.attr("id", function (d) {
  			return "bubble_" + d.id;
@@ -95,6 +103,7 @@
  	circle.transition().duration(1000).attr("r", function (d) {
  		return d.radius;
  	});
+ 	
 
  }
 
@@ -108,11 +117,13 @@
  		.size([width, height]);
  }
 
+
  function display_group_all() {
- 	force.gravity(layout_gravity)
+ 	var forceLayout = force.gravity(layout_gravity)
  		.charge(charge)
- 		.friction(0.9)
- 		.on("tick", function (e) {
+ 		.friction(0.8);
+ 	 	  	 	
+ 	 forceLayout.on("tick", function (e) {
  			circles.each(move_towards_center(e.alpha))
  				.attr("transform", function (d) {
  					return "translate(" + d.x + "," + d.y + ")"
@@ -185,16 +196,16 @@
 
  function show_details(data, i, element) {
  	d3.select(element).attr("fill", function (d) {
- 		return d3.rgb(color(d.value)).darker();
+ 		return d3.rgb(fill_color(d.value)).darker();
  	});
- 	var content = "<span class=\"name\">Title:</span><span class=\"value\"> " + data.name + "</span><br/>";
- 	content += "<span class=\"name\">Amount:</span><span class=\"value\"> $" + addCommas(data.value) + "</span><br/>";
+ 	var content = "<span class=\"name\">Producteur :</span><span class=\"value\"> " + data.name + "</span><br/>";
+ 	content += "<span class=\"name\">Nombre de r&eacute;f&eacute;rences vendues :</span><span class=\"value\">" + data.value + "</span><br/>";
  	tooltip.showTooltip(content, d3.event);
  }
 
  function hide_details(data, i, element) {
  	d3.select(element).attr("fill", function (d) {
- 		return d3.rgb(color(d.value));
+ 		return d3.rgb(fill_color(d.value));
  	});
  	tooltip.hideTooltip();
  }
@@ -215,7 +226,55 @@
  		display_group_all();
  	}
  };
-
+function CustomTooltip(tooltipId, width){
+	var tooltipId = tooltipId;
+	$("body").append("<div class='tooltip' id='"+tooltipId+"'></div>");
+	
+	if(width){
+		$("#"+tooltipId).css("width", width);
+	}
+	
+	hideTooltip();
+	
+	function showTooltip(content, event){
+		$("#"+tooltipId).html(content);
+		$("#"+tooltipId).show();
+		
+		updatePosition(event);
+	}
+	
+	function hideTooltip(){
+		$("#"+tooltipId).hide();
+	}
+	
+	function updatePosition(event){
+		var ttid = "#"+tooltipId;
+		var xOffset = 20;
+		var yOffset = 10;
+		
+		 var ttw = $(ttid).width();
+		 var tth = $(ttid).height();
+		 var wscrY = $(window).scrollTop();
+		 var wscrX = $(window).scrollLeft();
+		 var curX = (document.all) ? event.clientX + wscrX : event.pageX;
+		 var curY = (document.all) ? event.clientY + wscrY : event.pageY;
+		 var ttleft = ((curX - wscrX + xOffset*2 + ttw) > $(window).width()) ? curX - ttw - xOffset*2 : curX + xOffset;
+		 if (ttleft < wscrX + xOffset){
+		 	ttleft = wscrX + xOffset;
+		 } 
+		 var tttop = ((curY - wscrY + yOffset*2 + tth) > $(window).height()) ? curY - tth - yOffset*2 : curY + yOffset;
+		 if (tttop < wscrY + yOffset){
+		 	tttop = curY + yOffset;
+		 } 
+		 $(ttid).css('top', tttop + 'px').css('left', ttleft + 'px');
+	}
+	
+	return {
+		showTooltip: showTooltip,
+		hideTooltip: hideTooltip,
+		updatePosition: updatePosition
+	}
+}
  d3.json("/bigdata/mostFrequentProducers/", function (data) {
  	init(data);
  	toggle_view('all');
