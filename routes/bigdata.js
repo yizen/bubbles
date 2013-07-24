@@ -5,7 +5,7 @@ module.exports = function(app){
 	
 	app.get('/bigdata/mostFrequentProducers/', function(req, res){
 	
-		db.sequelize.query('select id, producer, count(*) as value from Wines group by producer').success(function(rows){
+		db.sequelize.query('select id, producer, count(*) as volume, avg(price) as price from Wines group by producer').success(function(rows){
 			rows.sort(function(a, b){
 				return b.value-a.value
 			});
