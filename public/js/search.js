@@ -28,6 +28,8 @@
 		   } else {
 			   $('#bottles').text("bouteilles de") 
 		   }
+		   
+		   launchSearch();
 	    });
 
 	 	$("span#more").on("click", function(){
