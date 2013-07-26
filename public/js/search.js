@@ -1,6 +1,35 @@
 (function($) {
 	 $(function() {
-	 
+	 	 $.widget( "ui.customspinner", $.ui.spinner, {
+		      widgetEventPrefix: $.ui.spinner.prototype.widgetEventPrefix,
+		      _buttonHtml: function() { // Remove arrows on the buttons
+		        return "" +
+		        "<a class='ui-spinner-button ui-spinner-up ui-corner-tr'>" +
+		          "<span class='ui-icon " + this.options.icons.up + "'></span>" +
+		        "</a>" +
+		        "<a class='ui-spinner-button ui-spinner-down ui-corner-br'>" +
+		          "<span class='ui-icon " + this.options.icons.down + "'></span>" +
+		        "</a>";
+		      }
+	    });
+
+	    $('#qty').customspinner({
+	      min: 1,
+	      max: 99
+	    }).on('focus', function () {
+	      $(this).closest('.ui-spinner').addClass('focus');
+	    }).on('blur', function () {
+	      $(this).closest('.ui-spinner').removeClass('focus');
+	    });
+	    
+	    $('#qty').on("spin", function() {
+		   if ($('#qty').val() == 1) {
+			   $('#bottles').text("bouteille de") 
+		   } else {
+			   $('#bottles').text("bouteilles de") 
+		   }
+	    });
+
 	 	$("span#more").on("click", function(){
 	 		$("#refine").slideToggle(200);
 		});
@@ -103,9 +132,10 @@
 			var minPrice = $("#price-range").slider("values")[0];
 			var maxPrice = $("#price-range").slider("values")[1];
 
+			var qty = $("#qty").val();
 			
 			$.ajax({
-				url: '/search?' + 'q='+ $('#search-query').val()+'&minSize='+minSize+'&maxSize='+maxSize+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&color='+color
+				url: '/search?' + 'q='+ $('#search-query').val()+'&minSize='+minSize+'&maxSize='+maxSize+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&color='+color+'&qty='+qty
 			}).done(function(wines) {
 				$('#results').replaceWith(wines);
 			}).always(function() {

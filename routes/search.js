@@ -159,16 +159,19 @@ module.exports = function(app){
 					wine.photo = '/images/no-image.png';
 				}
 				
+				wine.qty = qty;
+				
 				if (item._source.price) {
 					wine.euro = formatEuro(item._source.price);
 					/*wine.totalNoEuro = item._source.price + transportationFees.transportationFees(qty, item._source.website);
 					wine.total = formatEuro(wine.totalNoEuro);*/
-					wine.sixNoEuro = (6*item._source.price) + transportationFees.transportationFees(6, item._source.website, (6*item._source.price));
-					wine.six = formatEuro(wine.sixNoEuro);
+					wine.qtyNoEuro = (qty*item._source.price) + transportationFees.transportationFees(qty, item._source.website, (qty*item._source.price));
+					wine.qtyFormatted = formatEuro(wine.qtyNoEuro);
+					
 				} else {
 					wine.totalNoEuro = 100000; //push it to the end of the result list;
 					wine.euro = "Prix sur demande";
-					wine.six = "-";
+					wine.qtyFormatted = "-";
 				}
 				
 				wines.push(wine);	

@@ -99,8 +99,6 @@
  	circle.transition().duration(1000).attr("r", function (d) {
  		return d.radius;
  	});
- 	
-
  }
 
  function charge(d) {
@@ -112,7 +110,6 @@
  		.nodes(nodes)
  		.size([width, height]);
  }
-
 
  function display_group_all() {
  	var forceLayout = force.gravity(layout_gravity)
@@ -126,7 +123,6 @@
  				});
  		});
  	force.start();
- 	//hide_years();
  }
 
  function move_towards_center(alpha) {
@@ -150,7 +146,7 @@
  				});
  		});
  	force.start();
- 	//display_years();
+ 	Êdisplay_years();
  }
 
  function move_towards_year(alpha) {
@@ -195,9 +191,13 @@
  	d3.select(element).attr("fill", function (d) {
  		return d3.rgb(fill_color(d.volume)).darker();
  	});
+ 	
+ 	var si = d3.format(',.2f');
+ 	var price = si(data.price);
+ 	
  	var content = "<span class=\"name\">Producteur :</span><span class=\"value\"> " + data.name + "</span><br/>";
  	content += "<span class=\"name\">Nombre de r&eacute;f&eacute;rences vendues : </span><span class=\"value\">" + data.volume + "</span><br/>";
- 	content += "<span class=\"name\">Prix moyen de vente : </span><span class=\"value\">" + data.price + "</span><br/>";
+ 	content += "<span class=\"name\">Prix moyen de vente : </span><span class=\"value\">" + price + "</span><br/>";
 
  	tooltip.showTooltip(content, d3.event);
  }
@@ -224,7 +224,8 @@
  	} else {
  		display_group_all();
  	}
- };
+ }; 
+ 
 function CustomTooltip(tooltipId, width){
 	var tooltipId = tooltipId;
 	$("body").append("<div class='tooltip' id='"+tooltipId+"'></div>");

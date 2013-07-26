@@ -12,13 +12,18 @@ block body
 	div.container
 		div.row.searchbar
 			div.span2
-			div.span8
-				form.form-search#search-box.span8
-					div.input-prepend
-						button.btn.btn-huge(type='submit')
-							span.fui-search
-						input#search-query.huge.search-query.search-query-rounded.span6(type='search', placeholder='Search champagne', autocomplete='off' )
+				h4 Je cherche
 			div.span2
+				.control-group
+					input#qty.spinner(type="text",value="6")
+			div.span2
+				h4#bottles bouteilles de
+			div.span6
+				form.form-search#search-box
+					div.input-append
+						input#search-query.search-query.search.span5(type='text', placeholder='Deutz', autocomplete='off')
+						button.btn(type='submit')
+							span.fui-search
 					
 	div.container
 		div#optionsOn.row
