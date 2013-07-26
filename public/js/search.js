@@ -22,14 +22,14 @@
 	      $(this).closest('.ui-spinner').removeClass('focus');
 	    });
 	    
-	    $('#qty').on("spin", function() {
+	    $('#qty').on("spinstop", function() {
 		   if ($('#qty').val() == 1) {
-			   $('#bottles').text("bouteille de") 
+			   $('#bottles').html("bouteille de"); 
 		   } else {
-			   $('#bottles').text("bouteilles de") 
+			   $('#bottles').html("bouteilles de"); 
 		   }
 		   
-		   launchSearch();
+		   //launchSearch();
 	    });
 
 	 	$("span#more").on("click", function(){
