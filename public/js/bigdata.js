@@ -146,7 +146,7 @@
  				});
  		});
  	force.start();
- 	Êdisplay_years();
+ 	//display_years();
  }
 
  function move_towards_year(alpha) {
