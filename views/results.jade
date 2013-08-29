@@ -1,24 +1,29 @@
-div#results.thumbnails.span12
-	ul.wines
-		- each wine in wines
-				li.span2
-					div.wine
-						img.wine-image(src='#{wine.photo}')
-						.caption			
-							//div.wine-image.ratio(style='#{wine.photostyle}')
-							p.wine-name
-								| !{wine.wine}
-							p.wine-producer
-								| !{wine.producer}
-							p.wine-size
-								| !{wine.size}
-							p.wine-price
-								| !{wine.euro}
-								span.brut TTC, hors frais de ports
-							p.wine-price-six
-								| !{wine.qtyFormatted}
-								span.brut TTC, !{wine.qty} bouteilles port compris	
-							p.wine-options
-								= wine.options
-							p.wine-site
-								a(href=wine.url, target='_blank') #{wine.website}
+div#results
+- var i = 0;
+- while(i < wines.length)
+	ul.wines.row
+		- var k = i + 6
+		- while(i < k && i < wines.length)
+			- wine = wines[i]
+			- i++
+			li.span2
+				div.wine
+					img.wine-image(src='#{wine.photo}')
+					.caption
+						//div.wine-image.ratio(style='#{wine.photostyle}')
+						p.wine-name
+							| !{wine.wine}
+						p.wine-producer
+							| !{wine.producer}
+						p.wine-size
+							| !{wine.size}
+						p.wine-price
+							| !{wine.euro}
+							span.brut TTC, hors frais de ports
+						p.wine-price-six
+							| !{wine.qtyFormatted}
+							span.brut TTC, !{wine.qty} bouteilles port compris	
+						p.wine-options
+							= wine.options
+						p.wine-site
+							a(href=wine.url, target='_blank') #{wine.website}
