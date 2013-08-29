@@ -123,7 +123,7 @@
 			launchSearch();
 		});
 						
-		var launchSearch = function() {
+		var launchSearch = function(startup) {
 			
 			//launch spinner
 			$('#spinner').spin();
@@ -136,8 +136,10 @@
 
 			var qty = $("#qty").val();
 			
+			var keyword = (startup ? 'deutz' : $('#search-query').val());
+			
 			$.ajax({
-				url: '/search?' + 'q='+ $('#search-query').val()+'&minSize='+minSize+'&maxSize='+maxSize+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&color='+color+'&qty='+qty
+				url: '/search?' + 'q='+keyword+'&minSize='+minSize+'&maxSize='+maxSize+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&color='+color+'&qty='+qty
 			}).done(function(wines) {
 				$('#results').replaceWith(wines);
 			}).always(function() {
@@ -146,7 +148,9 @@
 		}; 
 		
 		
-		$('#search-query').focus();	
+		$('#search-query').focus();
+		
+		launchSearch(true);	
 
 	});
 })(jQuery);
