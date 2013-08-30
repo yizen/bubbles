@@ -32,7 +32,6 @@ table.smallTable {
 .wines li {
 	margin-bottom: 10px;
 	min-height: 400px;
-	height: 400px;	
 	position: relative;
 
 }
@@ -194,3 +193,4 @@ a.ui-slider-handle:hover span.Slider_Value{
 .tooltip .name {
   font-weight:bold;
 }
+
