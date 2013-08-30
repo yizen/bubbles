@@ -1,4 +1,4 @@
- var width = 940,
+ var width = 1024,
  	height = 600,
  	layout_gravity = -0.01,
  	tooltip = CustomTooltip("gates_tooltip", 240),
@@ -11,19 +11,19 @@
  	x: width / 2,
  	y: height / 2
  };
- 
- var fill_color = d3.scale.linear().domain([2,100]).range(['white', 'yellow']);             
-                  
- var year_centers = {
- 	"2008": {
+
+ var fill_color = d3.scale.linear().domain([2, 100]).range(['white', 'orange']);
+
+ var price_centers = {
+ 	"20": {
  		x: width / 3,
  		y: height / 2
  	},
- 	"2009": {
+ 	"40": {
  		x: width / 2,
  		y: height / 2
  	},
- 	"2010": {
+ 	"90": {
  		x: 2 * width / 3,
  		y: height / 2
  	}
@@ -115,13 +115,13 @@
  	var forceLayout = force.gravity(layout_gravity)
  		.charge(charge)
  		.friction(0.8);
- 	 	  	 	
- 	 forceLayout.on("tick", function (e) {
- 			circles.each(move_towards_center(e.alpha))
- 				.attr("transform", function (d) {
- 					return "translate(" + d.x + "," + d.y + ")"
- 				});
- 		});
+
+ 	forceLayout.on("tick", function (e) {
+ 		circles.each(move_towards_center(e.alpha))
+ 			.attr("transform", function (d) {
+ 				return "translate(" + d.x + "," + d.y + ")"
+ 			});
+ 	});
  	force.start();
  }
 
@@ -164,7 +164,7 @@
  		"2009": width / 2,
  		"2010": width - 160
  	};
- 	
+
  	var years_data = d3.keys(years_x);
  	var years = vis.selectAll(".years")
  		.data(years_data);
@@ -191,10 +191,10 @@
  	d3.select(element).attr("fill", function (d) {
  		return d3.rgb(fill_color(d.volume)).darker();
  	});
- 	
+
  	var si = d3.format(',.2f');
  	var price = si(data.price);
- 	
+
  	var content = "<span class=\"name\">Producteur :</span><span class=\"value\"> " + data.name + "</span><br/>";
  	content += "<span class=\"name\">Nombre de r&eacute;f&eacute;rences vendues : </span><span class=\"value\">" + data.volume + "</span><br/>";
  	content += "<span class=\"name\">Prix moyen de vente : </span><span class=\"value\">" + price + "</span><br/>";
@@ -224,57 +224,60 @@
  	} else {
  		display_group_all();
  	}
- }; 
+ };
+
+ function CustomTooltip(tooltipId, width) {
+ 	var tooltipId = tooltipId;
+ 	$("body").append("<div class='tooltip' id='" + tooltipId + "'></div>");
+
+ 	if (width) {
+ 		$("#" + tooltipId).css("width", width);
+ 	}
+
+ 	hideTooltip();
+
+ 	function showTooltip(content, event) {
+ 		$("#" + tooltipId).html(content);
+ 		$("#" + tooltipId).show();
+
+ 		updatePosition(event);
+ 	}
+
+ 	function hideTooltip() {
+ 		$("#" + tooltipId).hide();
+ 	}
+
+ 	function updatePosition(event) {
+ 		var ttid = "#" + tooltipId;
+ 		var xOffset = 20;
+ 		var yOffset = 10;
+
+ 		var ttw = $(ttid).width();
+ 		var tth = $(ttid).height();
+ 		var wscrY = $(window).scrollTop();
+ 		var wscrX = $(window).scrollLeft();
+ 		var curX = (document.all) ? event.clientX + wscrX : event.pageX;
+ 		var curY = (document.all) ? event.clientY + wscrY : event.pageY;
+ 		var ttleft = ((curX - wscrX + xOffset * 2 + ttw) > $(window).width()) ? curX - ttw - xOffset * 2 : curX + xOffset;
+ 		if (ttleft < wscrX + xOffset) {
+ 			ttleft = wscrX + xOffset;
+ 		}
+ 		var tttop = ((curY - wscrY + yOffset * 2 + tth) > $(window).height()) ? curY - tth - yOffset * 2 : curY + yOffset;
+ 		if (tttop < wscrY + yOffset) {
+ 			tttop = curY + yOffset;
+ 		}
+ 		$(ttid).css('top', tttop + 'px').css('left', ttleft + 'px');
+ 	}
+
+ 	return {
+ 		showTooltip: showTooltip,
+ 		hideTooltip: hideTooltip,
+ 		updatePosition: updatePosition
+ 	}
+ }
  
-function CustomTooltip(tooltipId, width){
-	var tooltipId = tooltipId;
-	$("body").append("<div class='tooltip' id='"+tooltipId+"'></div>");
-	
-	if(width){
-		$("#"+tooltipId).css("width", width);
-	}
-	
-	hideTooltip();
-	
-	function showTooltip(content, event){
-		$("#"+tooltipId).html(content);
-		$("#"+tooltipId).show();
-		
-		updatePosition(event);
-	}
-	
-	function hideTooltip(){
-		$("#"+tooltipId).hide();
-	}
-	
-	function updatePosition(event){
-		var ttid = "#"+tooltipId;
-		var xOffset = 20;
-		var yOffset = 10;
-		
-		 var ttw = $(ttid).width();
-		 var tth = $(ttid).height();
-		 var wscrY = $(window).scrollTop();
-		 var wscrX = $(window).scrollLeft();
-		 var curX = (document.all) ? event.clientX + wscrX : event.pageX;
-		 var curY = (document.all) ? event.clientY + wscrY : event.pageY;
-		 var ttleft = ((curX - wscrX + xOffset*2 + ttw) > $(window).width()) ? curX - ttw - xOffset*2 : curX + xOffset;
-		 if (ttleft < wscrX + xOffset){
-		 	ttleft = wscrX + xOffset;
-		 } 
-		 var tttop = ((curY - wscrY + yOffset*2 + tth) > $(window).height()) ? curY - tth - yOffset*2 : curY + yOffset;
-		 if (tttop < wscrY + yOffset){
-		 	tttop = curY + yOffset;
-		 } 
-		 $(ttid).css('top', tttop + 'px').css('left', ttleft + 'px');
-	}
-	
-	return {
-		showTooltip: showTooltip,
-		hideTooltip: hideTooltip,
-		updatePosition: updatePosition
-	}
-}
+ 
+ 
  d3.json("/bigdata/mostFrequentProducers/", function (data) {
  	init(data);
  	toggle_view('all');
