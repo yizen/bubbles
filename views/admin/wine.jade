@@ -53,8 +53,8 @@ block body
 							label.control-label(for='size') Size
 							.controls
 								select#size.input-xlarge(name='size')
-									for item in sizes
-										option(selected=wine.size == item.size, value=item.id) #{item.name}	
+									for item in sizeList
+										option(selected=wine.size == item.id, value=item.id) #{item.name}	
 						.control-group
 							label.control-label(for='options') Options
 							.controls

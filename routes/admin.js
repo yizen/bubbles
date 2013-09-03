@@ -119,20 +119,20 @@ module.exports = function(app){
 			},
 			
 			sizeList: function(callback) {
-				sizeList = new Object;
-				sizeList = sizes.sizesArray();
+				size = new Object;
+				size = sizes.sizesArray();
 				
-				var size = new Array();
+				var sizeList = new Array();
 				
-				for (var index in sizeList) {
+				for (var index in size) {
 					var obj = new Object;
-					obj.name = sizeList[index];
+					obj.name = size[index];
 					obj.id = index;
 					
-					size.push(obj);
+					sizeList.push(obj);
 				}
 				
-				callback (null, size);
+				callback (null, sizeList);
 			},
 			
 			prevNext: function(callback) {
@@ -206,7 +206,7 @@ module.exports = function(app){
 		},
 		
 		function(err, results) {
-			res.render('admin/wine', {wine: results.wine, websites: results.websites, colors: results.colors, sizes: results.sizeList, prevNext:results.prevNext, wineRef: results.wineRef });	
+			res.render('admin/wine', {wine: results.wine, websites: results.websites, colors: results.colors, sizeList: results.sizeList, prevNext:results.prevNext, wineRef: results.wineRef });	
 		});		
 	});	
 	
