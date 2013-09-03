@@ -96,6 +96,14 @@
         	
         	window.location.href = encodeURI("/admin/producers/search/"+q);
         });
+        
+        $( "#wineRefId" ).change(function() {
+        	var producer = $('#producerRef').val();
+        	var wine = $('#wineRefId option:selected').text();
+        	
+        	$('#wine').val(wine);
+        	$('#producer').val(producer);	
+		});
 
 	 
 	});
