@@ -1,0 +1,121 @@
+extends layout
+
+block body
+	div.container
+		div.row
+			div.span12
+				div.navbar
+					div.navbar-inner
+						div.container
+							a.brand Champagne
+							div#nav-collapse01.nav-collapse.collapse
+								ul.nav
+									li 
+										a(href='/admin/') Websites
+									li.active
+										a(href='/admin/wines/') Wines
+									li
+										a(href='/admin/producers/') Producers		
+									li
+										a(href='/admin/elasticsearch/') Elastic Search
+									li
+										a(href='/admin/clics/') Outbound
+		div.row
+			div
+				form.form-vertical(action='/admin/ajax/updatewine/', method='post')
+					fieldset.span6
+						legend 
+							| !{wine.name}
+						.control-group
+							label.control-label(for='active') Active
+							.controls
+								input#active(name='active', type='checkbox', checked=(wine.active===true ? "checked" : undefined), data-toggle='switch')
+								input#id(name='id', type='hidden', value=wine.id)
+						.control-group
+							label.control-label(for='website') Website
+							.controls
+								select#website.input-xlarge(name='websiteId', disabled)
+									for item in websites
+										option(selected=wine.WebsiteId == item.id, value=item.id) #{item.name}
+						.control-group
+							label.control-label(for='name') Full name
+							.controls
+								input#name.input-xxlarge(name='name', type='text', placeholder='', value=wine.name)
+						.control-group
+							label.control-label(for='producer') Producer
+							.controls
+								input#producer.input-xxlarge(name='producer', type='text', placeholder='', value=wine.producer)
+						.control-group
+							label.control-label(for='wine') Wine
+							.controls
+								input#wine.input-xxlarge(name='wine', type='text', placeholder='', value=wine.wine)
+						.control-group
+							label.control-label(for='size') Size
+							.controls
+								select#size.input-xlarge(name='size')
+									for item in sizes
+										option(selected=wine.size == item.size, value=item.id) #{item.name}	
+						.control-group
+							label.control-label(for='options') Options
+							.controls
+								input#options.input-xxlarge(name='options', type='text', placeholder='', value=wine.options)
+						.control-group
+							label.control-label(for='color') Color
+							.controls
+								select#color.input-xlarge(name='color')
+									for item in colors
+										option(selected=wine.color == item) #{item}						
+						.control-group
+							label.control-label(for='price') Price
+							.controls
+								.input-append
+									input#price.input-medium(name='price', placeholder='', type='text', value=wine.price)
+									.btn-group
+									button#priceHistory.btn(name='history') History
+						.control-group
+							label.control-label(for='minQuantity') Minimum Quantity
+							.controls
+								input#options.input-xxlarge(name='minQuantity', type='text', placeholder='', value=wine.minQuantity)			
+					fieldset.span6
+						legend Reference
+							a(href=wine.url, target='_blank') 
+								&nbsp;
+								i.fui-link
+							if (wineRef.id)
+								span(style="margin-left:40px")
+									i.fui-check-inverted	
+						.control-group
+							label.control-label(for='producerReference') Producer Referenced
+							.controls
+								input#producerRef.input-xlarge(name='producerRef', type='text',autocomplete='off', value=wineRef.producerName)
+								input#producerRefValue(name='producerRefValue', type='hidden', value=wineRef.producerId)
+								button#search.btn.btn-info(name='Search') Search
+						.control-group
+							label.control-label(for='wineRefId') Wine Referenced
+							.controls
+								select#wineRefId.input-xlarge(name='wineRefId')
+									if (wineRef.wines.length)
+										for item in wineRef.wines
+											option(selected=wineRef.id == item.id, value=item.id) #{item.name}	
+						.control-group
+							label.control-label(for='newName') New reference name in db
+							.controls
+								input#newName.input-xlarge(name='newName', type='text', value=wine.wine)
+								button#addWineRef.btn Add wine reference
+						.control-group
+							label.control-label(for='image') 
+								img.wine-image(src='#{wine.photo}')
+							.controls
+								input#image.input-file(name='image', type='file')
+						.control-group
+							label.control-label(for='save')
+							.controls
+						.control-group
+							div.pagination
+								ul
+									li
+										a.prev(href=((prevNext.prev ? '/admin/wine/'+prevNext.prev : undefined))) Previous wine
+									li
+										button#save.btn.btn-info(name='save') Save
+									li
+										a.next(href=((prevNext.next ? '/admin/wine/'+prevNext.next : undefined))) Next wine			

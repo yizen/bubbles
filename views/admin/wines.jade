@@ -13,7 +13,9 @@ block body
 									li 
 										a(href='/admin/') Websites
 									li.active
-										a(href='/admin/wines/') Wines	
+										a(href='/admin/wines/') Wines
+									li
+										a(href='/admin/producers/') Producers		
 									li
 										a(href='/admin/elasticsearch/') Elastic Search
 									li
@@ -33,13 +35,14 @@ block body
 							th Color
 							th Image
 							th Active
+							th Reference
 					tbdody
 						- each wine in wines
-							tr
+							tr(class="#{wine.reference>0 ? '' : 'info'}")
 								td
 									=wine.id
 								td	
-									=wine.website
+									a(href=wine.url, target='_blank') #{wine.website}
 								td
 									=wine.name
 								td
@@ -47,7 +50,7 @@ block body
 								td
 									=wine.wine
 								td
-									=wine.size
+									=wine.sizeText
 								td
 									=wine.options
 								td
@@ -55,4 +58,12 @@ block body
 								td
 									img(src='#{wine.photo}')
 								td
-									=wine.active
+									if wine.active
+										span.fui-check-inverted
+								td
+										a(href='/admin/wine/'+wine.id) Edit
+										
+												
+		div.row
+			div.span12
+				!= pagination

@@ -153,7 +153,7 @@ module.exports = function(app){
 					var photo = '/photos/'+item._source.photo;
 					var fullURL = req.protocol + "://" + req.get('host') + photo;
 
-					var base64photo = new Buffer(fullURL).toString('base64')
+					var base64photo = new Buffer(fullURL).toString('base64');
 					wine.photo = '/thumbs/small/images/'+base64photo+".jpg";
 				} else {
 					wine.photo = '/images/no-image.png';
