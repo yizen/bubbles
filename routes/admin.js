@@ -415,8 +415,11 @@ module.exports = function(app){
 		db.Winereference.create({ name: wine}).success(function(wineRef){
 			db.Producer.find(producerId).success(function(producer){
 				wineRef.setProducer(producer);
-				wineRef.save();
-				res.redirect('back');
+				wineRef.save().success(function(newWine){
+					if (newWine) {
+						res.send(200);
+					}
+				});
 			});
 		});
 	});

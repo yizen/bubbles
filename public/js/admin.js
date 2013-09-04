@@ -83,8 +83,7 @@
 				url: "/admin/ajax/createwineref/",
 				data: { producerId: ($('#producerRefValue').val()), wine: ($('#newName').val()) }
 			}).done(function( msg ) {
-				console.log(msg);
-				$('#addWineRef').hide();
+				window.location.reload();
 			});
         	
         });
