@@ -91,7 +91,8 @@ block body
 								input#producerRefValue(name='producerRefValue', type='hidden', value=wineRef.producerId)
 								button#search.btn.btn-info(name='Search') Search
 						.control-group
-							label.control-label(for='wineRefId') Wine Referenced
+							label.control-label(for='wineRefId') 
+								=wine.wine
 							.controls
 								select#wineRefId.input-xlarge(name='wineRefId')
 									if (wineRef.wines.length)
