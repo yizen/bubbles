@@ -47,13 +47,26 @@ block body
 							tr
 								td(colspan='3')
 									table
-										- each wine in producer.wines
+										- each wineRef in producer.winesRef
 											tr
 												td(width='240px')
-													=wine.name
+													=wineRef.name
 												td
-													a(href='/admin/ajax/removeWineReference/'+wine.id) 
+													a(href='/admin/ajax/removeWineReference/'+wineRef.id) 
 														i.fui-cross
+												if (wineRef.wines)
+													td
+														table
+															tr
+																- each wine in wineRef.wines
+																	td
+																		a(href='/admin/wine/'+wine.id)
+																			=wine.name
+																	td
+																		=wine.wine
+																	td
+																		img.wine-image(src='#{wine.photo}')
+														
 		div.row
 			div.span12
 				!= pagination														

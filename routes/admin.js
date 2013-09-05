@@ -229,7 +229,9 @@ module.exports = function(app){
 	    if (page) offset = (page-1)*limit;
 	    
 		db.Producer.findAndCountAll({offset: offset, limit: limit}).success(function(producers) {
-			async.each(producers.rows, function(producer, callback) {
+		
+			async.forEach(producers.rows, function(producer, callback) {
+			
 				if (producer.image) {
 					//wine.photo = '/photos/'+item._source.photo;
 					var photo = '/producer/'+producer.image;
@@ -241,12 +243,43 @@ module.exports = function(app){
 					producer.image = '/images/no-image-pixel.png';
 				}
 				
-				producer.getWinereferences().success(function(wines) {
-					producer.wines = wines;
-					callback();			
-				});
-				
-				}, function(err) {
+				producer.getWinereferences().success(function(winesRef) {
+					producer.winesRef = winesRef;
+					
+					async.forEach(producer.winesRef, function(wineRef, callback){
+						wineRef.getWines().success(function (wines){
+						
+							console.log(wines.length);
+						
+							if (wines) {
+							    wineRef.wines = wines;
+							    
+							    async.forEach(wineRef.wines, function(wine, callback){
+								    if (wine.photo) {
+										var photo = '/photos/'+wine.photo;
+										var fullURL = req.protocol + "://" + req.get('host') + photo;
+					
+										var base64photo = new Buffer(fullURL).toString('base64');
+										wine['photo'] = '/thumbs/small/images/'+base64photo+".jpg";
+									} else {
+										wine['photo'] = '/images/no-image.png';
+									}
+									callback();
+							    },
+							    function(err) {
+								    callback();
+							    });   
+							} else {
+								callback();
+							}
+						});
+					},
+					function (err) {
+						callback();			
+					});					
+				});	
+			}, function(err) {
+					console.log("render");
 					var pagination = paginator.paginate('/admin/producers/', producers.count, limit, page);
 					res.render('admin/producers', { producers : producers.rows, pagination : pagination });				
 			});	
@@ -292,13 +325,36 @@ module.exports = function(app){
 							producer.image = '/images/no-image-pixel.png';
 						}
 						
-						producer.getWinereferences().success(function(wines) {
-							producer.wines = wines;
-							producers.push(producer);
-							callback();			
-						});
+						producer.getWinereferences().success(function(winesRef) {
+							producer.winesRef = winesRef;
+							
+							async.forEach(producer.winesRef, function(wineRef, callback){
+								wineRef.getWines().success(function (wines){								
+									if (wines) {
+									    wineRef.wines = wines;
+									    
+									    async.forEach(wineRef.wines, function(wine, callback){
+										    if (wine.photo) {
+												var photo = '/photos/'+wine.photo;
+												var fullURL = req.protocol + "://" + req.get('host') + photo;
+							
+												var base64photo = new Buffer(fullURL).toString('base64');
+												wine['photo'] = '/thumbs/small/images/'+base64photo+".jpg";
+											} else {
+												wine['photo'] = '/images/no-image.png';
+											}
+											callback();
+									    },
+									    function(err) {
+										    callback();
+									    });   
+									} else {
+										callback();
+									}
+								});
+							});
 					});
-					
+				});	
 				}, 
 					function(err) {
 						var pagination = "";
