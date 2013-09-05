@@ -248,9 +248,7 @@ module.exports = function(app){
 					
 					async.forEach(producer.winesRef, function(wineRef, callback){
 						wineRef.getWines().success(function (wines){
-						
-							console.log(wines.length);
-						
+												
 							if (wines) {
 							    wineRef.wines = wines;
 							    
@@ -279,7 +277,6 @@ module.exports = function(app){
 					});					
 				});	
 			}, function(err) {
-					console.log("render");
 					var pagination = paginator.paginate('/admin/producers/', producers.count, limit, page);
 					res.render('admin/producers', { producers : producers.rows, pagination : pagination });				
 			});	
@@ -289,9 +286,7 @@ module.exports = function(app){
 	app.get('/admin/producers/search/:name?', function (req, res) {
 	    
 		var name = req.params.name || "deutz";
-		
-		console.log(name);
-		
+				
 		ejs.client = nc.NodeClient('localhost', '9200');
 		
 		var index 	= 'bubbles';
