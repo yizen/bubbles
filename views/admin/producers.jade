@@ -56,9 +56,9 @@ block body
 														i.fui-cross
 												if (wineRef.wines)
 													td
-														table
-															tr
-																- each wine in wineRef.wines
+														table.table.table-bordered
+															- each wine in wineRef.wines
+																tr
 																	td
 																		a(href='/admin/wine/'+wine.id)
 																			=wine.name
