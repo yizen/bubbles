@@ -5,28 +5,25 @@ var express 		= require('express'),
   	db 				= require('./models'),  	
   	bubblescrawler	= require('./crawler/bubblescrawler'),
   	thumbs			= require('connect-thumbs'),
-  	later			= require('later');
+  	later			= require('later'),
+  	Poet 			= require('poet');
   	
-var routes 			= require('./routes');  	
-
 var app = module.exports = express();
 var port = 3000;
 
-//Init models
+//Init data model with Sequelize
 db.sequelize.sync().complete(function(err) {
 	if (err) {
 	   	throw err
 	}
 });
 
-//setup later configuration
+//Setup Later configuration for crawler refresh
 later.date.localTime();
 var refreshSchedule = later.parse.recur().on('02:00:00').time();
 var refreshTask 	= later.setInterval(bubblescrawler.refreshAllWebsites, refreshSchedule);
 
-
 // Configuration
-
 app.configure(function(){	
 	 app.use(thumbs({
 		 "ttl": 92000
@@ -78,9 +75,7 @@ app.configure(function(){
 	app.use(express.bodyParser());
 	app.use(express.cookieParser( 'Gpe3YY88WGtxzizVh' ));
 	app.use(express.methodOverride());
-
-
-    app.use(app.router);
+	app.use(app.router);
     
     // express-winston errorHandler makes sense AFTER the router.
     app.use(expressWinston.errorLogger({
@@ -93,12 +88,38 @@ app.configure(function(){
     }));
 
     // Optionally you can include your custom error handler after the logging.
-    
     app.use(express.errorHandler({
       dumpExceptions: true,
       showStack: true
     }));
     
+    //Poet blogging engine
+	var poet = Poet(app, {
+	  postsPerPage: 3,
+	  posts: './posts',
+	  metaFormat: 'json',
+	  routes: {
+	    '/blog/post/:post': 		'blog/post',
+	    '/blog/page/:page': 		'blog/page',
+	    '/blog/tag/:tag': 			'blog/tag',
+	    '/blog/category/:category':	'blog/category'
+		}
+	  });
+
+	poet.watch(function () {
+		// watcher reloaded
+	}).init().then(function () {
+		// Ready to go!
+  	});
+	
+	require('./routes')(app);
+	
+	app.get('/rss', function (req, res) {
+	  // Only get the latest posts
+	  var posts = poet.helpers.getPosts(0, 5);
+	  res.setHeader('Content-Type', 'application/rss+xml');
+	  res.render('blog/rss', { posts: posts });
+	});
 });
 
 app.configure('development', function(){
@@ -108,14 +129,11 @@ app.configure('development', function(){
 app.configure('production', function(){
 });
 
-// Routes
-require('./routes')(app);
 
-// redirect all others to the index (HTML5 history)
-app.get('*', require('./routes/home'));
+// redirect all others to the index
+//app.get('*', require('./routes/home'));
 
 // Start server
-
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode, started at %s", this.address().port, app.settings.env, new Date());
 });

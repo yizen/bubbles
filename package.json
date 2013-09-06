@@ -23,6 +23,7 @@
     "underscore.string" : "",
     "winston" : "",
     "connect-thumbs" : "",
-    "later" : ""
+    "later" : "",
+    "poet" : ""
   }
 }

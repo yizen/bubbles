@@ -1,0 +1,26 @@
+extends ../layout
+
+block menu
+	ul.nav.navbar-inverse
+		li
+			a(href="/") Search
+		li 
+			a(href="/bigdata/") Big Data
+		li.active
+			a(href="/blog/") Blog
+
+block body
+	div.container
+		div.row
+			div.span12
+				div.post
+					h1
+						a(href=post.url)
+							= post.title
+					span.date #{post.date.getDate()}/#{post.date.getMonth()+1}/#{post.date.getFullYear()}
+					div.post.content
+						!= post.content
+					div.tags
+						- each tag in post.tags
+							a(href=tagUrl(tag))
+								span.label.label-info #{tag}

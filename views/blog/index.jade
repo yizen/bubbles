@@ -1,0 +1,21 @@
+extends ../layout
+
+block menu
+	ul.nav.navbar-inverse
+		li
+			a(href="/") Search
+		li 
+			a(href="/bigdata/") Big Data
+		li.active
+			a(href="/blog/") Blog
+
+block body
+	div.container
+		div.row
+			div.span12
+				- var posts = getPosts(0,5)
+				- var page  = 1
+				- each post in posts
+					include includes/postSnippet
+	
+				include includes/pagination
