@@ -96,7 +96,7 @@ app.configure(function(){
     //Poet blogging engine
 	var poet = Poet(app, {
 	  postsPerPage: 3,
-	  posts: './posts',
+	  posts: 'posts',
 	  metaFormat: 'json',
 	  routes: {
 	    '/blog/post/:post': 		'blog/post',
