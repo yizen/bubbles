@@ -14,6 +14,14 @@ block menu
 block body
 	div.container
 		div.row
+			div.span12#rawStats
+				p
+					| Sur la base de #{bigdata.websiteCount} sites de vente en ligne, #{bigdata.wineCount} références sont en vente.
+				p
+					| Cela représente #{bigdata.producerCount} maisons, qui proposent #{bigdata.wineRefCount} cuvées.
+				p
+					| Le prix moyen de vente à l'unité est de #{bigdata.meanPrice} euros.
+		div.row
 			div.span12#chart1
 				ul.nav.nav-pills
 					li.active
