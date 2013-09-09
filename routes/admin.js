@@ -79,28 +79,32 @@ module.exports = function(app){
 		async.series({
 			wine: function (callback) {
 				db.Wine.find(id).success(function(wine) {
-					wine.getWebsite().success(function(website) {
-						wine.getWinereference().success(function(winereference) {
-							if (winereference) {
-								wine['reference'] = winereference.id;
-							}
-						
-							wine['website'] = website.name;
-							wine['sizeText'] = sizes.sizeNumToText(wine.size);
-						
-							if (wine.photo) {
-								var photo = '/photos/'+wine.photo;
-								var fullURL = req.protocol + "://" + req.get('host') + photo;
-			
-								var base64photo = new Buffer(fullURL).toString('base64');
-								wine['photo'] = '/thumbs/small/images/'+base64photo+".jpg";
-							} else {
-								wine['photo'] = '/images/no-image.png';
-							}
+					if (wine) {						
+						wine.getWebsite().success(function(website) {
+							wine.getWinereference().success(function(winereference) {
+								if (winereference) {
+									wine['reference'] = winereference.id;
+								}
 							
-							callback (null, wine);
-						});			
-					});
+								wine['website'] = website.name;
+								wine['sizeText'] = sizes.sizeNumToText(wine.size);
+							
+								if (wine.photo) {
+									var photo = '/photos/'+wine.photo;
+									var fullURL = req.protocol + "://" + req.get('host') + photo;
+				
+									var base64photo = new Buffer(fullURL).toString('base64');
+									wine['photo'] = '/thumbs/small/images/'+base64photo+".jpg";
+								} else {
+									wine['photo'] = '/images/no-image.png';
+								}
+								
+								callback (null, wine);
+							});			
+						});
+					} else {
+						callback(null, new Object());
+					}
 				});
 			},
 			
@@ -156,51 +160,56 @@ module.exports = function(app){
 			},
 			
 			wineRef: function(callback) {
-				db.Wine.find(id).success(function(wine) {			
-					wine.getWinereference().success(function(wineReference) {
-					
-						wineRef = new Object;
-						wineRef.wines = new Array();
-						wineRef.producerName = "",
-						wineRef.producerId = "";
-						wineRef.id = "";
-
-						if (wineReference) {
-							
-							wineRef.id = wineReference.id;
-							
-							wineReference.getProducer().success(function(producer){
-								if (producer) {
-									wineRef.producerName = producer.name;
-									wineRef.producerId = producer.id;
+				db.Wine.find(id).success(function(wine) {
+				
+					if (wine) {		
+						wine.getWinereference().success(function(wineReference) {
+						
+							wineRef = new Object;
+							wineRef.wines = new Array();
+							wineRef.producerName = "",
+							wineRef.producerId = "";
+							wineRef.id = "";
+	
+							if (wineReference) {
 								
-									producer.getWinereferences().success(function(wines){
-										if (wines) wineRef.wines = wines;
-										callback(null, wineRef);
-									});
+								wineRef.id = wineReference.id;
+								
+								wineReference.getProducer().success(function(producer){
+									if (producer) {
+										wineRef.producerName = producer.name;
+										wineRef.producerId = producer.id;
 									
-								} else {
-									console.error("Error : winereference without a producer defined, should not happen "+wineReference.name);
-									callback("Error winereference without a producer defined, should not happen", null);
-								}
-							});
-						} else {						
-							db.Producer.find({where: {name: wine.producer}}).success(function(producer){
-								if (producer) {
-									wineRef.producerName = producer.name;
-									wineRef.producerId = producer.id;
-								
-									producer.getWinereferences().success(function(wines){
-										if (wines) wineRef.wines = wines;
+										producer.getWinereferences().success(function(wines){
+											if (wines) wineRef.wines = wines;
+											callback(null, wineRef);
+										});
+										
+									} else {
+										console.error("Error : winereference without a producer defined, should not happen "+wineReference.name);
+										callback("Error winereference without a producer defined, should not happen", null);
+									}
+								});
+							} else {						
+								db.Producer.find({where: {name: wine.producer}}).success(function(producer){
+									if (producer) {
+										wineRef.producerName = producer.name;
+										wineRef.producerId = producer.id;
+									
+										producer.getWinereferences().success(function(wines){
+											if (wines) wineRef.wines = wines;
+											callback(null, wineRef);
+										});
+									} else {
 										callback(null, wineRef);
-									});
-								} else {
-									callback(null, wineRef);
-								}
-								
-							});
-						}
-					});
+									}
+									
+								});
+							}
+						});
+					} else {
+						callback(null, new Object);
+					}
 				});
 			}
 		},
@@ -284,17 +293,18 @@ module.exports = function(app){
 	});
 	
 	app.get('/admin/producers/search/:name?', function (req, res) {
-	    
 		var name = req.params.name || "deutz";
-				
+
 		ejs.client = nc.NodeClient('localhost', '9200');
 		
 		var index 	= 'bubbles';
 		var type 	= 'producer';
+		
 		var request 	= ejs.Request({indices: index, types: type});
 		query  = ejs.MatchQuery('name', name.toString()).maxExpansions(10).operator('and');
 		
 		request.query(query).size(100).doSearch(function(results){
+		
 			if (!results.hits) {
 				console.log('Error executing search');
 				console.log(request.toString());
@@ -305,10 +315,14 @@ module.exports = function(app){
 			producers = new Array();
 			
 			if (hits && hits.total > 0) {
-				async.each(hits.hits, function(item, callback) {				
+				async.forEach(hits.hits, function(item, callback) {				
+					
 					var producerId = item._source.id;
 					 
 					db.Producer.find(producerId).success(function(producer){
+						
+						producers.push(producer);
+						
 						if (producer.image) {
 							//wine.photo = '/photos/'+item._source.photo;
 							var photo = '/producer/'+producer.image;
@@ -347,9 +361,12 @@ module.exports = function(app){
 										callback();
 									}
 								});
+							},
+							function(err) {
+								callback();
 							});
-					});
-				});	
+						});
+					});	
 				}, 
 					function(err) {
 						var pagination = "";
