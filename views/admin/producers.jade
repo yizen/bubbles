@@ -21,8 +21,13 @@ block body
 									li
 										a(href='/admin/clics/') Outbound		
 		div.row
-			div.span12
+			div.span8
 				!= pagination
+			div.span4
+				form#search-form-producer
+					input#producerRef.span2.search-query.search-query-rounded(type='text')
+					&nbsp;
+					a.btn#search Search		
 		div.row
 			div.span12
 				table.table.table-bordered
