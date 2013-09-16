@@ -12,10 +12,10 @@ var app = module.exports = express();
 var port = 3000;
 
 //Init data model with Sequelize
-db.sequelize.sync().complete(function(err) {
-	if (err) {
-	   	throw err
-	}
+db.sequelize.sync().complete(function() {
+	console.log("Database started, sync completed");
+				 }).error(function(error) {
+	console.error("Could not sync database "+error);				 
 });
 
 //Setup Later configuration for crawler refresh

@@ -95,6 +95,12 @@
         	
         	window.location.href = encodeURI("/admin/producers/search/"+q);
         });
+               
+        $('#clearjobs').on('click', function(e) {
+			$.get('/admin/clearalljobs/', function(data) {
+				window.location.href = encodeURI("/admin/");
+  			}); 
+        });
         
         $( "#wineRefId" ).change(function() {
         	var producer = $('#producerRef').val();

@@ -633,6 +633,49 @@ module.exports = function(app){
 		});
 	});
 	
+	app.get('/admin/clearalljobs/', function(req, res) {
+		db.Website.findAll().success(function(websites) {
+			async.each(websites, function(website, callback) {
+				website['refresh'] = "admin/refresh/"+website.id;
+				website['crawl'] = "admin/crawl/"+website.id;
+				website['jobs'] = new Array;
+				//Query jobs for this website
+				website.getJobs().success(function(jobs) {
+					website['jobs'] = jobs;
+					async.each(jobs, function(job, callback) {
+						if (job.status=="OK") {
+						 	jobId = job.id;
+						 	job.destroy().on('success', function(u) {
+								// successfully deleted the job
+								//delete all child Logs
+								db.Log.findAll({where: "JobId = "+jobId}).success(function(logs) {
+									async.each(logs, 
+										function (log, callback){				
+											log.destroy().on('success', function() {
+											callback();
+									})
+									},
+									function(err) {				
+										callback();
+									});
+								});
+							});	 
+						 } else {
+							 callback();
+						 }
+					 }, 
+					 function(err) {
+						callback();
+
+					 });
+				});
+				}, function(err) {
+					var result = "OK";
+					res.json(result);				
+			});	
+		});
+	});
+	
 	app.get('/admin/elasticsearch/', function (req, res) {
 		ejs.client = nc.NodeClient('localhost', '9200');
 		
