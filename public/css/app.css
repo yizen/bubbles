@@ -151,12 +151,14 @@ a.ui-slider-handle:hover span.Slider_Value{
     display: block;
 }   
 
-#refine{
-	display: none;
+h5.options-name {
+	display: block;
+	font-size: 18px;
+	
 }
 
-#optionsOn {
-	cursor: pointer;
+h5.options-name:not(:first-child) {
+    margin-top: 70px;
 }
 
 #spinner {

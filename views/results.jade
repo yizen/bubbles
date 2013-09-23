@@ -3,11 +3,11 @@ div#results
 	- while(i < wines.length)
 		div.row
 			ul.wines
-				- var k = i + 6
+				- var k = i + 3
 				- while(i < k && i < wines.length)
 					- wine = wines[i]
 					- i++
-					li.span2
+					li.span3
 						div.wine
 							img.wine-image(src='#{wine.photo}')
 							.caption

@@ -21,62 +21,44 @@ block body
 			div.span6
 				form.form-search#search-box
 					div.input-append
-						input#search-query.search-query.search.span5(type='text', placeholder='Deutz', autocomplete='off')
+						input#search-query.search-query.search.span5(type='text', placeholder='Recherche par producteur ou cuvée', autocomplete='off')
 						button.btn(type='submit')
 							span.fui-search
 					
-	div.container
-		div#optionsOn.row
-			.offset4.span4
-				span#more.fui-plus-inverted
-					&nbsp;Filtrer par	prix, couleur, contenance						
-		div#refine-container.row
-			div#refine.span12
-				.row
-					h4.span2 Contenance
-					fieldset.span9.slider
-						select#minimumSize(name='minimumSize')
-							option(value='0.5') Demi-bouteille
-							option(value='1', selected='selected') Bouteille
-							option(value='2') Magnum
-							option(value='4') Jeroboam
-							option(value='8') Mathusalem
-							option(value='12') Salmanazar
-							option(value='16') Balthazar
-							option(value='20') Nabuchodonosor
-							option(value='24') Salomon
-							option(value='36') Primat
-						select#maximumSize(name='maximumSize')
-							option(value='0.5') Demi-bouteille
-							option(value='1') Bouteille
-							option(value='2') Magnum
-							option(value='4') Jeroboam
-							option(value='8') Mathusalem
-							option(value='12') Salmanazar
-							option(value='16') Balthazar
-							option(value='20', selected='selected') Nabuchodonosor
-							option(value='24') Salomon
-							option(value='36') Primat
-						.span1
-				.row
-					h4.span2 Prix	
-					#price-range.span9.slider
-					.span1
-				.row
-					h4.span2 Couleur
-					label.radio.span2#whiteAndPink
-						input(type='radio', name='optionsRadios', value='whiteAndPink', data-toggle='radio',	 checked='')
-						| Blancs et rosés
-					label.radio.span2#white
-						input(type='radio', name='optionsRadios', value='white', data-toggle='radio')
-						| Uniquement blancs
-					label.radio.span2#pink
-						input(type='radio', name='optionsRadios', value='pink', data-toggle='radio')
-						| Uniquement rosés
+	div.container				
+		.row
+			.span3
+				h5.options-name Contenance
+				fieldset.slider
+					select#minimumSize(name='minimumSize')
+						option(value='0.5') Demi-bouteille
+						option(value='1', selected='selected') Bouteille
+						option(value='2') Magnum
+						option(value='400') Jeroboam et plus
+					select#maximumSize(name='maximumSize')
+						option(value='0.5') Demi-bouteille
+						option(value='1') Bouteille
+						option(value='2') Magnum
+						option(value='400', selected='selected') Jeroboam et plus
 
-		div#results-container.row
+				h5.options-name Prix
+				#price-range.slider
+
+				h5.options-name Couleur
+				label.radio.span3#whiteAndPink
+					input(type='radio', name='optionsRadios', value='whiteAndPink', data-toggle='radio', checked='')
+					| Blancs et rosés
+				label.radio.span3#white
+					input(type='radio', name='optionsRadios', value='white', data-toggle='radio')
+					| Uniquement blancs
+				label.radio.span3#pink
+					input(type='radio', name='optionsRadios', value='pink', data-toggle='radio')
+					| Uniquement rosés
+
+			div#results-container.span9
+				div#results
+
 			div#spinner		
-		div#results
 			
 block append scripts
 	script(src='/js/search.js')
