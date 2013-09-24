@@ -56,8 +56,6 @@ app.configure(function(){
   		src: __dirname + '/public/less',
   		dest: __dirname + '/public/css',
   		prefix: "/css",
-		// force true recompiles on every request... not the best
-		// for production, but fine in debug while working through changes
 		force: false
 	}));
 	
@@ -72,10 +70,20 @@ app.configure(function(){
     }));
     */
     
+    function requireLogin(req, res, next) {
+		if (req.session.loggedIn) {
+			next(); // allow the next route to run
+		} else {
+			// require the user to log in
+			res.redirect("/login"); // or render a form, etc.
+		}
+	}
+    
+    app.use(express.favicon());
 	app.use(express.bodyParser());
 	app.use(express.cookieParser( 'Gpe3YY88WGtxzizVh' ));
-	app.use(express.methodOverride());
-	app.use(app.router);
+	app.use(express.session({ secret: 'LujfScBVmsD29S' }));
+	app.use(express.methodOverride());	
     
     // express-winston errorHandler makes sense AFTER the router.
     app.use(expressWinston.errorLogger({
@@ -93,6 +101,13 @@ app.configure(function(){
       showStack: true
     }));
     
+    app.all("/admin/*", requireLogin, function(req, res, next) {
+		next(); // if the middleware allowed us to get here,
+          		// just move on to the next route handler
+	});
+	
+	app.use(app.router);
+	    
     //Poet blogging engine
 	var poet = Poet(app, {
 	  postsPerPage: 3,

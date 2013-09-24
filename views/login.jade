@@ -1,0 +1,15 @@
+extends layout
+
+
+block body
+	div.container
+		div.row
+			div.span2
+				h4 Login
+			div
+				form#login.form-inline(method='post',action='login')
+					input#login.span3(name='login', type='text', placeholder='Login', autocomplete='off')
+					input#password.span3(name='password', type='password')
+
+					button.btn.btn-embossed.btn-primary(type='submit') Login
+					
