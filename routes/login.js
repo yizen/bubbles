@@ -10,6 +10,7 @@ module.exports = function(app){
 		if (login == 'olivier' && password == 'bullesme') {
 			console.log("logged in");
 			req.session.loggedIn = true;
+			
 			res.redirect('/admin/');
 		} else {
 			res.render('login');	
