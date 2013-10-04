@@ -10,12 +10,10 @@ block menu
 			a(href="/blog/") Blog
 
 block body
-	div.container
-		div.row
-			div.span12
-				- var posts = getPosts(0,5)
-				- var page  = 1
-				- each post in posts
-					include includes/postSnippet
-	
-				include includes/pagination
+	div.blog
+		- var posts = getPosts(0,5)
+		- var page  = 1
+		- each post in posts
+			include includes/postSnippet
+
+		include includes/pagination

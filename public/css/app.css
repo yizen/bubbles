@@ -196,3 +196,165 @@ h5.options-name:not(:first-child) {
   font-weight:bold;
 }
 
+/* blog */
+
+section {
+    display: block;
+    position: relative;
+    background: #fff;
+    padding: 80px 50px;
+    width: auto;
+    max-width: 860px;
+    margin: 0 auto;
+    margin-bottom: 40px;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2),inset 0 -1px 3px #f6f4ee;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+section .date {
+    position: absolute;
+    top: 80px;
+    right: 100px;
+    text-align: right;
+    font-weight: bold;
+    font-size: 16px;
+    color: #d7d7d7;
+    text-transform: uppercase;
+    -webkit-transition: color .25s ease-in-out;
+    -moz-transition: color .25s ease-in-out;
+    -o-transition: color .25s ease-in-out;
+    transition: color .25s ease-in-out;
+}
+
+section .date:hover {
+    color: #f64;
+}
+
+section .title {
+    margin-bottom: 30px;
+    max-width: 80%;
+}
+
+section .title small a {
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #999;
+    -webkit-transition: color .25s ease-in-out;
+    -moz-transition: color .25s ease-in-out;
+    -o-transition: color .25s ease-in-out;
+    transition: color .25s ease-in-out;
+}
+
+section .title small a:hover {
+    text-decoration: none;
+    color: #f64;
+}
+
+section .post_intro {
+    color: #aaa;
+    font-size: 20px;
+    letter-spacing: 1px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+section button {
+    margin: 0;
+}
+
+section.quote {
+    background: #f6f4ee;
+    padding: 80px 80px 30px 200px;
+    -webkit-transition: all .25s ease-in-out;
+    -moz-transition: all .25s ease-in-out;
+    -o-transition: all .25s ease-in-out;
+    transition: all .25s ease-in-out;
+}
+
+section.quote p {
+    font-size: 24px;
+    line-height: 48px;
+    text-align: right;
+    -webkit-transition: all .25s ease-in-out;
+    -moz-transition: all .25s ease-in-out;
+    -o-transition: all .25s ease-in-out;
+    transition: all .25s ease-in-out;
+}
+
+section.quote .author {
+    display: block;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #bbb;
+    -webkit-transition: all .25s ease-in-out;
+    -moz-transition: all .25s ease-in-out;
+    -o-transition: all .25s ease-in-out;
+    transition: all .25s ease-in-out;
+}
+
+section.quote:hover {
+    background: #f64;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2),inset 0 -1px 3px #d83e1c;
+}
+
+section.quote:hover p {
+    color: #fff;
+}
+
+section.quote:hover .author {
+    color: #c93c1d;
+}
+
+section .hashtags {
+    font-size: 14px;
+    margin: 38px 0 0 0;
+    position: absolute;
+    right: -3px;
+    top: 0;
+    width: 103px;
+}
+
+section .hashtags:hover {
+    -moz-box-shadow: 0 0 5px 2px #ccc;
+    -webkit-box-shadow: 0 0 5px 2px #ccc;
+    box-shadow: 0 0 5px 2px #ccc;
+}
+
+section .hashtags .hashtag:first-child {
+    opacity: 1;
+    height: 26px;
+    background-color: #f5f5f5;
+}
+
+section .hashtags:hover .hashtag {
+    opacity: 1;
+    height: 26px;
+}
+
+section .hashtags .hashtag {
+    float: right;
+    clear: both;
+    height: 0;
+    width: 80px;
+    line-height: 26px;
+    font-weight: bold;
+    word-wrap: normal;
+    padding: 4px 10px;
+    border-right: 3px solid #f64;
+    background: #fff;
+    opacity: 0;
+    text-align: right;
+    -webkit-transition: all .1s ease-in-out;
+    -moz-transition: all .1s ease-in-out;
+    -o-transition: all .1s ease-in-out;
+    transition: all .1s ease-in-out;
+}
+
+section .hashtags .hashtag:hover {
+    background: #aaa28c;
+    color: #fff;
+}
