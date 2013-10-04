@@ -8,7 +8,6 @@ module.exports = function(app){
 		var password  = req.body.password;
 		
 		if (login == 'olivier' && password == 'bullesme') {
-			console.log("logged in");
 			req.session.loggedIn = true;
 			
 			res.redirect('/admin/');

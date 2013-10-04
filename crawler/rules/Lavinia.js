@@ -36,7 +36,7 @@ var Lavinia = function ( scrapinode ) {
 		if (!window) return;
 	
 		var $ = window.$;
-		var price = $("form[data-section='product'] label[itemprop='lowPrice']").text();
+		var price = $("article form[data-section='product'] label[itemprop='lowPrice']").text();
 		return price;
 	};
 	
