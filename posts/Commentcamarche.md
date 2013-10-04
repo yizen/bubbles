@@ -1,6 +1,6 @@
 {{{
   "title": "Comment ça marche, La Cote du Champagne ?",
-  "tags": ["fonctionnement","prix"],
+  "tags": ["prix","mise à jour"],
   "category": "",
   "date": "10-4-2013"
 }}}
