@@ -1,6 +1,6 @@
 {{{
   "title": "Comment ça marche, La Cote du Champagne ?",
-  "tags": ["fonctionnement"],
+  "tags": ["fonctionnement"]
   "category": "",
   "date": "10-4-2013"
 }}}
