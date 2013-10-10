@@ -358,3 +358,31 @@ section .hashtags .hashtag:hover {
     background: #aaa28c;
     color: #fff;
 }
+
+.post-image {
+	margin-bottom: -10px;
+}
+.post-header, .post-image, .post-video {
+	max-width: 860px;
+	margin: 0 auto;
+	margin-bottom: -3px;
+	position: relative;
+	z-index: 2;
+	display: block;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+.post-image img, .post-video video {
+width: 100%;
+-webkit-border-top-left-radius: 3px;
+-webkit-border-top-right-radius: 3px;
+-moz-border-radius-topleft: 3px;
+-moz-border-radius-topright: 3px;
+border-top-left-radius: 3px;
+border-top-right-radius: 3px;
+}

@@ -21,3 +21,4 @@ node_modules
 /node.sql
 /tmp/
 /public/less/modules/.DS_Store
+/posts/base.md

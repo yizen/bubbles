@@ -118,6 +118,11 @@ app.configure(function(){
 	    '/blog/page/:page': 		'blog/page',
 	    '/blog/tag/:tag': 			'blog/tag',
 	    '/blog/category/:category':	'blog/category'
+		},
+		readMoreLink: function (post) {
+			  var anchor = '<a class="btn btn-large btn-inverse" href="' + post.url + '"';
+			  anchor += ' title="Lire la suite de ' + post.title + '">Lire la suite</a>';
+			  return '<p>' + anchor + '</p>';
 		}
 	  });
 

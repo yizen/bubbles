@@ -2,7 +2,8 @@
   "title": "Comment ça marche, La Cote du Champagne ?",
   "tags": ["prix","mise à jour"],
   "category": "",
-  "date": "10-4-2013"
+  "date": "10-4-2013",
+  "image": "code.jpg"
 }}}
 
 La Cote du Champagne a pour vocation de référencer de façon exhaustive tous les prix des champagnes disponibles en vente en ligne.
