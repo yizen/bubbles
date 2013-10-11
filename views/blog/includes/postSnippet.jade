@@ -6,7 +6,7 @@ section
 		h4.title
 			a(href=post.url)
 				= post.title
-		span.date #{post.date.getDate()}.#{post.date.getMonth()+1}.#{post.date.getFullYear()}
+		span.date DEPLOY #{post.date.getDate()}.#{post.date.getMonth()+1}.#{post.date.getFullYear()}
 		div.hashtags
 			- each tag in post.tags
 				a.hashtag(href=tagUrl(tag))
