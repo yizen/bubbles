@@ -33,10 +33,10 @@ var PopBulles = function ( scrapinode ) {
 		if (!window) return;
 	
 		var $ = window.$;
-		var price = $('div.price-box p.special-price span.price').text();
+		var price = $('div.price-box span.regular-price span.price').text();
 		
 		if (!price) {
-			price = $('div.price-box span.regular-price span.price').text();
+			price = $('div.price-box p.special-price span.price').text();
 		}
 		
 		return price;
