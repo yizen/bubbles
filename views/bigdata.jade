@@ -1,18 +1,17 @@
 extends layout
 
 block menu
-	ul.nav.navbar-inverse
-		li
-			a(href="/") Search
-		li.active 
-			a(href="/bigdata/") Big Data
-		li
-			a(href="/blog/") Blog
+	-var selected = 'Big Data';
 
+block header
+	#nav-bg
 
-
-block body
+block content
 	div.container
+		div.row
+			div.span12
+				h3
+					| Statistiques globales
 		div.row
 			div.span12#rawStats
 				p
@@ -22,12 +21,15 @@ block body
 				p
 					| Le prix moyen de vente à l'unité est de #{bigdata.meanPrice} euros.
 		div.row
+			
+			
+		div.row
 			div.span12#chart1
 				ul.nav.nav-pills
 					li.active
-						a.mostFrequent Marques les plus répresentées
-					li
-						a.mostExpensives Prix les plus élevés
+						a#mostFrequent Marques les plus representées
+					li	
+						a#byPrice Marques les plus chères
 				div.svg
 			
 block append scripts

@@ -1,28 +1,14 @@
 extends layout
 
-block body
-	div.container
-		div.row
-			div.span12
-				div.navbar
-					div.navbar-inner
-						div.container
-							a.brand Champagne
-							div#nav-collapse01.nav-collapse.collapse
-								ul.nav
-									li 
-										a(href='/admin/') Websites
-									li
-										a(href='/admin/wines/') Wines	
-									li
-										a(href='/admin/producers/') Producers	
-									li
-										a(href='/admin/elasticsearch/') Elastic Search
-									li.active
-										a(href='/admin/clics/') Outbound		
-		div.row
-			div.span12
-				table.table.table-bordered
+block nav
+	-var selected = 'Clics';
+	
+block header
+	#nav-bg
+									
+block content
+	.container#clics
+		table.table.table-bordered.admin-table
 					thead
 						tr
 							th Date

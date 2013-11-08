@@ -1,17 +1,16 @@
 div#results
 	- var i = 0;
 	- while(i < wines.length)
-		div.row
+		.row
 			ul.wines
-				- var k = i + 3
+				- var k = i + 4
 				- while(i < k && i < wines.length)
 					- wine = wines[i]
 					- i++
-					li.span3
-						div.wine
+					li.col-lg-3
+						.wine
 							img.wine-image(src='#{wine.photo}')
 							.caption
-								//div.wine-image.ratio(style='#{wine.photostyle}')
 								p.wine-name
 									| !{wine.wine}
 								p.wine-producer

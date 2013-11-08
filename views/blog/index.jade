@@ -1,16 +1,13 @@
 extends ../layout
 
 block menu
-	ul.nav.navbar-inverse
-		li
-			a(href="/") Search
-		li 
-			a(href="/bigdata/") Big Data
-		li.active
-			a(href="/blog/") Blog
-
-block body
-	div.blog
+	-var selected = 'Blog';
+	
+block header
+	#nav-bg
+	
+block content
+	.container#blog
 		- var posts = getPosts(0,5)
 		- var page  = 1
 		- each post in posts

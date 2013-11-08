@@ -1,64 +1,51 @@
 extends layout
-block menu
-	ul.nav
-		li.active 
-			a(href="/") Search
-		li
-			a(href="/bigdata/") Big Data
-		li
-			a(href="/blog/") Blog
 
-block body
-	div.container
-		div.row.searchbar
-			div.span2
-				h4 Je cherche
-			div.span2
-				.control-group
-					input#qty.spinner(type="text",value="6")
-			div.span2
-				h4#bottles bouteilles de
-			div.span6
-				form.form-search#search-box
-					div.input-append
-						input#search-query.search-query.search.span5(type='text', placeholder='Recherche par producteur ou cuvée', autocomplete='off')
-						button.btn(type='submit')
-							span.fui-search
-					
-	div.container				
-		.row
-			.span3
-				h5.options-name Contenance
-				fieldset.slider
-					select#minimumSize(name='minimumSize')
-						option(value='0.5') Demi-bouteille
-						option(value='1', selected='selected') Bouteille
-						option(value='2') Magnum
-						option(value='400') Jeroboam et plus
-					select#maximumSize(name='maximumSize')
-						option(value='0.5') Demi-bouteille
-						option(value='1') Bouteille
-						option(value='2') Magnum
-						option(value='400', selected='selected') Jeroboam et plus
+block nav
+	-var selected = 'Search';
 
-				h5.options-name Prix
-				#price-range.slider
-
-				h5.options-name Couleur
-				label.radio.span3#whiteAndPink
-					input(type='radio', name='optionsRadios', value='whiteAndPink', data-toggle='radio', checked='')
-					| Blancs et rosés
-				label.radio.span3#white
-					input(type='radio', name='optionsRadios', value='white', data-toggle='radio')
-					| Uniquement blancs
-				label.radio.span3#pink
-					input(type='radio', name='optionsRadios', value='pink', data-toggle='radio')
-					| Uniquement rosés
-
-			div#results-container.span9
-				div#results
-
-			div#spinner		
-			
+block header
+	header#searchbox
+		.container			
+			.row
+				.col-md-3.searchitem.search-fulltext
+					input#text.form-control.input-hg(type='text', placeholder='marque, cuvée', autocomplete='off')
+				.col-md-3.hidden-xs
+					.searchitem 
+						#price-range.slider
+				.col-md-3.hidden-xs
+					.searchitem 	
+						fieldset.slider
+							select#minimumSize(name='minimumSize')
+								option(value='0.5') Demi-bouteille
+								option(value='1', selected='selected') Bouteille
+								option(value='2') Magnum
+								option(value='400') Jeroboam et plus
+							select#maximumSize(name='maximumSize')
+								option(value='0.5') Demi-bouteille
+								option(value='1') Bouteille
+								option(value='2') Magnum
+								option(value='400', selected='selected') Jeroboam et plus		
+				.col-md-3.hidden-xs
+					.searchitem 
+							label.radio#whiteAndPink
+								input(type='radio', name='optionsRadios', value='whiteAndPink', data-toggle='radio', checked='')
+								| Blancs et rosés
+							label.radio#white
+								input(type='radio', name='optionsRadios', value='white', data-toggle='radio')
+								| Uniquement blancs
+							label.radio#pink
+								input(type='radio', name='optionsRadios', value='pink', data-toggle='radio')
+								| Uniquement rosés
+				//
+					label Nombre de bouteilles
+					.control-group
+						input#qty.spinner.form-control(type="text",value="6")					
+	#nav-bg		
+	
+block content
+	.container					
+		.row#results-container
+			#results
+							
 block append scripts
 	script(src='/js/search.js')

@@ -1,62 +1,43 @@
 (function($) {
-	 $(function() {
-	 	 $.widget( "ui.customspinner", $.ui.spinner, {
-		      widgetEventPrefix: $.ui.spinner.prototype.widgetEventPrefix,
-		      _buttonHtml: function() { // Remove arrows on the buttons
-		        return "" +
-		        "<a class='ui-spinner-button ui-spinner-up ui-corner-tr'>" +
-		          "<span class='ui-icon " + this.options.icons.up + "'></span>" +
-		        "</a>" +
-		        "<a class='ui-spinner-button ui-spinner-down ui-corner-br'>" +
-		          "<span class='ui-icon " + this.options.icons.down + "'></span>" +
-		        "</a>";
-		      }
-	    });
+	$(function() {
+		//
+		// Spinner used to set quantity -----------------------------------
+		//
+		$.widget( "ui.customspinner", $.ui.spinner, {
+				widgetEventPrefix: $.ui.spinner.prototype.widgetEventPrefix,
+				_buttonHtml: function() { // Remove arrows on the buttons
+				  return "" +
+				  "<a class='ui-spinner-button ui-spinner-up ui-corner-tr'>" +
+					"<span class='ui-icon " + this.options.icons.up + "'></span>" +
+				  "</a>" +
+				  "<a class='ui-spinner-button ui-spinner-down ui-corner-br'>" +
+					"<span class='ui-icon " + this.options.icons.down + "'></span>" +
+				  "</a>";
+				}
+		});
 
-	    $('#qty').customspinner({
-	      min: 1,
-	      max: 99
-	    }).on('focus', function () {
-	      $(this).closest('.ui-spinner').addClass('focus');
-	    }).on('blur', function () {
-	      $(this).closest('.ui-spinner').removeClass('focus');
-	    });
-	    
-	    $('#qty').on("spinstop", function() {
-		   if ($('#qty').val() == 1) {
-			   $('#bottles').html("bouteille de"); 
-		   } else {
-			   $('#bottles').html("bouteilles de"); 
-		   }
-		   
-		   //launchSearch();
-	    });
+		$('#qty').customspinner({
+			min: 1,
+			max: 99
+		}).on('focus', function () {
+			$(this).closest('.ui-spinner').addClass('focus');
+		}).on('blur', function () {
+			$(this).closest('.ui-spinner').removeClass('focus');
+		});
+		
+		$('#qty').on("spinstop", function() {
+			if ($('#qty').val() == 1) {
+				$('#bottles').html("bouteille de"); 
+			} else {
+				$('#bottles').html("bouteilles de"); 
+			}		  
+		});
 
-	 	$("span#more").on("click", function(){
-	 		$("#refine").slideToggle(200);
-		});
-	 	
-	 	//setup before functions
-		var typingTimer;                //timer identifier
-		var doneTypingInterval = 500;  //time in ms
-		
-		//on keyup, start the countdown
-		$('#search-query').keyup(function(){
-		    typingTimer = setTimeout(doneTyping, doneTypingInterval);
-		});
-		
-		//on keydown, clear the countdown 
-		$('#search-query').keydown(function(){
-		    clearTimeout(typingTimer);
-		});
-		
-		//user is "finished typing," do something
-		function doneTyping () {
-		    if ($('#search-query').val().length < 3) { return }
-			launchSearch();
-		}
-		
-	 	$('select#minimumSize, select#maximumSize').selectToUISlider({
+		//
+		// Sliders setup -----------------------------------
+		//
+
+		$('select#minimumSize, select#maximumSize').selectToUISlider({
 				labels: 12,
 				labelSrc: 'text',
 				tooltip: false,
@@ -69,36 +50,33 @@
 				}
 		}).hide();
 		
-		 var tooltip = function(sliderObj, ui){
-         	val1            = '<div id="slider_tooltip">&euro; '+ sliderObj.slider("values", 0) +'</div>';
-            val2            = '<div id="slider_tooltip">&euro; '+ sliderObj.slider("values", 1) +'</div>';
-            sliderObj.children('.ui-slider-handle').first().html(val1);
-            sliderObj.children('.ui-slider-handle').last().html(val2);                  
-          };
+		var tooltip = function(sliderObj, ui){
+			val1			= '<div id="slider_tooltip">&euro; '+ sliderObj.slider("values", 0) +'</div>';
+			val2			= '<div id="slider_tooltip">&euro; '+ sliderObj.slider("values", 1) +'</div>';
+			sliderObj.children('.ui-slider-handle').first().html(val1);
+			sliderObj.children('.ui-slider-handle').last().html(val2);					
+		};
 
-       		
 		$( "#price-range" ).slider({
 			range: true,
 			min: 0,
 			max: 500,
 			values: [ 10, 300 ],
 			slide: function( e, ui ) {
-                tooltip($(this),ui);                    
-              },              
-              create:function(e,ui){
-                tooltip($(this),ui);                    
-             },
-              stop:function(e,ui) {
-	             launchSearch(); 
-              }
+				tooltip($(this),ui);					
+			  },			  
+			  create:function(e,ui){
+				tooltip($(this),ui);					
+			 },
+			  stop:function(e,ui) {
+				  launchSearch(); 
+			  }
 		});
-	 
-		// Focus state for append/prepend inputs
-		$('.input-prepend, .input-append').on('focus', 'input', function () {
-				$(this).closest('.control-group, form').addClass('focus');
-		}).on('blur', 'input', function () {
-				$(this).closest('.control-group, form').removeClass('focus');
-		}); 
+	
+		
+		//
+		// Events----------------------
+		//
 		
 		$('#search-box').on('submit', function(event) {
 			if ($('#search-query').val().length < 3) { return }	
@@ -122,9 +100,34 @@
 			color='whiteAndPink';
 			launchSearch();
 		});
-						
+		
+		
+		
+		//
+		// Fire search dynamically after a few keystrokes ----------------------
+		//
+		
+		//setup before functions
+		var typingTimer;				  //timer identifier
+		var doneTypingInterval = 500;	 //time in ms
+		
+		//on keyup, start the countdown
+		$('#text').keyup(function(){
+			typingTimer = setTimeout(doneTyping, doneTypingInterval);
+		});
+		
+		//on keydown, clear the countdown 
+		$('#text').keydown(function(){
+			  clearTimeout(typingTimer);
+		});
+		
+		//user is "finished typing," launch search
+		function doneTyping () {
+			if ($('#text').val().length < 3) { return }
+			launchSearch();
+		}
+		
 		var launchSearch = function(startup) {
-			
 			//launch spinner
 			$('#spinner').spin();
 			
@@ -136,7 +139,7 @@
 
 			var qty = $("#qty").val();
 			
-			var keyword = (startup ? 'deutz' : $('#search-query').val());
+			var keyword = (startup ? 'deutz' : $('#text').val());
 			
 			$.ajax({
 				url: '/search?' + 'q='+keyword+'&minSize='+minSize+'&maxSize='+maxSize+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&color='+color+'&qty='+qty
@@ -147,8 +150,11 @@
 			});
 		}; 
 		
+		//
+		// Inits----------------------
+		//
 		
-		$('#search-query').focus();
+		$('#text').focus();
 		
 		launchSearch(true);	
 

@@ -14,21 +14,6 @@
 
  var fill_color = d3.scale.linear().domain([2, 100]).range(['white', 'orange']);
 
- var price_centers = {
- 	"20": {
- 		x: width / 3,
- 		y: height / 2
- 	},
- 	"40": {
- 		x: width / 2,
- 		y: height / 2
- 	},
- 	"90": {
- 		x: 2 * width / 3,
- 		y: height / 2
- 	}
- };
-
  function custom_chart(data) {
  	var max_amount = d3.max(data, function (d) {
  		return parseInt(d.volume, 10);
@@ -123,6 +108,7 @@
  			});
  	});
  	force.start();
+ 	hide_prices();
  }
 
  function move_towards_center(alpha) {
@@ -132,12 +118,12 @@
  	};
  }
 
- function display_by_year() {
+ function display_by_price() {
  	force.gravity(layout_gravity)
  		.charge(charge)
  		.friction(0.9)
  		.on("tick", function (e) {
- 			circles.each(move_towards_year(e.alpha))
+ 			circles.each(move_towards_prices(e.alpha))
  				.attr("cx", function (d) {
  					return d.x;
  				})
@@ -146,46 +132,67 @@
  				});
  		});
  	force.start();
- 	//display_years();
+ 	display_prices();
+ }
+  
+  var prices_centers = {
+ 	"40": {
+ 		x: width / 3,
+ 		y: height / 2
+ 	},
+ 	"80": {
+ 		x: width / 2,
+ 		y: height / 2
+ 	},
+ 	"160": {
+ 		x: 2 * width / 3,
+ 		y: height / 2
+ 	}
+ };
+ 
+  function get_prices_center(value) {
+	 var target = new Object;
+	 target.y = height / 2;
+	 target.x = value / 8;
+	 
+	 return target;
  }
 
- function move_towards_year(alpha) {
+ function move_towards_prices(alpha) {
  	return function (d) {
- 		var target = year_centers[d.year];
+ 		var target = get_prices_center(d.price);
  		d.x = d.x + (target.x - d.x) * (damper + 0.02) * alpha * 1.1;
  		d.y = d.y + (target.y - d.y) * (damper + 0.02) * alpha * 1.1;
+ 		d.radius = radius_scale(parseInt(d.price, 10));
  	};
  }
 
-
- function display_years() {
- 	var years_x = {
- 		"2008": 160,
- 		"2009": width / 2,
- 		"2010": width - 160
+ function display_prices() {
+ 	var prices_x = {
+ 		"20": 160,
+ 		"40": width / 2,
+ 		"90": width - 160
  	};
 
- 	var years_data = d3.keys(years_x);
- 	var years = vis.selectAll(".years")
- 		.data(years_data);
+ 	var prices_data = d3.keys(prices_x);
+ 	var prices = vis.selectAll(".prices")
+ 		.data(prices_data);
 
- 	years.enter().append("text")
- 		.attr("class", "years")
+ 	prices.enter().append("text")
+ 		.attr("class", "prices")
  		.attr("x", function (d) {
- 			return years_x[d];
+ 			return prices_x[d];
  		})
  		.attr("y", 40)
  		.attr("text-anchor", "middle")
  		.text(function (d) {
  			return d;
  		});
-
  }
 
- function hide_years() {
- 	var years = vis.selectAll(".years").remove();
+ function hide_prices() {
+ 	var years = vis.selectAll(".prices").remove();
  }
-
 
  function show_details(data, i, element) {
  	d3.select(element).attr("fill", function (d) {
@@ -216,15 +223,23 @@
  };
 
  display_all = display_group_all;
- display_year = display_by_year;
+ display_price = display_by_price;
 
  toggle_view = function (view_type) {
- 	if (view_type == 'year') {
- 		display_by_year();
+ 	if (view_type == 'price') {
+ 		display_by_price();
  	} else {
  		display_group_all();
  	}
  };
+ 
+ $('#mostFrequent').on('click', function(e) {
+	 display_group_all();
+ });
+ 
+ $('#byPrice').on('click', function(e) {
+	 display_by_price() 
+ });
 
  function CustomTooltip(tooltipId, width) {
  	var tooltipId = tooltipId;
@@ -281,5 +296,4 @@
  d3.json("/bigdata/mostFrequentProducers/", function (data) {
  	init(data);
  	toggle_view('all');
-
  });

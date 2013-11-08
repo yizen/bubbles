@@ -45,6 +45,13 @@ app.configure(function(){
 		}
 	}));
 	
+	app.use(require('less-middleware')({ 
+  		src: __dirname + '/public/less',
+  		dest: __dirname + '/public/css',
+  		prefix: "/css",
+		force: false
+	}));
+	
 	app.use(express.static(__dirname + '/public'));
 	
 	global.photodir = __dirname + '/public' + '/photos';
@@ -52,12 +59,7 @@ app.configure(function(){
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'jade');
   
-	app.use(require('less-middleware')({ 
-  		src: __dirname + '/public/less',
-  		dest: __dirname + '/public/css',
-  		prefix: "/css",
-		force: false
-	}));
+	
 	
 	/*
 	app.use(expressWinston.logger({

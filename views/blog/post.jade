@@ -1,28 +1,26 @@
 extends ../layout
 
 block menu
-	ul.nav.navbar-inverse
-		li
-			a(href="/") Search
-		li 
-			a(href="/bigdata/") Big Data
-		li.active
-			a(href="/blog/") Blog
-
-block body
-	if (post.image)
-		div.post-image
-			img(src='/posts/#{post.image}')
-	section
-		div
-			h4.title
-				a(href=post.url)
-					= post.title
-			span.date #{post.date.getDate()}.#{post.date.getMonth()+1}.#{post.date.getFullYear()}
-			div.hashtags
-				- each tag in post.tags
-					a.hashtag(href=tagUrl(tag))
-						=tag
+	-var selected = 'Blog';
 	
-			div.post.content
-				!= post.content
+block header
+	#nav-bg
+	
+block content
+	.container#blog
+		if (post.image)
+			div.post-image
+				img(src='/posts/#{post.image}')
+		section
+			div
+				h4.title
+					a(href=post.url)
+						= post.title
+				span.date #{post.date.getDate()}.#{post.date.getMonth()+1}.#{post.date.getFullYear()}
+				div.hashtags
+					- each tag in post.tags
+						a.hashtag(href=tagUrl(tag))
+							=tag
+		
+				div.post.content
+					!= post.content

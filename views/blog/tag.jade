@@ -1,19 +1,17 @@
 extends ../layout
 
 block menu
-	ul.nav.navbar-inverse
-		li
-			a(href="/") Search
-		li 
-			a(href="/bigdata/") Big Data
-		li.active
-			a(href="/blog/") Blog
-
-block body
-	div.container
-		div.row
-			div.span12
-				h3
-					a(href=tagUrl(tag)) posts tagged * #{tag}
-					- each post in posts
-						include includes/postSnippet
+	-var selected = 'Blog';
+	
+block header
+	#nav-bg
+	
+block content
+	.container#blog
+		.row
+			section
+				h2
+					a(href=tagUrl(tag)) Les posts taggu&eacute;s avec #{tag}
+		.row
+			- each post in posts
+				include includes/postSnippet

@@ -1,14 +1,17 @@
 extends layout
+block nav
+	-var selected = 'Search';
+	
+block content
+	#nav-bg		
 
-block body
-	div.container
-		div.row
-			div.span2
-				h4 Login
-			div
-				form#login.form-inline(method='post',action='login')
-					input#login.span3(name='login', type='text', placeholder='Login', autocomplete='off')
-					input#password.span3(name='password', type='password')
-
-					button.btn.btn-embossed.btn-primary(type='submit') Login
-					
+	.container#login
+			.alert
+				form.form-inline(method='post',action='login', role='form')
+					.form-group
+						label.sr-only(for='login') Login
+						input.form-control(name='login', type='text', placeholder='Login', autocomplete='off')
+					.form-group
+						label.sr-only(for='password') Password
+						input.form-control(name='password', type='password')
+					button.btn.btn-default(type='submit') Login

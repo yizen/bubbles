@@ -699,7 +699,7 @@ module.exports = function(app){
 					copy.website = website.name;
 					var doc = ejs.Document('bubbles', 'wine', copy.id).source(copy).upsert(copy).doUpdate(function(data) {
 					}, function(error) {
-						console.error("Error at index "+JSON.stringify(error));
+						console.error("Error at index Wine"+JSON.stringify(error));
 					}
 					);
 				});
@@ -710,10 +710,19 @@ module.exports = function(app){
 			producers.forEach(function(producer, index) {
 				var doc = ejs.Document('bubbles', 'producer', producer.id).source(producer).upsert(producer).doUpdate(function(data) {
 					}, function(error) {
-						console.error("Error at index "+JSON.stringify(error));
+						console.error("Error at index Producer "+JSON.stringify(error));
 					}
 				);
-	
+   			});
+		});
+		
+		db.Winereference.findAll().success(function(wines) {
+			wines.forEach(function(wine, index) {
+				var doc = ejs.Document('bubbles', 'winereference', wine.id).source(wine).upsert(wine).doUpdate(function(data) {
+					}, function(error) {
+						console.error("Error at index Winereference"+JSON.stringify(error));
+					}
+				);	
    			});
 		});
 	});

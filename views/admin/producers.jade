@@ -1,42 +1,35 @@
 extends layout
 
-block body
-	div.container
-		div.row
-			div.span12
-				div.navbar
-					div.navbar-inner
-						div.container
-							a.brand Champagne
-							div#nav-collapse01.nav-collapse.collapse
-								ul.nav
-									li 
-										a(href='/admin/') Websites
-									li
-										a(href='/admin/wines/') Wines
-									li.active
-										a(href='/admin/producers/') Producers		
-									li
-										a(href='/admin/elasticsearch/') Elastic Search
-									li
-										a(href='/admin/clics/') Outbound		
-		div.row
-			div.span8
+block nav
+	-var selected = 'Producers';
+	
+block header
+	header
+		.container
+			.row.col-md-9
 				!= pagination
-			div.span4
-				form#search-form-producer
-					input#producerRef.span2.search-query.search-query-rounded(type='text')
-					&nbsp;
-					a.btn#search Search		
-		div.row
-			div.span12
-				table.table.table-bordered
+			.row
+				.col-md-3
+					.form-group
+						.input-group.input-group-hg.input-group-rounded
+							span.input-group-btn
+								button.btn(type='submit')
+									span.fui-search
+							input#producerRef.form-control(type='text', placeholder='Search')
+		
+	#nav-bg
+									
+block content
+	.container
+		.row
+			col-md-12
+				table.table.table-bordered.admin-table
 					thead
 						tr
 							th Id
 							th Name
 							th Image
-					tbdody
+					tbody
 						- each producer in producers
 							tr.info
 								td
@@ -77,6 +70,6 @@ block body
 																	td
 																		img.wine-image(src='#{wine.photo}')
 														
-		div.row
-			div.span12
+		.row
+			.col-md-12
 				!= pagination														

@@ -1,69 +1,54 @@
 extends layout
 
-block body
-	div.container
-		div.row
-			div.span12
-				div.navbar
-					div.navbar-inner
-						div.container
-							a.brand Champagne
-							div#nav-collapse01.nav-collapse.collapse
-								ul.nav
-									li 
-										a(href='/admin/') Websites
-									li.active
-										a(href='/admin/wines/') Wines
-									li
-										a(href='/admin/producers/') Producers		
-									li
-										a(href='/admin/elasticsearch/') Elastic Search
-									li
-										a(href='/admin/clics/') Outbound		
-		div.row
-			div.span12
-				table.table.table-bordered
-					thead
-						tr
-							th Id
-							th Website
-							th Name
-							th Producer
-							th Wine
-							th Size
-							th Options
-							th Color
-							th Image
-							th Active
-							th Reference
-					tbdody
-						- each wine in wines
-							tr(class="#{wine.reference>0 ? '' : 'info'}")
-								td
-									=wine.id
-								td	
-									a(href=wine.url, target='_blank') #{wine.website}
-								td
-									=wine.name
-								td
-									=wine.producer
-								td
-									=wine.wine
-								td
-									=wine.sizeText
-								td
-									=wine.options
-								td
-									=wine.color
-								td
-									img(src='#{wine.photo}')
-								td
-									if wine.active
-										span.fui-check-inverted
-								td
-										a(href='/admin/wine/'+wine.id) Edit
-										
-												
-		div.row
-			div.span12
-				!= pagination
+block nav
+	-var selected = 'Wines';
+	
+block header
+	header
+		.container
+			!= pagination
+	#nav-bg
+									
+block content
+	.container
+		table.table.table-bordered.admin-table
+			thead
+				tr
+					th Id
+					th Website
+					th Name
+					th Producer
+					th Wine
+					th Size
+					th Options
+					th Color
+					th Image
+					th Active
+					th Reference
+			tbody
+				- each wine in wines
+					tr(class="#{wine.reference>0 ? '' : 'info'}")
+						td
+							=wine.id
+						td	
+							a(href=wine.url, target='_blank') #{wine.website}
+						td
+							=wine.name
+						td
+							=wine.producer
+						td
+							=wine.wine
+						td
+							=wine.sizeText
+						td
+							=wine.options
+						td
+							=wine.color
+						td
+							img(src='#{wine.photo}')
+						td
+							if wine.active
+								span.fui-check-inverted
+						td
+								a(href='/admin/wine/'+wine.id) Edit
+		!= pagination

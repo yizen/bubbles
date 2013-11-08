@@ -1,30 +1,66 @@
 !!!
-html
+html(lang='fr')
+	-var menu = {'Websites': {url:'/admin/', text:'Listes des sites référencés'},'Cuvées': {url:'/admin/wines/', text:'Les cuvées référencées'}, 'Producteurs': {url:'/admin/producers/', text: 'Les producteurs et leurs cuvées'}, 'ElasticSearch': {url:'/admin/elasticsearch/', text:'Gestion du moteur elasticSearch'}, 'Outbound': {url:'/admin/clics/', text:'Les clics sortants'}};
+	block menu
+		-var selected = 'Websites';
 	head
 		meta(charset='utf8')
+		meta(name='viewport' content='width=device-width, initial-scale=1.0')
 		base(href='/')
-		title The Bulles Authority
+		title Admin
 		block css
 			link(rel='stylesheet', href='/bootstrap/css/bootstrap.css')
-			link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.css')		
 			link(rel='stylesheet', href='/css/flat-ui.css')
 			link(rel='stylesheet', href='/css/ui.slider.extras.css')
-			link(rel='stylesheet', href='/css/admin.css')
-		
+			link(rel='stylesheet', href='/css/app.css')
+	
+	body.admin
+		nav
+			div.container
+				#brand
+					h1 
+						a(href="/") Admin
+					h2 Back office d'administration
+				#spinner	
+				ul.hidden-xs
+					each val, key in menu
+						li
+							if selected === key
+								a.active(href=val.url, title=key)= key
+								div 
+									=val.text
+							else
+								a(href=val.url, title=key)= key
+								div 
+									=val.text
+		block header							
+		block content
 		block scripts
 			script(src='/js/ui/jquery-1.8.3.min.js')
 			script(src='/js/ui/jquery-ui-1.10.3.custom.min.js')
 			script(src='/js/ui/jquery.ui.touch-punch.min.js')
+			script(src='/js/ui/jquery.ui.selecttoslider.js')
+			
 			script(src='/js/ui/bootstrap.min.js')
 			script(src='/js/ui/bootstrap-select.js')
 			script(src='/js/ui/bootstrap-switch.js')
+			script(src='/js/ui/bootstrap-typeahead.js')
+
 			script(src='/js/ui/flatui-checkbox.js')
 			script(src='/js/ui/flatui-radio.js')
 			script(src='/js/ui/jquery.tagsinput.js')
 			script(src='/js/ui/jquery.placeholder.js')
-			script(src='/js/ui/jquery.stacktable.js')
-				
+			
+			script(src='/js/plugins/spin.min.js')
+			script(src='/js/plugins/jquery.spin.js')
+			
+			script(src='/js/presentation.js')
 			script(src='/js/admin.js')
-	
-	body
-		block body
+			
+			script.
+				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+				ga('create', 'UA-42238568-1', 'bulles.me');
+				ga('send', 'pageview');

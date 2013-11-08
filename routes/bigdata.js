@@ -36,9 +36,6 @@ module.exports = function(app){
 			res.render('bigdata', {bigdata: results} );
 
 		});
-		
-		
-	
 	});
 	
 	app.get('/bigdata/mostFrequentProducers/', function(req, res){

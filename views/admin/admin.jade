@@ -1,85 +1,60 @@
 extends layout
 
-block body
-	div.container
-		div.row
-			div.span12
-				div.navbar
-					div.navbar-inner
-						div.container
-							a.brand Champagne
-							div#nav-collapse01.nav-collapse.collapse
-								ul.nav
-									li.active 
-										a(href='/admin/') Websites
-									li
-										a(href='/admin/wines/') Wines
-									li
-										a(href='/admin/producers/') Producers	
-									li
-										a(href='/admin/elasticsearch/') Elastic Search
-									li
-										a(href='/admin/clics/') Outbound	
-		div.row
-			div.span12
-				div.iconbar
-					ul
-						li
-							a.btn#clearjobs.fui-trash  Clear all jobs		
-		div.row
-			div.span12
-				table.table.table-bordered
-					thead
-						tr
-							th Website
-							th Jobs
-							th Actions
-					tbdody
-						- each website in websites
-							tr
-								td	
-									=website.name
-								td	
-									table.table.table-striped.smallTable
-										thead
-											tr
-												th	Job Id
-												th	Type
-												th	Status
-												th 	Action
-										tbody
-										- each job in website.jobs
-											tr
-												td
-													a.btn.btn-mini(href='/admin/job/'+job.id) Job #{job.id}
-												td
-													=job.type 
-												td	
-													=job.status
-												td
-													if (job.status == "RUNNING")
-														a.btn.btn-mini.btn-warning.mlm(href='/admin/job/stop/'+job.id)
-															i(style='font-size:11px').fui-power
-													a.btn.btn-mini.btn-danger.mlm.confirm-delete(data-id=job.id)
-														i(style='font-size:11px').fui-trash
+block nav
+	-var selected = 'Websites';
 	
-								td
-									div.actions		
-										a.btn.btn-mini.btn-primary(href=website.refresh) Run Refresh
-										a.btn.btn-mini.btn-primary(href=website.crawl) Run Crawl
-									div.status
-										if (website.active == true)
-											input.switchStatus(type='checkbox', checked='checked', data-toggle='switch', data-website=website.id)
-										else
-											input.switchStatus(type='checkbox', data-toggle='switch', data-website=website.id)
+block header
+	header
+		.container
+			.iconbar
+				ul
+					li
+						a.btn#clearjobs.fui-trash  Clear all jobs
+	#nav-bg
+									
+block content
+	.container
+		table.table.table-bordered.admin-table
+			thead
+				tr
+					th Website
+					th Jobs
+					th Actions
+			tbody
+				- each website in websites
+					tr
+						td	
+							=website.name
+						td	
+							table.table.table-striped.smallTable
+								thead
+									tr
+										th	Job Id
+										th	Type
+										th	Status
+										th 	Action
+								tbody
+								- each job in website.jobs
+									tr
+										td
+											a.btn.btn-mini(href='/admin/job/'+job.id) Job #{job.id}
+										td
+											=job.type 
+										td	
+											=job.status
+										td
+											if (job.status == "RUNNING")
+												a.btn.btn-mini.btn-warning.mlm(href='/admin/job/stop/'+job.id)
+													i(style='font-size:11px').fui-power
+												a.btn.btn-mini.btn-warning.mlm(href='/admin/job/clear/'+job.id)
+													i(style='font-size:11px').fui-trash	
 
-					
-												
-	#modal-from-dom.modal.hide.fade.alert.alert-error
-		button.close.fui-cross(type='button', data-dismiss='alert')
-		h3 Attention: You are about to remove a complete Job.
-		p
-			| This action will permanently remove the
-			| selected Job and associated log.
-		a.btn.btn-danger.danger.btn-wide(href='/admin/job/clear/') Delete
-		a.btn.btn-wide(href='javascript:$(\'#modal-from-dom\').modal(\'hide\')') Cancel
+						td
+							div.actions		
+								a.btn.btn-mini.btn-primary(href=website.refresh) Run Refresh
+								a.btn.btn-mini.btn-primary(href=website.crawl) Run Crawl
+							div.status
+								if (website.active == true)
+									input.switchStatus(type='checkbox', checked='checked', data-toggle='switch', data-website=website.id)
+								else
+									input.switchStatus(type='checkbox', data-toggle='switch', data-website=website.id)
