@@ -181,6 +181,8 @@ module.exports = function(app){
 				return a.totalNoEuro-b.totalNoEuro;
 			});*/
 			
+			wines.resultsCount = hits.total;
+			
 			res.render('results', { wines : wines });
 		}
 	});	

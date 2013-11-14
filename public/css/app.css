@@ -165,14 +165,15 @@ ol.ui-slider-scale > li {
   margin-top: 10px;
 }
 /* Search results ---------------------------- */
-.wines {
-  margin: 0;
-  list-style: none;
+.resultsCount {
+  margin-top: 20px;
 }
-.wines li {
-  margin-bottom: 10px;
-  min-height: 400px;
-  position: relative;
+.wines {
+  margin-top: 20px;
+}
+.wine {
+  margin-bottom: 20px;
+  border: 1px solid gray;
 }
 .wine .euro {
   font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
@@ -257,59 +258,6 @@ span.brut {
   position: relative;
   top: -9px;
   left: 10px;
-}
-#refine h4 {
-  font-size: 18px;
-}
-#refine .row {
-  margin-top: 30px;
-}
-#refine .slider {
-  margin-top: 6px;
-}
-a.ui-slider-handle span.Slider_Value {
-  position: absolute;
-  top: 0px;
-  left: -2px;
-  display: none;
-}
-a.ui-slider-handle:hover span.Slider_Value {
-  display: block;
-}
-h5.options-name {
-  display: block;
-  font-size: 18px;
-}
-h5.options-below-slider {
-  margin-top: 70px;
-}
-.status {
-  margin-top: 5px;
-}
-.tooltip {
-  position: absolute;
-  top: 100px;
-  left: 100px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  border: 2px solid #000;
-  /* background: #222222; */
-
-  background: #fff;
-  opacity: .9;
-  /* color: #eeeeee; */
-
-  color: black;
-  padding: 10px;
-  width: 300px;
-  font-size: 12px;
-  z-index: 10;
-}
-.tooltip .title {
-  font-size: 13px;
-}
-.tooltip .name {
-  font-weight: bold;
 }
 /* blog ---------------------------- */
 #blog {
