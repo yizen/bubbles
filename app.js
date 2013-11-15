@@ -26,12 +26,13 @@ var refreshTask 	= later.setInterval(bubblescrawler.refreshAllWebsites, refreshS
 // Configuration
 app.configure(function(){	
 	 app.use(thumbs({
-		 "ttl": 92000
-		, "tmpCacheTTL": 86400
+		 "ttl": 604800
+		, "tmpCacheTTL": 604800
 		, "tmpDir": "./tmp/thumbnails"
 	    , "presets": {
 	        small: {
-	          width: 180
+	          width:180,
+	          height: 180
 	          , compression:.5
 	        }
 	        , medium: {

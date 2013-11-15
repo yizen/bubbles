@@ -10,7 +10,7 @@
 @import "lesshat";
 
 // Site specific colors
-@nav-bg: @brand-primary;
+@nav-bg: #131A1C;
 @nav-height: 130px;
 @search-padding: 30px;
 
@@ -202,106 +202,59 @@ ol.ui-slider-scale > li {
 }
 
 /* Search results ---------------------------- */
+
+@wine-padding-inside: 6px;
+@wine-border-color: #969696;
+	
 .resultsCount{
 	margin-top: 20px;
 }
 
-
 .wines {
 	margin-top: 20px;
+	border: 1px solid @wine-border-color;
 }
 
 .wine {
-	margin-bottom: 20px;
-	border: 1px solid gray;
-
-	.euro {
-		font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+	border-bottom: 1px solid @wine-border-color;
+	
+	.image,
+	.name,
+	.options,
+	.website {
+		padding: @wine-padding-inside;
 	}
 	
+	.image {
+		text-align: center;
+		background-color: white;
+		img {
+			height: 180px;
+		}
+	}
+	
+	.price {
+		width: 100%;
+		text-align: center;
+		position: absolute;
+		margin: 0 auto;
+		top: 50px;
+		font-size: 34px;
+		a {
+			font-weight: bold;
+			text-shadow: 0px 0px 15px #FFFEFE;
+			color: #393939;
+		}
+	}
+	
+	/* Search highlight */	
 	em {
 		font-style: normal;
-		background-color: #dfdfdf;
+		background-color: yellow;
 		padding-left: 4px;
 		padding-right: 4px;
 	}
-	
-	.wine-image {
-		height: 180px;
-		max-height: 180px;
-	}
-}
 
-.caption {
-	border-style: solid;
-	border-width: 1px;
-	border-color: #d9d9d9;
-	margin-bottom: 1.25em;
-	padding: 1.25em;
-	background: #f2f2f2;
-}
-.caption p {
-	line-height: 1;
-}
-.wine-name {
-	font-size: 1.125em;
-	font-weight: bold;
-}
-.wine-producer {
-	font-size: 1.125em;
-}
-.wine-size,
-.wine-options {
-	font-size: 1em;
-}
-.wine-total-price {
-	position: absolute;
-	top: 28%;
-	right: -14px;
-	width: 60px;
-	height: 60px;
-	line-height: 57px;
-	color: white;
-	text-align: center;
-	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.3);
-	text-indent: -1px;
-	letter-spacing: -1px;
-	background: #e54930;
-	border: 1px solid;
-	border-color: #b33323 #ab3123 #982b1f;
-	border-radius: 60px;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	/*
-	background-image: -webkit-linear-gradient(top, #f75a3b, #d63b29);
-	background-image: -moz-linear-gradient(top, #f75a3b, #d63b29);
-	background-image: -o-linear-gradient(top, #f75a3b, #d63b29);
-	background-image: linear-gradient(to bottom, #f75a3b, #d63b29);
-	-webkit-box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-	box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);*/
-
-}
-.wine-total-price:before {
-	content: '';
-	position: absolute;
-	top: 3px;
-	bottom: 3px;
-	left: 3px;
-	right: 3px;
-	border: 2px solid #f5f8fb;
-	border-radius: 60px;
-	/*
-	-webkit-box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px rgba(0, 0, 0, 0.25), 0 -1px 1px rgba(0, 0, 0, 0.25);
-	box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px rgba(0, 0, 0, 0.25), 0 -1px 1px rgba(0, 0, 0, 0.25);*/
-
-}
-span.brut {
-	font-size: 8px;
-	position: relative;
-	top: -9px;
-	left: 10px;
 }
 
 

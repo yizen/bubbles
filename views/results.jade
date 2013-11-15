@@ -5,26 +5,27 @@ div#results
 				!{wines.resultsCount} champagnes correspondent à votre recherche.
 			-else
 				Un seul champagne correspond à votre recherche.	
-		
+		.sortOrder.col-md-6
+			p
 	.row.wines
-	- each wine in wines
-		.row.wine
-			.col-lg-3
-				img.wine-image(src='#{wine.photo}')
-			.col-lg-3
-				p.wine-name
-					| !{wine.wine}
-				p.wine-producer
-					| !{wine.producer}
-				p.wine-size
-					| !{wine.size}
-				p.wine-price
-					| !{wine.euro}
-					span.brut TTC, hors frais de ports
-				p.wine-price-six
-					| !{wine.qtyFormatted}
-					span.brut TTC, !{wine.qty} bouteilles port compris	
-				p.wine-options
-					= wine.options
-				p.wine-site
-					a(href=wine.url, target='_blank') #{wine.website}
+		.col-md-12
+			- each wine in wines
+				.row.wine
+						.image.col-sm-3
+							img(src='#{wine.photo}')
+							.price
+								a(href=wine.url, target='_blank') !{wine.euro}
+						.name.col-sm-3
+							p.wine-name Cuvée :
+								| !{wine.wine}
+							p.wine-producer Producteur :
+								| !{wine.producer}
+						.options.col-sm-3
+							p.wine-size Taille :
+								| !{wine.size}
+							-if (wine.options != '')	
+								p.wine-options Options :
+									= wine.options	
+						.website.col-sm-3
+							p.wine-site
+								a(href=wine.url, target='_blank') #{wine.website}
