@@ -14,7 +14,7 @@ nav {
   width: 100%;
   margin: 0 auto;
   top: 0;
-  z-index: 3;
+  z-index: 110;
 }
 nav ul {
   padding: 0;
@@ -74,7 +74,7 @@ nav #brand h2 {
   height: 130px;
   width: 100%;
   top: 0;
-  z-index: 1;
+  z-index: 100;
 }
 /* Header ------------------------------- */
 header {
@@ -181,7 +181,10 @@ ol.ui-slider-scale > li {
 }
 .wine {
   border-bottom: 1px solid #969696;
+  position: relative;
   /* Search highlight */
+  /* Options ribbon */
+
 }
 .wine .image,
 .wine .name,
@@ -214,6 +217,36 @@ ol.ui-slider-scale > li {
   background-color: yellow;
   padding-left: 4px;
   padding-right: 4px;
+}
+.wine .ribbon {
+  width: 140px;
+  height: 140px;
+  overflow: hidden;
+  position: absolute;
+  z-index: 2;
+}
+.wine .ribbon > div {
+  font: bold 15px sans-serif;
+  color: #5f0812;
+  text-align: center;
+  text-shadow: rgba(255, 255, 255, 0.15) 0 1px 0;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  position: relative;
+  padding: 7px 0;
+  left: -40px;
+  top: 35px;
+  width: 180px;
+  background-color: #bd0f23;
+  background-image: -webkit-gradient(linear, 0% top, 100% top, from(#f04256), to(#bd0f23));
+  background-image: -webkit-linear-gradient(left, color-stop(#f04256 0%), color-stop(#bd0f23 100%));
+  background-image: -moz-linear-gradient(left, #f04256 0%, #bd0f23 100%);
+  background-image: linear-gradient(to right, #f04256 0%, #bd0f23 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff04256', endColorstr='#ffbd0f23', GradientType=1);
 }
 /* blog ---------------------------- */
 #blog {

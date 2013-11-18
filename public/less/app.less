@@ -28,7 +28,7 @@ nav {
 	width: 100%;
 	margin: 0 auto;
 	top: 0;
-	z-index: 3;
+	z-index: 110;
 	
 	ul {
 		padding: 0;
@@ -100,7 +100,7 @@ nav {
 	height: @nav-height;
 	width: 100%;
 	top: 0;
-	z-index: 1;
+	z-index: 100;
 }
 
 /* Header ------------------------------- */
@@ -225,7 +225,8 @@ ol.ui-slider-scale > li {
 
 .wine {
 	border-bottom: 1px solid @wine-border-color;
-	
+	  position: relative;
+
 	.image,
 	.name,
 	.options,
@@ -262,7 +263,32 @@ ol.ui-slider-scale > li {
 		padding-left: 4px;
 		padding-right: 4px;
 	}
+	
+	/* Options ribbon */
+	@ribbon: #bd0f23;
 
+	.ribbon {
+		width: 140px;
+		height: 140px;
+		overflow: hidden;
+		position: absolute;
+		z-index: 2;
+	}
+	
+	.ribbon > div {
+		font: bold 15px sans-serif;
+		color: darken(@ribbon, 20%);
+		text-align: center;
+		text-shadow: rgba(255,255,255,.15) 0 1px 0;
+		.rotate(-45deg);
+		position: relative;
+		padding: 7px 0;
+		left: -40px;
+		top: 35px;
+		width: 180px;
+		background-color: @ribbon;
+		#gradient.horizontal(lighten(@ribbon, 20%), @ribbon);
+	}
 }
 
 

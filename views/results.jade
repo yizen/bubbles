@@ -11,21 +11,25 @@ div#results
 		.col-md-12
 			- each wine in wines
 				.row.wine
-						.image.col-sm-3
-							img(src='#{wine.photo}')
-							.price
-								a(href=wine.url, target='_blank') !{wine.euro}
-						.name.col-sm-3
-							p.wine-name Cuvée :
-								| !{wine.wine}
-							p.wine-producer Producteur :
-								| !{wine.producer}
-						.options.col-sm-3
-							p.wine-size Taille :
-								| !{wine.size}
-							-if (wine.options != '')	
-								p.wine-options Options :
-									= wine.options	
-						.website.col-sm-3
-							p.wine-site
-								a.btn.btn-primary(href=wine.url, target='_blank', role='button') #{wine.website}
+					-if (wine.options != '')	
+								.ribbon
+									div
+										= wine.options	
+					figure.image.col-sm-3
+						
+						img(src='#{wine.photo}')
+						
+						.price
+							a(href=wine.url, target='_blank') !{wine.euro}
+							
+					.name.col-sm-3
+						p.wine-name Cuvée :
+							| !{wine.wine}
+						p.wine-producer Producteur :
+							| !{wine.producer}
+					.options.col-sm-3
+						p.wine-size Taille :
+							| !{wine.size}
+					.website.col-sm-3
+						p.wine-site
+							a.btn.btn-primary(href=wine.url, target='_blank', role='button') #{wine.website}
