@@ -105,15 +105,15 @@ nav {
 
 /* Header ------------------------------- */
 header {
-		position: relative;
-		background-color: @nav-bg;
-		padding: @nav-height 0px (@nav-height * 0.66) 0px;
-		
-		.admin & {
-					padding: @nav-height 0px 10px 0px;
-		}
-		
-		z-index: 2;
+	position: relative;
+	background-color: @nav-bg;
+	padding: @nav-height 0px (@nav-height * 0.66) 0px;
+	
+	.admin & {
+		padding: @nav-height 0px 10px 0px;
+	}
+	
+	z-index: 105;
 }
 
 #header-canvas {
@@ -141,7 +141,7 @@ header {
 		border-radius: 2px;
 		background-color: ##FEFEFE;
 		#gradient.vertical( #FEFEFE; #EEEEEE; 0%; 100%);
-		border: 1px solid #D8D8D8;
+		border: 1px solid darken(@nav-bg, 10%);
 	}
 	
 	.search-fulltext {
@@ -187,7 +187,7 @@ ol.ui-slider-scale > li {
 
 #slider_tooltip {
 	margin-top: 20px;
-		width: 140px;
+	width: 140px;
 }
 
 .ui-slider span.ui-slider-tic {
@@ -225,7 +225,7 @@ ol.ui-slider-scale > li {
 
 .wine {
 	border-bottom: 1px solid @wine-border-color;
-	  position: relative;
+	position: relative;
 
 	.image,
 	.name,

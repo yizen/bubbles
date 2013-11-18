@@ -12,20 +12,18 @@ div#results
 			- each wine in wines
 				.row.wine
 					-if (wine.options != '')	
-								.ribbon
-									div
-										= wine.options	
+						.ribbon
+							div
+								= wine.options	
 					figure.image.col-sm-3
-						
 						img(src='#{wine.photo}')
-						
 						.price
 							a(href=wine.url, target='_blank') !{wine.euro}
 							
 					.name.col-sm-3
 						p.wine-name Cuvée :
 							| !{wine.wine}
-						p.wine-producer Producteur :
+						p.wine-producer Maison :
 							| !{wine.producer}
 					.options.col-sm-3
 						p.wine-size Taille :

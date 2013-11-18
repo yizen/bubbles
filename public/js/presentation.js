@@ -13,7 +13,6 @@
 		// Placeholders for input/textarea
 		$("input, textarea").placeholder();
 		
-		
 		//
 		// Header scroll change opacity ------------------------------------
 		//
