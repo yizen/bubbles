@@ -22,3 +22,4 @@ node_modules
 /tmp/
 /public/less/modules/.DS_Store
 /posts/base.md
+/setup.txt
