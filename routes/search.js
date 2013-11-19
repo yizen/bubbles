@@ -145,7 +145,8 @@ module.exports = function(app){
 	
 				wine.website = item._source.website;						
 				wine.options = _.capitalize(item._source.options);
-
+				
+				wine.color   = _.capitalize(item._source.color);
 				wine.url = '/out/'+item._source.id;
 				
 				if (item._source.photo) {
