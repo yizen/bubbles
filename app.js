@@ -1,4 +1,4 @@
-require('newrelic');
+
 
 var express 		= require('express'),
   	async 			= require('async'),
@@ -11,6 +11,9 @@ var express 		= require('express'),
   	Poet 			= require('poet');
 
 var app = module.exports = express();
+
+if (app.settings.env != 'development')require('newrelic');
+
 var port = 3000;
 
 //Init data model with Sequelize
