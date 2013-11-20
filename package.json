@@ -1,7 +1,7 @@
 {
   "name": "bulles.me",
   "description": "Bulles.me web application",
-  "version": "0.0.1",
+  "version": "0.3",
   "private": true,
   "dependencies": {
     "express": "",
@@ -24,6 +24,7 @@
     "winston" : "",
     "connect-thumbs" : "",
     "later" : "",
-    "poet" : ""
+    "poet" : "", 
+    "newrelic" : ""
   }
 }

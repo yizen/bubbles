@@ -1,3 +1,5 @@
+require('newrelic');
+
 var express 		= require('express'),
   	async 			= require('async'),
   	expressWinston 	= require('express-winston'),
@@ -7,7 +9,7 @@ var express 		= require('express'),
   	thumbs			= require('connect-thumbs'),
   	later			= require('later'),
   	Poet 			= require('poet');
-  	
+
 var app = module.exports = express();
 var port = 3000;
 
