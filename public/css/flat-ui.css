@@ -1784,10 +1784,8 @@ fieldset[disabled] .btn-link:focus {
   .navbar .nav-collapse:after {
     content: " ";
     /* 1 */
-  
     display: table;
     /* 2 */
-  
   }
   .navbar .nav-collapse:after {
     clear: both;
@@ -1823,10 +1821,8 @@ fieldset[disabled] .btn-link:focus {
 .select.select-block:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .select.select-block:after {
   clear: both;
@@ -3835,10 +3831,8 @@ fieldset[disabled] .input-group .input-group-btn:first-child .btn-default.active
 .dropdown-menu li > a:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .dropdown-menu li > a:after {
   clear: both;
@@ -4304,10 +4298,8 @@ a.list-group-item.active > .badge,
 .bottom-menu .bottom-icons:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .bottom-menu .bottom-links:after,
 .bottom-menu .bottom-icons:after {
@@ -4685,10 +4677,8 @@ a.list-group-item.active > .badge,
 .iconbar:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .iconbar:after {
   clear: both;

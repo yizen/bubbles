@@ -119,22 +119,18 @@ header {
 #searchbox .search-fulltext {
   /* Center box*/
   /* Internet Explorer 10 */
-
   display: -ms-flexbox;
   -ms-flex-pack: center;
   -ms-flex-align: center;
   /* Firefox */
-
   display: -moz-box;
   -moz-box-pack: center;
   -moz-box-align: center;
   /* Safari, Opera, and Chrome */
-
   display: -webkit-box;
   -webkit-box-pack: center;
   -webkit-box-align: center;
   /* W3C */
-
   display: box;
   box-pack: center;
   box-align: center;
@@ -184,7 +180,6 @@ ol.ui-slider-scale > li {
   position: relative;
   /* Search highlight */
   /* Options ribbon */
-
 }
 .wine .image,
 .wine .name,

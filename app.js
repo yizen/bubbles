@@ -88,7 +88,8 @@ app.configure(function(){
 	}
     
     app.use(express.favicon());
-	app.use(express.bodyParser());
+	app.use(express.json());
+	app.use(express.urlencoded());
 	app.use(express.cookieParser( 'Gpe3YY88WGtxzizVh' ));
 	app.use(express.session({ secret: 'LujfScBVmsD29S' }));
 	app.use(express.methodOverride());	
