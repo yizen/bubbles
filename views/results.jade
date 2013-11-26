@@ -44,5 +44,7 @@ div#results
 								li
 									span.other-price !{otherWine.euro}
 									span.other-website
-										a.btn.other-website(href=otherWine.url, target='_blank', role='button') #{otherWine.website}
-									span.other-options #{otherWine.options}	
+										a.btn.other-website(href=otherWine.url, target='_blank', role='button') #{otherWine.website}&nbsp;
+											i.fui-export
+									-if (otherWine.options && otherWine.options != '')	
+										span.other-options #{otherWine.options}	

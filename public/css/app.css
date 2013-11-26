@@ -276,8 +276,21 @@ ol.ui-slider-scale > li {
 .wine .other-wines span.other-price {
   font-size: 15px;
 }
+.wine .other-wines span.other-options {
+  font-size: 15px;
+  border-radius: 15px;
+  background-color: #dfdfdf;
+  padding: 6px;
+}
 .wine .other-wines a.other-website {
   line-height: 1;
+}
+.wine .other-wines a.other-website i {
+  color: #ccc;
+}
+.wine .other-wines a.other-website:hover {
+  color: #333;
+  text-decoration: underline;
 }
 /* blog ---------------------------- */
 #blog {
