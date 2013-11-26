@@ -207,9 +207,18 @@ ol.ui-slider-scale > li {
   color: white;
   text-shadow: black 0.1em 0.1em 0.2em;
 }
+.wine .target-site .btn-target-site {
+  border-radius: 2px;
+  color: #20182e;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.wine .target-site .btn-target-site:hover {
+  background-color: #20182e;
+  color: #fff;
+}
 .wine em {
   font-style: normal;
-  background-color: yellow;
+  background-color: rgba(255, 255, 0, 0.2);
   padding-left: 4px;
   padding-right: 4px;
 }
@@ -222,7 +231,7 @@ ol.ui-slider-scale > li {
 }
 .wine .ribbon > div {
   font: bold 15px sans-serif;
-  color: #5f0812;
+  color: #ec4224;
   text-align: center;
   text-shadow: rgba(255, 255, 255, 0.15) 0 1px 0;
   -webkit-transform: rotate(-45deg);
@@ -235,13 +244,40 @@ ol.ui-slider-scale > li {
   left: -40px;
   top: 35px;
   width: 180px;
-  background-color: #bd0f23;
-  background-image: -webkit-gradient(linear, 0% top, 100% top, from(#f04256), to(#bd0f23));
-  background-image: -webkit-linear-gradient(left, color-stop(#f04256 0%), color-stop(#bd0f23 100%));
-  background-image: -moz-linear-gradient(left, #f04256 0%, #bd0f23 100%);
-  background-image: linear-gradient(to right, #f04256 0%, #bd0f23 100%);
+  background-color: #f49382;
+  background-image: -webkit-gradient(linear, 0% top, 100% top, from(#fce4e0), to(#f49382));
+  background-image: -webkit-linear-gradient(left, color-stop(#fce4e0 0%), color-stop(#f49382 100%));
+  background-image: -moz-linear-gradient(left, #fce4e0 0%, #f49382 100%);
+  background-image: linear-gradient(to right, #fce4e0 0%, #f49382 100%);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff04256', endColorstr='#ffbd0f23', GradientType=1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffce4e0', endColorstr='#fff49382', GradientType=1);
+}
+.wine .best-wine {
+  margin-top: 20px;
+}
+.wine .best-wine li {
+  list-style-type: none;
+  text-align: center;
+}
+.wine .best-wine li.wine-producer {
+  font-weight: bold;
+  font-size: 40px;
+}
+.wine .best-wine li.wine-site {
+  padding-top: 10px;
+  font-size: 14px;
+}
+.wine .other-wines .other-wines-header {
+  width: 100%;
+  background-color: #ddd;
+  color: white;
+  padding: 6px;
+}
+.wine .other-wines span.other-price {
+  font-size: 15px;
+}
+.wine .other-wines a.other-website {
+  line-height: 1;
 }
 /* blog ---------------------------- */
 #blog {

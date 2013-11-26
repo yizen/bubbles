@@ -79,7 +79,7 @@ app.configure(function(){
     */
     
     function requireLogin(req, res, next) {
-		if (req.session.loggedIn) {
+		if (req.session.loggedIn || (app.settings.env == 'development')) {
 			next(); // allow the next route to run
 		} else {
 			// require the user to log in

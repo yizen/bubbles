@@ -256,16 +256,30 @@ ol.ui-slider-scale > li {
 		}
 	}
 	
+	.target-site {
+		@target-site-color: #20182e;
+		
+			.btn-target-site {
+				border-radius: 2px;
+				color: @target-site-color;
+				background-color: rgba(255,255,255,0.7);
+			}
+			.btn-target-site:hover {
+				background-color: @target-site-color;
+				color: #fff;
+			}
+	}
+	
 	/* Search highlight */	
 	em {
 		font-style: normal;
-		background-color: yellow;
+		background-color: rgba(255,255,0,0.2);
 		padding-left: 4px;
 		padding-right: 4px;
 	}
 	
 	/* Options ribbon */
-	@ribbon: #bd0f23;
+	@ribbon: #f49382;
 
 	.ribbon {
 		width: 140px;
@@ -288,6 +302,42 @@ ol.ui-slider-scale > li {
 		width: 180px;
 		background-color: @ribbon;
 		#gradient.horizontal(lighten(@ribbon, 20%), @ribbon);
+	}
+	
+	.best-wine {
+		margin-top:20px;
+		
+		li {
+			list-style-type: none;
+			text-align: center;
+		}
+			
+		li.wine-producer {
+			font-weight: bold;
+			font-size: 40px;
+		}
+		
+		li.wine-site {
+			padding-top: 10px;
+			font-size: 14px;
+		}	
+	}
+	
+	.other-wines {
+		.other-wines-header {
+			width: 100%;
+			background-color: #ddd;
+			color: white;
+			padding: 6px;
+		}
+		
+		span.other-price {
+			font-size: 15px;
+		}
+		
+		a.other-website {
+			line-height: 1;
+		}
 	}
 }
 

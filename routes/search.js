@@ -37,10 +37,10 @@ module.exports = function(app){
 		var wines = new Array();
 		
 		var index 	= 'bubbles';
-		var type 	= 'wine';
+		var type 	= 'winereference';
 		var request 	= ejs.Request({indices: index, types: type});
 		
-		var highlight 	= ejs.Highlight(['producer', 'wine']);
+		var highlight 	= ejs.Highlight(['producer', 'name']);
 		var sort 		= ejs.Sort('price');
 		
 		var filter 	 	= ejs.AndFilter([
@@ -51,8 +51,7 @@ module.exports = function(app){
 										]),
 										
 										ejs.AndFilter([
-											ejs.TermsFilter('color', colors),
-											ejs.TermFilter('active', true)
+											ejs.TermsFilter('color', colors)
 										])
 
 										]);
@@ -67,27 +66,21 @@ module.exports = function(app){
 			
 		var query2 = new Object;
 		if ( q!= '')
-			query2  = ejs.MatchQuery('wine', q.toString()).operator('and');
+			query2  = ejs.MatchQuery('name', q.toString()).operator('and');
 		else
 			query2	= ejs.MatchAllQuery();
 			
-		var query3 = new Object;
-		if ( q!= '')
-			query3  = ejs.FuzzyQuery('name', q.toString()).minSimilarity(0.7);
-		else
-			query3	= ejs.MatchAllQuery();
 			
 		var hits = null;		
 		
 		request.query(query1).filter(filter).sort(sort).highlight(highlight).size(100).doSearch(function(results){
 			if (!results.hits) {
 				console.log('Error executing search');
-				console.log(request.toString());
 				return;
 			}
 			
 			hits = results.hits;
-			
+
 			if (hits && hits.total > 0) {
 				renderSearchResults(hits);	
 			} else {
@@ -104,21 +97,7 @@ module.exports = function(app){
 					if (hits && hits.total > 0) {
 						renderSearchResults(hits);	
 					} else {
-						request.query(query3).filter(filter).highlight(highlight).size(100).doSearch(function(results){
-					
-							if (!results.hits) {
-								console.log('Error executing search');
-								return;
-							}
-							
-							hits = results.hits;
-																			
-							if (hits && hits.total > 0) {
-								renderSearchResults(hits);	
-							} else {
-								res.render('noresults' );
-							}
-						});
+						res.render('noresults' );
 					}
 				});
 			}
@@ -127,60 +106,72 @@ module.exports = function(app){
 		var renderSearchResults = function (hits) {
 			hits.hits.forEach(function(item) { 
 				var wine = new Object;
-				wine.wine = item._source.wine;
-	
+				
+				/* handle highlighting if present */
 				if (item.highlight && item.highlight.producer) {
 					wine.producer = item.highlight.producer;
 				} else {
 					wine.producer = item._source.producer;
 				}
 				
-				if (item.highlight && item.highlight.wine) {
-					wine.wine = item.highlight.wine;
+				if (item.highlight && item.highlight.name) {
+					wine.name = item.highlight.name;
 				} else {
-					wine.wine = item._source.wine;
+					wine.name = item._source.name;
 				}
 				
-				wine.size =  _.capitalize(sizes.sizeNumToText(item._source.size));
-	
-				wine.website = item._source.website;						
-				wine.options = _.capitalize(item._source.options);
-				
-				wine.color   = _.capitalize(item._source.color);
-				wine.url = '/out/'+item._source.id;
-				
-				if (item._source.photo) {
-					//wine.photo = '/photos/'+item._source.photo;
-					var photo = '/photos/'+item._source.photo;
-					var fullURL = req.protocol + "://" + req.get('host') + photo;
+				wine.size =  _.capitalize(sizes.sizeNumToText(item._source.size));				
+				wine.color= _.capitalize(item._source.color);
 
-					var base64photo = new Buffer(fullURL).toString('base64');
-					wine.photo = '/thumbs/small/images/'+base64photo+".jpg";
-				} else {
-					wine.photo = '/images/no-image.png';
-				}
-				
 				wine.qty = qty;
-				
-				if (item._source.price) {
-					wine.euro = formatEuro(item._source.price);
+
+				if (item._source.bestWinePrice) {
+					wine.euro = formatEuro(item._source.bestWinePrice);
 					/*wine.totalNoEuro = item._source.price + transportationFees.transportationFees(qty, item._source.website);
 					wine.total = formatEuro(wine.totalNoEuro);*/
-					wine.qtyNoEuro = (qty*item._source.price) + transportationFees.transportationFees(qty, item._source.website, (qty*item._source.price));
+					wine.qtyNoEuro = (qty*item._source.bestWinePrice) + transportationFees.transportationFees(qty, item._source.bestWineWebsiteName, (qty*item._source.bestWinePrice));
 					wine.qtyFormatted = formatEuro(wine.qtyNoEuro);
 					
+					wine.url = '/out/'+item._source.bestWineId;
+					wine.website = item._source.bestWineWebsiteName;
 				} else {
-					wine.totalNoEuro = 100000; //push it to the end of the result list;
-					wine.euro = "Prix sur demande";
-					wine.qtyFormatted = "-";
+					wine.euro = "";
+					wine.qtyFormatted = "";
 				}
 				
+								
+				wine.photoFrom = 0;
+				wine.photo = '/images/no-image.png';
+				
+				/* Loop through all wines */
+				var otherWines = new Array();
+				
+				for (var key in item._source.wines) {
+					var subwine = item._source.wines[key];
+					
+					//TODO : better selection of photo based on websites quality.
+					if (wine.photoFrom == 0 && subwine.photo) {
+						wine.photoFrom = subwine.websiteId;
+						wine.photo = getPhotoPath(subwine.photo, req);
+					}
+					
+					//Skip the best priced wine.
+					if (item._source.bestWineId != subwine.id) {
+						subwine.photo = getPhotoPath(subwine.photo, req);
+						subwine.euro = formatEuro(subwine.price);
+						subwine.url = '/out/'+subwine.id;
+						otherWines.push(subwine);
+					}
+				}
+				
+				otherWines.sort(function(a, b){
+					return a.price-b.price;
+				});
+				
+				wine.otherWines = otherWines;
+													
 				wines.push(wine);	
 			});
-			
-			/*wines.sort(function(a, b){
-				return a.totalNoEuro-b.totalNoEuro;
-			});*/
 			
 			wines.resultsCount = hits.total;
 			
@@ -190,5 +181,14 @@ module.exports = function(app){
 
 	var formatEuro = function  (number) {
 		return _.numberFormat(number, 2, ',', ' ')+' &euro;'; 
+	}
+	
+	var getPhotoPath = function (photoSource, req) {
+		var photo = '/photos/'+photoSource;
+		var fullURL = req.protocol + "://" + req.get('host') + photo;
+
+		var base64photo = new Buffer(fullURL).toString('base64');
+		
+		return('/thumbs/small/images/'+base64photo+".jpg");
 	}
 };
