@@ -16,26 +16,30 @@ html(lang='fr')
 	
 	include seo
 	body
-		nav
-			div.container
-				#brand
-					h1 
-						a(href="/") la cote des bulles
-					h2 Le comparateur indépendant des prix du champagne
-				#spinner	
-				ul.hidden-xs
-					each val, key in menu
-						li
-							if selected === key
-								a.active(href=val.url, title=key)= key
-								div 
-									=val.text
-							else
-								a(href=val.url, title=key)= key
-								div 
-									=val.text
-		block header							
-		block content
+		#wrap
+			nav
+				.container
+					#brand
+						h1 
+							a(href="/") la cote des bulles
+						h2 Le comparateur indépendant des prix du champagne
+					#spinner	
+					ul.hidden-xs
+						each val, key in menu
+							li
+								if selected === key
+									a.active(href=val.url, title=key)= key
+									div 
+										=val.text
+								else
+									a(href=val.url, title=key)= key
+									div 
+										=val.text
+			block header							
+			block content
+		#footer
+			include footer
+
 		block scripts
 			script(src='/js/ui/jquery-1.8.3.min.js')
 			script(src='/js/ui/jquery-ui-1.10.3.custom.min.js')

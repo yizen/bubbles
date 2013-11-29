@@ -33,7 +33,8 @@ div#results
 								| !{wine.size}	
 							li.wine-site
 								| Au meilleur prix chez&nbsp;
-								strong #{wine.website}
+								strong 
+									a(href=wine.url, target='_blank') #{wine.website}
 									
 					.other-wines.col-sm-5
 						-if (wine.otherWines.length >0)

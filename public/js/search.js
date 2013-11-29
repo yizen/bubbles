@@ -30,7 +30,7 @@
 				$('#bottles').html("bouteille de"); 
 			} else {
 				$('#bottles').html("bouteilles de"); 
-			}		  
+			}			
 		});
 
 		//
@@ -64,13 +64,13 @@
 			values: [ 10, 300 ],
 			slide: function( e, ui ) {
 				tooltip($(this),ui);					
-			  },			  
-			  create:function(e,ui){
+				 },				
+				 create:function(e,ui){
 				tooltip($(this),ui);					
 			 },
-			  stop:function(e,ui) {
+				 stop:function(e,ui) {
 				  launchSearch(); 
-			  }
+				 }
 		});
 	
 		
@@ -108,7 +108,7 @@
 		//
 		
 		//setup before functions
-		var typingTimer;				  //timer identifier
+		var typingTimer;					//timer identifier
 		var doneTypingInterval = 500;	 //time in ms
 		
 		//on keyup, start the countdown
@@ -118,7 +118,7 @@
 		
 		//on keydown, clear the countdown 
 		$('#text').keydown(function(){
-			  clearTimeout(typingTimer);
+				 clearTimeout(typingTimer);
 		});
 		
 		//user is "finished typing," launch search
@@ -128,6 +128,10 @@
 		}
 		
 		var launchSearch = function(startup) {
+			$('header').removeClass('hidden-xs');
+			$('header').hide();
+			$("html, body").animate({ scrollTop: 0 }, 500);
+			$('#searchbox').css({marginTop: "120px"});
 			//launch spinner
 			$('#spinner').spin();
 			
@@ -153,10 +157,26 @@
 		//
 		// Inits----------------------
 		//
+		var getQuery = getURLParameter('q');
 		
-		$('#text').focus();
+		if (getQuery && getQuery != '') {
+			$('#text').val(getQuery);
+			launchSearch(false);
+		}
 		
-		launchSearch(true);	
+		//Check if query is set in get variable
+		$('#text').focus();	
+		
+		function getURLParameter(sParam) {
+			var sPageURL = window.location.search.substring(1);
+			var sURLVariables = sPageURL.split('&');
+			for (var i = 0; i < sURLVariables.length; i++)  {
+				var sParameterName = sURLVariables[i].split('=');
+				if (sParameterName[0] == sParam) {
+					return decodeURIComponent(sParameterName[1]);
+				}
+			}
+		}
 
 	});
 })(jQuery);

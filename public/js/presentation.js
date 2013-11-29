@@ -16,7 +16,8 @@
 		//
 		// Header scroll change opacity ------------------------------------
 		//
-		var divs = $('header');
+		/*
+var divs = $('header');
 		var range = 130;
 		$(window).on('scroll', function() {
 			var st = $(this).scrollTop();
@@ -29,5 +30,6 @@
 				});
 			});
 		});
+*/
 	});
 })(jQuery);

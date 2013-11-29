@@ -1,60 +1,64 @@
 extends layout
 
-block nav
-	-var selected = 'Search';
-
 block header
-	header#searchbox
+	header.hidden-xs
+		#intro
+			p Le comparateur indépendant des prix du champagne.
+
 		canvas#header-canvas
 			//Browser not supported.
-		.container
-			.row
-				.col-md-3.searchitem.search-fulltext
-					input#text.form-control.input-hg(type='text', placeholder='maison, cuvée', autocomplete='off')
-				.col-md-3.hidden-xs
-					.searchitem 
-						#price-range.slider
-				.col-md-3.hidden-xs
-					.searchitem 	
-						fieldset.slider
-							select#minimumSize(name='minimumSize')
-								option(value='0.5') Demi-bouteille
-								option(value='1', selected='selected') Bouteille
-								option(value='2') Magnum
-								option(value='400') Jeroboam et plus
-							select#maximumSize(name='maximumSize')
-								option(value='0.5') Demi-bouteille
-								option(value='1') Bouteille
-								option(value='2') Magnum
-								option(value='400', selected='selected') Jeroboam et plus		
-				.col-md-3.hidden-xs
-					.searchitem 
-							label.radio#whiteAndPink
-								input(type='radio', name='optionsRadios', value='whiteAndPink', data-toggle='radio', checked='')
-								| Blancs et rosés
-							label.radio#white
-								input(type='radio', name='optionsRadios', value='white', data-toggle='radio')
-								| Uniquement blancs
-							label.radio#pink
-								input(type='radio', name='optionsRadios', value='pink', data-toggle='radio')
-								| Uniquement rosés
-				//
-					label Nombre de bouteilles
-					.control-group
-						input#qty.spinner.form-control(type="text",value="6")					
-	#nav-bg		
+							
+	#nav-bg	
 	
+block nav
+	-var selected = 'Search';		
+
 block content
+	.container#searchbox
+		.row
+			.col-md-3.searchitem.search-fulltext
+				input#text.form-control.input-hg(type='text', placeholder='maison, cuvée', autocomplete='off')
+			.col-md-3.hidden-xs
+				.searchitem 
+					#price-range.slider
+			.col-md-3.hidden-xs
+				.searchitem 	
+					fieldset.slider
+						select#minimumSize(name='minimumSize')
+							option(value='0.5') Demi-bouteille
+							option(value='1', selected='selected') Bouteille
+							option(value='2') Magnum
+							option(value='400') Jeroboam et plus
+						select#maximumSize(name='maximumSize')
+							option(value='0.5') Demi-bouteille
+							option(value='1') Bouteille
+							option(value='2') Magnum
+							option(value='400', selected='selected') Jeroboam et plus		
+			.col-md-3.hidden-xs
+				.searchitem 
+						label.radio#whiteAndPink
+							input(type='radio', name='optionsRadios', value='whiteAndPink', data-toggle='radio', checked='')
+							| Blancs et rosés
+						label.radio#white
+							input(type='radio', name='optionsRadios', value='white', data-toggle='radio')
+							| Uniquement blancs
+						label.radio#pink
+							input(type='radio', name='optionsRadios', value='pink', data-toggle='radio')
+							| Uniquement rosés
+			//
+				label Nombre de bouteilles
+				.control-group
+					input#qty.spinner.form-control(type="text",value="6")		
 	.container					
 		#results
-							
+										
 block append scripts
 	script(src='/js/search.js')
 	script(src='/js/paper-full.min.js')
 	
 	script(type='text/paperscript',canvas='header-canvas').
 		// The amount of symbol we want to place;
-		var count = 150;
+		var count = 100;
 	
 		project.currentStyle = {
 			fillColor: 'white'
@@ -73,7 +77,7 @@ block append scripts
 	
 		var vector = new Point({
 			angle: -90,
-			length: 60
+			length: 20
 		});
 	
 		var mouseVector = vector.clone();

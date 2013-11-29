@@ -15,6 +15,8 @@ module.exports = function(app){
 		//Connect to Elasticsearch
 		ejs.client = nc.NodeClient('localhost', '9200');
 		  
+		var maxResults = 35; 
+		  
 		var q 		= req.query.q;
 		var qty 	= req.query.qty || 1;
 
@@ -73,7 +75,7 @@ module.exports = function(app){
 			
 		var hits = null;		
 		
-		request.query(query1).filter(filter).sort(sort).highlight(highlight).size(100).doSearch(function(results){
+		request.query(query1).filter(filter).sort(sort).highlight(highlight).size(maxResults).doSearch(function(results){
 			if (!results.hits) {
 				console.log('Error executing search');
 				return;
@@ -85,7 +87,7 @@ module.exports = function(app){
 				renderSearchResults(hits);	
 			} else {
 			
-				request.query(query2).filter(filter).highlight(highlight).size(100).doSearch(function(results){
+				request.query(query2).filter(filter).highlight(highlight).size(maxResults).doSearch(function(results){
 			
 					if (!results.hits) {
 						console.log('Error executing search');
