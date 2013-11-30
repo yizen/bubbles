@@ -117,6 +117,11 @@ header {
   padding-top: 180px;
 }
 /* Search box ---------------------------- */
+@media (max-width: 767px) {
+  #searchbox {
+    margin-top: 120px;
+  }
+}
 #searchbox {
   padding: 30px;
 }

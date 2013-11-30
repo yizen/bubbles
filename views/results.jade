@@ -23,7 +23,7 @@ div#results
 							a.btn.btn-target-site(href=wine.url, target='_blank', role='button')
 								|Voir l'offre&nbsp;
 								i.fui-export
-					.best-wine.col-sm-4
+					.best-wine.col-md-4.hidden-xs
 						ul
 							li.wine-producer
 								| !{wine.producer}
@@ -36,7 +36,7 @@ div#results
 								strong 
 									a(href=wine.url, target='_blank') #{wine.website}
 									
-					.other-wines.col-sm-5
+					.other-wines.col-md-5.hidden-xs
 						-if (wine.otherWines.length >0)
 							.other-wines-header
 								| Également disponible chez

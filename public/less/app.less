@@ -10,7 +10,6 @@
 @import "lesshat";
 
 // Site specific colors
-@nav-bg: @clouds;//#7f8c8d;//#f49f0d;//#faf2ed;
 @nav-text-color: #333;
 @nav-bg-when-scrolled: rgba(255,255,255,0.9);
 @nav-height: 130px;
@@ -156,7 +155,15 @@ header {
 }
 
 /* Search box ---------------------------- */
+
+@media (max-width: @screen-xs-max) { 
+	#searchbox {
+		margin-top: 120px;
+	}
+}
+
 #searchbox {
+	
 	padding: @search-padding;
 	
 	.searchitem {
@@ -165,7 +172,7 @@ header {
 		border-radius: 2px;
 		background-color: ##FEFEFE;
 		#gradient.vertical( #FEFEFE; #EEEEEE; 0%; 100%);
-		border: 1px solid darken(@nav-bg, 10%);
+		border: 1px solid darken(@clouds, 10%);
 	}
 	
 	.search-fulltext {
