@@ -101,8 +101,6 @@
 			launchSearch();
 		});
 		
-		
-		
 		//
 		// Fire search dynamically after a few keystrokes ----------------------
 		//
@@ -133,7 +131,7 @@
 			$("html, body").animate({ scrollTop: 0 }, 500);
 			$('#searchbox').css({marginTop: "120px"});
 			//launch spinner
-			$('#spinner').spin();
+			$('#spinner').spin("large","#333");
 			
 			var minSize = $('select#minimumSize').val();
 			var maxSize = $('select#maximumSize').val();
