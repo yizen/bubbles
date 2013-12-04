@@ -25,7 +25,7 @@ module.exports = function(app){
 		
 		var minPrice =  req.query.minPrice || 0;
 		var maxPrice =  req.query.maxPrice || 5000;
-		
+				
 		var color = req.query.color;
 		
 		if (!color || color=="whiteAndPink") colors = ['white', 'pink'];
@@ -84,7 +84,7 @@ module.exports = function(app){
 			hits = results.hits;
 
 			if (hits && hits.total > 0) {
-				renderSearchResults(hits);	
+				renderSearchResults(hits, qty);	
 			} else {
 			
 				request.query(query2).filter(filter).highlight(highlight).size(maxResults).doSearch(function(results){
@@ -97,7 +97,7 @@ module.exports = function(app){
 					hits = results.hits;
 			
 					if (hits && hits.total > 0) {
-						renderSearchResults(hits);	
+						renderSearchResults(hits, qty);	
 					} else {
 						res.render('noresults' );
 					}
@@ -105,7 +105,7 @@ module.exports = function(app){
 			}
 		});
 		
-		var renderSearchResults = function (hits) {
+		var renderSearchResults = function (hits, qty) {
 			hits.hits.forEach(function(item) { 
 				var wine = new Object;
 				
@@ -124,13 +124,15 @@ module.exports = function(app){
 				
 				wine.size =  _.capitalize(sizes.sizeNumToText(item._source.size));				
 				wine.color= _.capitalize(item._source.color);
-
 				wine.qty = qty;
 
 				if (item._source.bestWinePrice) {
 					wine.euro = formatEuro(item._source.bestWinePrice);
+					
 					/*wine.totalNoEuro = item._source.price + transportationFees.transportationFees(qty, item._source.website);
-					wine.total = formatEuro(wine.totalNoEuro);*/
+					wine.total = formatEuro(wine.totalNoEuro);
+					*/
+					
 					wine.qtyNoEuro = (qty*item._source.bestWinePrice) + transportationFees.transportationFees(qty, item._source.bestWineWebsiteName, (qty*item._source.bestWinePrice));
 					wine.qtyFormatted = formatEuro(wine.qtyNoEuro);
 					
@@ -162,6 +164,10 @@ module.exports = function(app){
 						subwine.photo = getPhotoPath(subwine.photo, req);
 						subwine.euro = formatEuro(subwine.price);
 						subwine.url = '/out/'+subwine.id;
+						
+						subwine.qtyNoEuro = (qty*subwine.price) + transportationFees.transportationFees(qty, subwine.website, (qty*subwine.price));
+						subwine.qtyFormatted = formatEuro(subwine.qtyNoEuro);
+						
 						otherWines.push(subwine);
 					}
 				}
@@ -171,13 +177,13 @@ module.exports = function(app){
 				});
 				
 				wine.otherWines = otherWines;
-													
+
 				wines.push(wine);	
 			});
 			
 			wines.resultsCount = hits.total;
 			
-			res.render('results', { wines : wines });
+			res.render('results', { wines : wines, qty: qty });
 		}
 	});	
 

@@ -244,8 +244,19 @@ ol.ui-slider-scale > li {
 @wine-padding-inside: 6px;
 @wine-border-color: #969696;
 	
-.resultsCount{
-	margin-top: 20px;
+.results-count{
+	margin-top: 4px;
+}
+
+.results-qty {
+
+	label#qty-label {
+		margin-right: 10px;
+	}
+
+	#qty-bottles {
+		margin-left: 10px;
+	}
 }
 
 .wines {
@@ -258,6 +269,7 @@ ol.ui-slider-scale > li {
 	outline: 4px solid #f49f0d;
 	z-index: 50;
 }
+
 .wine {
 	border-bottom: 1px solid @wine-border-color;
 	position: relative;
@@ -358,6 +370,10 @@ ol.ui-slider-scale > li {
 			padding-top: 10px;
 			font-size: 14px;
 		}	
+		
+		li.wine-total {
+			font-size: 14px;
+		}
 	}
 	
 	.other-wines {
@@ -370,6 +386,12 @@ ol.ui-slider-scale > li {
 		
 		span.other-price {
 			font-size: 15px;
+		}
+		
+		span.other-total-price {
+			font-size: 15px;
+			margin-left:5px;
+			color: #bbb;
 		}
 		
 		span.other-options {

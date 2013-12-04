@@ -3,35 +3,19 @@
 		//
 		// Spinner used to set quantity -----------------------------------
 		//
-		$.widget( "ui.customspinner", $.ui.spinner, {
-				widgetEventPrefix: $.ui.spinner.prototype.widgetEventPrefix,
-				_buttonHtml: function() { // Remove arrows on the buttons
-				  return "" +
-				  "<a class='ui-spinner-button ui-spinner-up ui-corner-tr'>" +
-					"<span class='ui-icon " + this.options.icons.up + "'></span>" +
-				  "</a>" +
-				  "<a class='ui-spinner-button ui-spinner-down ui-corner-br'>" +
-					"<span class='ui-icon " + this.options.icons.down + "'></span>" +
-				  "</a>";
-				}
-		});
-
-		$('#qty').customspinner({
-			min: 1,
-			max: 99
-		}).on('focus', function () {
-			$(this).closest('.ui-spinner').addClass('focus');
-		}).on('blur', function () {
-			$(this).closest('.ui-spinner').removeClass('focus');
-		});
-		
-		$('#qty').on("spinstop", function() {
-			if ($('#qty').val() == 1) {
-				$('#bottles').html("bouteille de"); 
-			} else {
-				$('#bottles').html("bouteilles de"); 
-			}			
-		});
+		// jQuery UI Spinner
+	    $.widget( "ui.customspinner", $.ui.spinner, {
+	      widgetEventPrefix: $.ui.spinner.prototype.widgetEventPrefix,
+	      _buttonHtml: function() { // Remove arrows on the buttons
+	        return "" +
+	        "<a class='ui-spinner-button ui-spinner-up ui-corner-tr'>" +
+	          "<span class='ui-icon " + this.options.icons.up + "'></span>" +
+	        "</a>" +
+	        "<a class='ui-spinner-button ui-spinner-down ui-corner-br'>" +
+	          "<span class='ui-icon " + this.options.icons.down + "'></span>" +
+	        "</a>";
+	      }
+	    });
 
 		//
 		// Sliders setup -----------------------------------
@@ -116,7 +100,7 @@
 		
 		//on keydown, clear the countdown 
 		$('#text').keydown(function(){
-				 clearTimeout(typingTimer);
+			clearTimeout(typingTimer);
 		});
 		
 		//user is "finished typing," launch search
@@ -125,7 +109,7 @@
 			launchSearch();
 		}
 		
-		var launchSearch = function(startup) {
+		var launchSearch = function() {
 			$('header').removeClass('hidden-xs');
 			$('header').hide();
 			$("html, body").animate({ scrollTop: 0 }, 500);
@@ -139,14 +123,36 @@
 			var minPrice = $("#price-range").slider("values")[0];
 			var maxPrice = $("#price-range").slider("values")[1];
 
-			var qty = $("#qty").val();
-			
-			var keyword = (startup ? 'deutz' : $('#text').val());
+			var qty 	= $("#qty").val() || 6;
+
+			var keyword = $('#text').val();
 			
 			$.ajax({
 				url: '/search?' + 'q='+keyword+'&minSize='+minSize+'&maxSize='+maxSize+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&color='+color+'&qty='+qty
 			}).done(function(wines) {
+			
 				$('#results').replaceWith(wines);
+				
+				$('#qty').customspinner({
+					min: 1,
+					max: 99
+				}).on('focus', function () {
+					$(this).closest('.ui-spinner').addClass('focus');
+				}).on('blur', function () {
+					$(this).closest('.ui-spinner').removeClass('focus');
+				});
+				
+				$('#qty').on("spinstop", function() {
+					if ($('#qty').val() == 1) {
+						$('#qty-bottles').html("bouteille."); 
+					} else {
+						$('#qty-bottles').html("bouteilles."); 
+					}
+					
+					launchSearch();		
+				});
+				
+				
 			}).always(function() {
 				$('#spinner').spin(false);
 			});
@@ -159,7 +165,7 @@
 		
 		if (getQuery && getQuery != '') {
 			$('#text').val(getQuery);
-			launchSearch(false);
+			launchSearch();
 		}
 		
 		//Check if query is set in get variable

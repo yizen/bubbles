@@ -190,8 +190,14 @@ ol.ui-slider-scale > li {
   margin-top: 80px;
 }
 /* Search results ----------------------------- */
-.resultsCount {
-  margin-top: 20px;
+.results-count {
+  margin-top: 4px;
+}
+.results-qty label#qty-label {
+  margin-right: 10px;
+}
+.results-qty #qty-bottles {
+  margin-left: 10px;
 }
 .wines {
   margin-top: 20px;
@@ -296,6 +302,9 @@ ol.ui-slider-scale > li {
   padding-top: 10px;
   font-size: 14px;
 }
+.wine .best-wine li.wine-total {
+  font-size: 14px;
+}
 .wine .other-wines .other-wines-header {
   width: 100%;
   background-color: #ddd;
@@ -304,6 +313,11 @@ ol.ui-slider-scale > li {
 }
 .wine .other-wines span.other-price {
   font-size: 15px;
+}
+.wine .other-wines span.other-total-price {
+  font-size: 15px;
+  margin-left: 5px;
+  color: #bbb;
 }
 .wine .other-wines span.other-options {
   font-size: 15px;

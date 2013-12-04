@@ -1,12 +1,15 @@
 div#results
 	.row
-		.resultsCount.col-md-6
+		.results-count.col-md-6
 			-if (wines.resultsCount > 1)
 				!{wines.resultsCount} champagnes correspondent à votre recherche.
 			-else
 				Un seul champagne correspond à votre recherche.	
-		.sortOrder.col-md-6
-			p
+		.results-qty.col-md-6
+			.form-group
+				label#qty-label Calculer un total avec frais de ports pour
+				input#qty.spinner.form-control(type="text", value="#{qty}")
+				span#qty-bottles bouteilles.
 	.row.wines
 		.col-md-12
 			- each wine in wines
@@ -35,6 +38,8 @@ div#results
 								| Au meilleur prix chez&nbsp;
 								strong 
 									a(href=wine.url, target='_blank') #{wine.website}
+							li.wine-total
+								| Total pour !{wine.qty} frais de port compris : !{wine.qtyFormatted}
 									
 					.other-wines.col-md-5.hidden-xs
 						-if (wine.otherWines.length >0)
@@ -44,6 +49,7 @@ div#results
 							-each otherWine in wine.otherWines
 								li
 									span.other-price !{otherWine.euro}
+									span.other-total-price (!{otherWine.qtyFormatted} pour #{qty})
 									span.other-website
 										a.btn.other-website(href=otherWine.url, target='_blank', role='button') #{otherWine.website}&nbsp;
 											i.fui-export
