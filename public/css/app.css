@@ -362,8 +362,14 @@ h5.title {
 #blog {
   margin-top: 180px;
 }
+#blog h1 {
+  font-size: 32px;
+}
 #blog h2 {
-  font-size: 34px;
+  font-size: 26px;
+}
+#blog p {
+  color: #333;
 }
 #blog section {
   display: block;
