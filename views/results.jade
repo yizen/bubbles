@@ -1,57 +1,66 @@
-div#results
-	.row
-		.results-count.col-md-6
-			-if (wines.resultsCount > 1)
-				!{wines.resultsCount} champagnes correspondent à votre recherche.
-			-else
-				Un seul champagne correspond à votre recherche.	
-		.results-qty.col-md-6.hidden-xs
-			.form-group
-				label#qty-label Calculer un total avec frais de ports pour
-				input#qty.spinner.form-control(type="text", value="#{qty}")
-				span#qty-bottles bouteilles.
-	.row.wines
-		.col-md-12
-			- each wine in wines
-				.row.wine
-					-if (wine.color == 'Pink')	
-						.ribbon
-							div
-								| Rosé	
-					figure.image.col-sm-3
-						img(src='#{wine.photo}')
-						.price
-							a(href=wine.url, target='_blank') !{wine.euro}
-						.target-site
-							a.btn.btn-target-site(href=wine.url, target='_blank', role='button')
-								|Voir l'offre&nbsp;
-								i.fui-export
-					.best-wine.col-md-4.hidden-xs
-						ul
-							li.wine-producer
-								| !{wine.producer}
-							li.wine-name
-								| !{wine.name}
-							li.wine-size
-								| !{wine.size}	
-							li.wine-site
-								| Au meilleur prix chez&nbsp;
-								strong 
-									a(href=wine.url, target='_blank') #{wine.website}
-							li.wine-total
-								| Total pour !{wine.qty} frais de port compris : !{wine.qtyFormatted}
-									
-					.other-wines.col-md-5.hidden-xs
-						-if (wine.otherWines.length >0)
-							.other-wines-header
-								| Également disponible chez
+-if (wines.resultsCount == 0)
+	div#results
+		.row
+			.results-count.col-md-6
+				h4 Aucun champagne ne correspond à votre recherche
+-else				
+	div#results
+		.row
+			.results-count.col-md-6
+				-if (wines.resultsCount > 1)
+					- if (queryParams.producer)
+						p Voici les !{wines.resultsCount} champagnes de #{queryParams.producer} les moins cher
+					- else 
+						p Voici les !{wines.resultsCount} champagnes qui correspondent à votre recherche
+				-else
+					p Voici le champagne qui correspond à votre recherche.
+			.results-qty.col-md-6.hidden-xs
+				.form-group
+					label#qty-label Calculer un total avec frais de ports pour
+					input#qty.spinner.form-control(type="text", value="#{wines.qty}")
+					span#qty-bottles bouteilles.
+		.row.wines
+			.col-md-12
+				- each wine in wines
+					.row.wine
+						-if (wine.color == 'Pink')	
+							.ribbon
+								div
+									| Rosé	
+						figure.image.col-sm-3
+							img(src='#{wine.photo}')
+							.price
+								a(href=wine.url, target='_blank') !{wine.euro}
+							.target-site
+								a.btn.btn-target-site(href=wine.url, target='_blank', role='button')
+									|Voir l'offre&nbsp;
+									i.fui-export
+						.best-wine.col-md-4.hidden-xs
 							ul
-							-each otherWine in wine.otherWines
-								li
-									span.other-price !{otherWine.euro}
-									span.other-total-price (!{otherWine.qtyFormatted} pour #{qty})
-									span.other-website
-										a.btn.other-website(href=otherWine.url, target='_blank', role='button') #{otherWine.website}&nbsp;
-											i.fui-export
-									-if (otherWine.options && otherWine.options != '')	
-										span.other-options #{otherWine.options}	
+								li.wine-producer
+									| !{wine.producer}
+								li.wine-name
+									| !{wine.name}
+								li.wine-size
+									| !{wine.size}	
+								li.wine-site
+									| Au meilleur prix chez&nbsp;
+									strong 
+										a(href=wine.url, target='_blank') #{wine.website}
+								li.wine-total
+									| Total pour !{wine.qty} frais de port compris : !{wine.qtyFormatted}
+										
+						.other-wines.col-md-5.hidden-xs
+							-if (wine.otherWines.length >0)
+								.other-wines-header
+									| Également disponible chez
+								ul
+								-each otherWine in wine.otherWines
+									li
+										span.other-price !{otherWine.euro}
+										span.other-total-price (!{otherWine.qtyFormatted} pour #{qty})
+										span.other-website
+											a.btn.other-website(href=otherWine.url, target='_blank', role='button') #{otherWine.website}&nbsp;
+												i.fui-export
+										-if (otherWine.options && otherWine.options != '')	
+											span.other-options #{otherWine.options}	

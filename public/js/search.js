@@ -113,7 +113,7 @@
 			$('header').removeClass('hidden-xs');
 			$('header').hide();
 			$("html, body").animate({ scrollTop: 0 }, 500);
-			$('#searchbox').css({marginTop: "120px"});
+			$('#searchbox').addClass('after-search');
 			//launch spinner
 			$('#spinner').spin("large","#333");
 			
@@ -162,6 +162,28 @@
 		// Inits----------------------
 		//
 		var getQuery = getURLParameter('q');
+		
+		if ($('#qty')) {
+			$('#qty').customspinner({
+					min: 1,
+					max: 99
+				}).on('focus', function () {
+					$(this).closest('.ui-spinner').addClass('focus');
+				}).on('blur', function () {
+					$(this).closest('.ui-spinner').removeClass('focus');
+				});
+				
+				$('#qty').on("spinstop", function() {
+					if ($('#qty').val() == 1) {
+						$('#qty-bottles').html("bouteille."); 
+					} else {
+						$('#qty-bottles').html("bouteilles."); 
+					}
+					
+					launchSearch();		
+				});
+		}
+		
 		
 		if (getQuery && getQuery != '') {
 			$('#text').val(getQuery);

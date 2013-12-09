@@ -1,0 +1,48 @@
+extends layout
+
+block header		
+	#nav-bg
+	
+block nav
+	-var selected = 'Search';
+
+block content
+	- var searchTerm = '';
+	- if (queryParams.producer) {searchTerm = queryParams.producer};
+	- if (queryParams.name) {searchTerm = queryParams.name};
+	.container#searchbox.after-search
+		.row
+			.col-md-3.searchitem.search-fulltext
+				input#text.form-control.input-hg(type='text', placeholder='maison, cuvée', autocomplete='off', value='#{searchTerm}')
+			.col-md-3.hidden-xs
+				.searchitem 
+					#price-range.slider
+			.col-md-3.hidden-xs
+				.searchitem 	
+					fieldset.slider
+						select#minimumSize(name='minimumSize')
+							option(value='0.5') Demi-bouteille
+							option(value='1', selected='selected') Bouteille
+							option(value='2') Magnum
+							option(value='400') Jeroboam et plus
+						select#maximumSize(name='maximumSize')
+							option(value='0.5') Demi-bouteille
+							option(value='1') Bouteille
+							option(value='2') Magnum
+							option(value='400', selected='selected') Jeroboam et plus		
+			.col-md-3.hidden-xs
+				.searchitem 
+						label.radio#whiteAndPink
+							input(type='radio', name='optionsRadios', value='whiteAndPink', data-toggle='radio', checked='')
+							| Blancs et rosés
+						label.radio#white
+							input(type='radio', name='optionsRadios', value='white', data-toggle='radio')
+							| Uniquement blancs
+						label.radio#pink
+							input(type='radio', name='optionsRadios', value='pink', data-toggle='radio')
+							| Uniquement rosés		
+	.container			
+		include results
+										
+block append scripts
+	script(src='/js/search.js')

@@ -160,6 +160,9 @@ header {
 #searchbox .search-fulltext input {
   border-radius: 30px;
 }
+.after-search {
+  margin-top: 120px;
+}
 /* Slider search elements ------------------------- */
 ol.ui-slider-scale > li {
   font-size: 80%;
