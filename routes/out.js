@@ -5,10 +5,14 @@ module.exports = function(app){
 			if (wine) {
 				res.redirect(wine.url);
 				
-				var cookie = req.signedCookies.query;		
-
+				var cookie = req.signedCookies.query;
+				
 				db.Clic.create ({
 					query: cookie.q,
+					producer: cookie.producer,
+					wine: cookie.wine,
+					from: cookie.from,
+					
 					qty: cookie.qty,
 					minSize:cookie.minSize,
 					maxSize:cookie.maxSize,

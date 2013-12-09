@@ -41,7 +41,7 @@ module.exports = function(app){
 	app.get('/search', function(req, res){
 		
 		var queryParams = extend({}, req.query);
-		setCookie (res, queryParams, 'producer');
+		setCookie (res, queryParams, 'search');
 		executeSearch(req, res, queryParams, 'results');
 	});
 	
@@ -242,5 +242,4 @@ module.exports = function(app){
 	var setCookie = function(res, query, from) {
 		res.cookie('query', { from: from, q: query.q, wine:query.name, producer: query.producer, qty: query.qty, minSize: query.minSize, maxSize:query.maxSize, minPrice:query.minPrice, maxPrice:query.maxPrice, color:query.color }, {signed: true});
 	}
-	
 };
