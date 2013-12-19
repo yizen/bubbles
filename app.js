@@ -1,11 +1,10 @@
-
-
 var express 		= require('express'),
   	async 			= require('async'),
   	expressWinston 	= require('express-winston'),
   	winston			= require('winston'),
   	db 				= require('./models'),  	
   	bubblescrawler	= require('./crawler/bubblescrawler'),
+  	elasticSearch	= require('./lib/elasticSearch'),
   	thumbs			= require('connect-thumbs'),
   	later			= require('later'),
   	Poet 			= require('poet');
@@ -27,6 +26,9 @@ db.sequelize.sync().complete(function() {
 later.date.localTime();
 var refreshSchedule = later.parse.recur().on('02:00:00').time();
 var refreshTask 	= later.setInterval(bubblescrawler.refreshAllWebsites, refreshSchedule);
+
+var reindexSchedule = later.parse.recur().on('04:00:00').time();
+var reindexTask		= later.setInterval(elasticSearch.reindexReferenceWines, reindexSchedule);
 
 // Configuration
 app.configure(function(){	

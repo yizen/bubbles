@@ -6,9 +6,15 @@ block nav
 block header
 	header.admin
 		.container
-			a.btn.btn-mini.btn-danger.mlm(href='/admin/elasticsearch/reindex/')
+			a.btn.btn-mini.btn-danger.mlm(href='/admin/elasticsearch/reindexReference/')
 				i(style='font-size:11px').fui-trash
-				|	Reindex
+				|	Reindex Wines Reference
+			a.btn.btn-mini.btn-danger.mlm(href='/admin/elasticsearch/reindexWine/')
+				i(style='font-size:11px').fui-trash
+				|	Reindex Wines 	
+			a.btn.btn-mini.btn-danger.mlm(href='/admin/elasticsearch/reindexProducer/')
+				i(style='font-size:11px').fui-trash
+				|	Reindex Producers 		
 	#nav-bg
 									
 block content
