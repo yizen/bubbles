@@ -27,8 +27,10 @@
 				tooltip: false,
 				sliderOptions: { 
 					change:function(e, ui) { 
-						//minSize = $('select#minimumSize option').eq(ui.values[0]).val();
-						//maxSize = $('select#maximumSize option').eq(ui.values[1]).val();
+						var minSize = $('select#minimumSize').val();
+						var maxSize = $('select#maximumSize').val();
+						ga('send','event', 'Search', 'Size', minSize+' '+maxSize);
+
 						launchSearch();
 					}
 				}
@@ -53,7 +55,10 @@
 				tooltip($(this),ui);					
 			 },
 				 stop:function(e,ui) {
-				  launchSearch(); 
+				 	var minPrice = $("#price-range").slider("values")[0];
+				 	var maxPrice = $("#price-range").slider("values")[1];
+				 	ga('send','event', 'Search', 'Price', minPrice+' '+maxPrice);
+				 	launchSearch(); 
 				 }
 		});
 	
@@ -72,16 +77,22 @@
 		
 		$('#white').on('click', function(event) {
 			color='White';
+			ga('send','event', 'Search', 'Color', color);
+
 			launchSearch();
 		});
 		
 		$('#pink').on('click', function(event) {
 			color='Pink';
+			ga('send','event', 'Search', 'Color', color);
+	
 			launchSearch();
 		});
 		
 		$('#whiteAndPink').on('click', function(event) {
 			color='whiteAndPink';
+			ga('send','event', 'Search', 'Color', color);
+
 			launchSearch();
 		});
 		
@@ -106,6 +117,8 @@
 		//user is "finished typing," launch search
 		function doneTyping () {
 			if ($('#text').val().length < 3) { return }
+			ga('send', 'event', 'Search', 'Text', $('#text').val());
+
 			launchSearch();
 		}
 		
