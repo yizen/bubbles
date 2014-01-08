@@ -428,6 +428,16 @@ h5.title {
   padding-bottom: 20px;
   border-bottom: 1px solid #ddd;
 }
+#blog section .content a {
+  border-bottom: 2px solid #333;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.125s ease-in-out;
+}
+#blog section .content a:hover {
+  border-bottom-color: #4a7298;
+  color: #4a7298;
+}
 #blog section .hashtags {
   font-size: 14px;
   margin: 38px 0 0 0;
@@ -482,4 +492,32 @@ h5.title {
   margin-bottom: -3px;
   position: relative;
   display: block;
+}
+/* Big data ----------------------------------------------------------------------- */
+#big-data-intro {
+  margin-top: 150px;
+}
+.data-block {
+  border-radius: 4px;
+  padding: 20px;
+  background: #282537;
+  background-image: -webkit-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+  background-image: -moz-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+  background-image: -o-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+  background-image: radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+  color: #fff;
+  margin-bottom: 10px;
+}
+.data-block h1 {
+  font-family: "Hoefler Text", "Baskerville old face", Garamond, "Times New Roman", serif;
+  font-size: 36px;
+}
+.data-block h2 {
+  font-size: 18px;
+}
+.data-block p span {
+  background-color: white;
+  padding: 6px;
+  color: black;
+  border-radius: 4px;
 }

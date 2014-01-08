@@ -155,7 +155,6 @@ header {
 }
 
 /* Search box ---------------------------- */
-
 @media (max-width: @screen-xs-max) { 
 	#searchbox {
 		margin-top: 120px;
@@ -465,6 +464,9 @@ h5.title {
 		color: #333;
 	}
 	
+	
+
+	
 	section {
 		display: block;
 		position: relative;
@@ -532,6 +534,22 @@ h5.title {
 			border-bottom: 1px solid #ddd;
 		}
 		
+		
+		.content {
+			a {
+			  border-bottom: 2px solid #333;
+			  color: #333;
+			  text-decoration: none;
+			  transition: all .125s ease-in-out;
+			}
+			
+			a:hover{
+			  border-bottom-color: #4a7298;
+			  color: #4a7298;
+			}
+		}
+	
+		
 		.hashtags {
 			font-size: 14px;
 			margin: 38px 0 0 0;
@@ -591,5 +609,39 @@ h5.title {
 		margin-bottom: -3px;
 		position: relative;
 		display: block;
+	}
+}
+
+/* Big data ----------------------------------------------------------------------- */
+#big-data-intro {
+	margin-top: 150px;
+}
+
+.data-block {
+	border-radius: 4px;
+	padding: 20px;
+background: #282537;
+ background-image: -webkit-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+ background-image: -moz-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+ background-image: -o-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+ background-image: radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);	color: #fff;
+	margin-bottom: 10px;
+	
+	h1 {
+		font-family: "Hoefler Text", "Baskerville old face", Garamond, "Times New Roman", serif;
+		font-size: 36px;
+	}
+	
+	h2 {
+		font-size: 18px;
+	}
+	
+	p {
+		span {
+			background-color: white;
+			padding: 6px;
+			color: black;
+			border-radius: 4px;
+		}
 	}
 }

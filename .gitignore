@@ -23,3 +23,5 @@ node_modules
 /public/less/modules/.DS_Store
 /posts/base.md
 /setup.txt
+
+/bigdata/

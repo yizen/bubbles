@@ -5,13 +5,14 @@ var express 		= require('express'),
   	db 				= require('./models'),  	
   	bubblescrawler	= require('./crawler/bubblescrawler'),
   	elasticSearch	= require('./lib/elasticSearch'),
+  	bigData			= require('./lib/bigData'),  	
   	thumbs			= require('connect-thumbs'),
   	later			= require('later'),
   	Poet 			= require('poet');
 
 var app = module.exports = express();
 
-if (app.settings.env != 'development')require('newrelic');
+if (app.settings.env != 'development') require('newrelic');
 
 var port = 3000;
 
@@ -29,6 +30,9 @@ var refreshTask 	= later.setInterval(bubblescrawler.refreshAllWebsites, refreshS
 
 var reindexSchedule = later.parse.recur().on('04:00:00').time();
 var reindexTask		= later.setInterval(elasticSearch.reindexReferenceWines, reindexSchedule);
+
+var recalcStatsSchedule = later.parse.recur().on('04:30:00').time();
+var recalcStatsTask		= later.setInterval(bigData.recalcStats, recalcStatsSchedule);
 
 // Configuration
 app.configure(function(){	

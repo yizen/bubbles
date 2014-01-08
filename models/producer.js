@@ -8,6 +8,8 @@ module.exports = function(sequelize, DataTypes) {
 		company:DataTypes.STRING,		
 		adress:DataTypes.STRING,
 		zip:DataTypes.STRING,
-		city:DataTypes.STRING
+		city:DataTypes.STRING,
+		longitude: DataTypes.FLOAT,
+		latitude: DataTypes.FLOAT
 	});
 }

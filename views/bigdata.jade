@@ -7,31 +7,32 @@ block header
 	#nav-bg
 
 block content
-	div.container
-		div.row
-			div.span12
-				h3
-					| Statistiques globales
-		div.row
-			div.span12#rawStats
-				p
-					| Sur la base de #{bigdata.websiteCount} sites de vente en ligne, #{bigdata.wineCount} références sont en vente.
-				p
-					| Cela représente #{bigdata.producerCount} maisons, qui proposent #{bigdata.wineRefCount} cuvées.
-				p
-					| Le prix moyen de vente à l'unité est de #{bigdata.meanPrice} euros.
-		div.row
-			
-			
-		div.row
-			div.span12#chart1
-				ul.nav.nav-pills
-					li.active
-						a#mostFrequent Marques les plus representées
-					li	
-						a#byPrice Marques les plus chères
-				div.svg
-			
+	.container#container
+		#big-data-intro
+			.row
+				.col-md-12
+					p Les statistiques publiées ici sont calculées sur notre base de données.
+
+			.row
+				.col-md-6
+					.data-block
+						h1 Echantillon
+						h2 Sur quelle base travaillons-nous ?
+						p La Cote des Bulles référence <span>#{bigdata.websiteCount}</span> sites de vente en ligne.
+						p Ces <span>#{bigdata.websiteCount}</span> sites proposent à la vente <span>#{bigdata.wineCount}</span> références.
+						p Cela représente <span>#{bigdata.producerCount}</span> maisons, qui proposent <span>#{bigdata.wineRefCount}</span> cuvées.
+						p Le prix moyen de vente à l'unité est de <span>#{bigdata.meanPrice}</span> euros pour une bouteille de 75cl.
+						p Le prix median de vente à l'unité est de <span>#{bigdata.medianPrice}</span> euros.
+				.col-md-6			
+					.data-block
+						h1 Rosé ou Blanc
+						h2 Quelle différence entre le champagne blanc et le champagne rosé ?
+						p Seulement <span>#{bigdata.percentPink} %</span> des vins référencés par La Cote des Bulles sont rosés.
+						p Le prix moyen de vente à l'unité est de <span>#{bigdata.meanPricePink}</span> euros pour une bouteille de 75cl rosé.
+						p Le prix median de vente à l'unité est de <span>#{bigdata.medianPricePink}</span> euros pour une bouteille de 75cl rosé.
+						p Le prix moyen de vente à l'unité est de <span>#{bigdata.meanPriceWhite}</span> euros pour une bouteille de 75cl blanc.
+						p Le prix median de vente à l'unité est de <span>#{bigdata.medianPriceWhite}</span> euros pour une bouteille de 75cl blanc.
+		
 block append scripts
 	script(src='/js/d3/d3.v3.min.js')
-	script(src='/js/bigdata.js')
+	script(src='/js/ui/masonry.pkgd.min.js')
