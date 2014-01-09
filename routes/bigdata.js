@@ -4,7 +4,7 @@ bigData			= require('./../lib/bigData');
 
 module.exports = function(app){
 	app.get('/bigdata/', function(req, res) {
-		fs.readFile('./bigdata/data.json', function read(err, data) {
+		fs.readFile('bigdata/data.json', function read(err, data) {
 		    if (err) {
 		        throw err;
 		    }
