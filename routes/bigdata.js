@@ -1,10 +1,12 @@
 async 			= require('async');
 fs 				= require('fs');
 bigData			= require('./../lib/bigData');
+path  			= require('path');
+
 
 module.exports = function(app){
 	app.get('/bigdata/', function(req, res) {
-		fs.readFile('bigdata/data.json', function read(err, data) {
+		fs.readFile(path.resolve(__dirname, '../bigdata/data.json'), function read(err, data) {
 		    if (err) {
 		        throw err;
 		    }
