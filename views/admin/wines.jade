@@ -30,7 +30,7 @@ block content
 					tr(class="#{wine.reference>0 ? '' : 'info'}")
 						td
 							=wine.id
-						td	
+						td
 							a(href=wine.url, target='_blank') #{wine.website}
 						td
 							=wine.name
@@ -50,5 +50,5 @@ block content
 							if wine.active
 								span.fui-check-inverted
 						td
-								a(href='/admin/wine/'+wine.id) Edit
+							a(href='/admin/wine/'+wine.id) Edit
 		!= pagination

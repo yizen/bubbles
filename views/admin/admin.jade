@@ -11,7 +11,7 @@ block header
 					li
 						a.btn#clearjobs.fui-trash  Clear all jobs
 	#nav-bg
-									
+
 block content
 	.container
 		table.table.table-bordered.admin-table
@@ -21,11 +21,11 @@ block content
 					th Jobs
 					th Actions
 			tbody
-				- each website in websites
+				-each website in websites
 					tr
-						td	
+						td
 							=website.name
-						td	
+						td
 							table.table.table-striped.smallTable
 								thead
 									tr
@@ -34,23 +34,23 @@ block content
 										th	Status
 										th 	Action
 								tbody
-								- each job in website.jobs
+								-each job in website.jobs
 									tr
 										td
 											a.btn.btn-mini(href='/admin/job/'+job.id) Job #{job.id}
 										td
 											=job.type 
-										td	
+										td
 											=job.status
 										td
 											if (job.status == "RUNNING")
 												a.btn.btn-mini.btn-warning.mlm(href='/admin/job/stop/'+job.id)
 													i(style='font-size:11px').fui-power
 												a.btn.btn-mini.btn-warning.mlm(href='/admin/job/clear/'+job.id)
-													i(style='font-size:11px').fui-trash	
+													i(style='font-size:11px').fui-trash
 
 						td
-							div.actions		
+							div.actions
 								a.btn.btn-mini.btn-primary(href=website.refresh) Run Refresh
 								a.btn.btn-mini.btn-primary(href=website.crawl) Run Crawl
 							div.status

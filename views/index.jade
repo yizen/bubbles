@@ -7,8 +7,8 @@ block header
 
 		canvas#header-canvas
 			//Browser not supported.
-							
-	#nav-bg	
+
+	#nav-bg
 	
 block nav
 	-var selected = 'Search';		
@@ -22,7 +22,7 @@ block content
 				.searchitem 
 					#price-range.slider
 			.col-md-3.hidden-xs
-				.searchitem 	
+				.searchitem
 					fieldset.slider
 						select#minimumSize(name='minimumSize')
 							option(value='0.5') Demi-bouteille
@@ -33,7 +33,7 @@ block content
 							option(value='0.5') Demi-bouteille
 							option(value='1') Bouteille
 							option(value='2') Magnum
-							option(value='400', selected='selected') Jeroboam et plus		
+							option(value='400', selected='selected') Jeroboam et plus
 			.col-md-3.hidden-xs
 				.searchitem 
 						label.radio#whiteAndPink
@@ -44,10 +44,10 @@ block content
 							| Uniquement blancs
 						label.radio#pink
 							input(type='radio', name='optionsRadios', value='pink', data-toggle='radio')
-							| Uniquement rosés		
-	.container					
+							| Uniquement rosés
+	.container
 		#results
-										
+
 block append scripts
 	script(src='/js/search.js')
 	script(src='/js/paper-full.min.js')

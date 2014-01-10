@@ -1,4 +1,4 @@
-!!!
+doctype html
 html(lang='fr')
 	-var menu = {'Search': {url:'/', text:'Recherchez et comparez par producteur, gamme de prix...'},'Big data': {url:'/bigdata/', text:'Les données décortiquées de la vente en ligne de champagne'}, 'Blog': {url:'/blog/', text: 'Nos plus belles infos sur les plus belles bulles'} };
 	block menu
@@ -24,7 +24,7 @@ html(lang='fr')
 						h1 
 							a(href="/") la cote des bulles
 						h2 Le comparateur indépendant des prix du champagne
-					#spinner	
+					#spinner
 					ul.hidden-xs
 						each val, key in menu
 							li
@@ -36,7 +36,7 @@ html(lang='fr')
 									a(href=val.url, title=key)= key
 									div 
 										=val.text
-			block header							
+			block header
 			block content
 		#footer
 			include footer

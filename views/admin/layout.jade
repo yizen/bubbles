@@ -1,4 +1,4 @@
-!!!
+doctype html
 html(lang='fr')
 	-var menu = {'Websites': {url:'/admin/', text:'Listes des sites référencés'},'Cuvées': {url:'/admin/wines/', text:'Les cuvées référencées'}, 'Producteurs': {url:'/admin/producers/', text: 'Les producteurs et leurs cuvées'}, 'ElasticSearch': {url:'/admin/elasticsearch/', text:'Gestion du moteur elasticSearch'}, 'Outbound': {url:'/admin/clics/', text:'Les clics sortants'}};
 	block menu
@@ -21,7 +21,7 @@ html(lang='fr')
 					h1 
 						a(href="/") Admin
 					h2 Back office d'administration
-				#spinner	
+				#spinner
 				ul.hidden-xs
 					each val, key in menu
 						li
