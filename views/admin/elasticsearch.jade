@@ -18,8 +18,9 @@ block header
 	#nav-bg
 									
 block content
-	.container		
-		h3	#{status.cluster_name}
+	.container
+		h3
+			|#{status.cluster_name}
 		ul
 			each node in status.nodes
 				li= node.name
