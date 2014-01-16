@@ -92,8 +92,8 @@ module.exports = function(app){
 
 		//if q : query both producer and wines		
 		if ( query.q && query.q != '') {
-			var termQuery1 = ejs.MatchQuery('name', query.q).operator('and'),
-				termQuery2 = ejs.MatchQuery('producer', query.q).operator('and');
+			var termQuery1 = ejs.FuzzyQuery('name', query.q);//.operator('and'),
+			var termQuery2 = ejs.FuzzyQuery('producer', query.q);//.operator('and');
 		
 			constructedQuery  = ejs.BoolQuery().should([termQuery1, termQuery2]);
 			
@@ -106,6 +106,8 @@ module.exports = function(app){
 		} else {
 			constructedQuery = ejs.MatchAllQuery();
 		}
+		
+		console.log(constructedQuery.toString());
 		
 		return({query:constructedQuery, filter:filter, sort:sort, highlight:highlight, maxResults:maxResults});
 	}
