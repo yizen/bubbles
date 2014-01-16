@@ -1,5 +1,5 @@
 var bubblescrawler = (function () {
-    var Crawler = require("simplecrawler").Crawler;
+    var Crawler 	= require("simplecrawler").Crawler;
 	var scrapinode 	= require("scrapinode");
 	var request 	= require('request');
 	var db      	= require('../models');
@@ -269,11 +269,13 @@ var bubblescrawler = (function () {
 	
 		website.lastCrawlStart = new Date();
 		website.save();
-	
+	    
+	    console.log("Start "+website.url);
+	    
 		var mainCrawler = new Crawler(website.url);
 		
-		mainCrawler.timeout = 5000;
-		mainCrawler.interval = 3600;
+		mainCrawler.timeout 	= 5000;
+		mainCrawler.interval 	= 3600;
 		
 		mainCrawler.downloadUnsupported = false;
 		mainCrawler.acceptCookies = true;
