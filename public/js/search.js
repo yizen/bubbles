@@ -29,7 +29,7 @@
 					change:function(e, ui) { 
 						var minSize = $('select#minimumSize').val();
 						var maxSize = $('select#maximumSize').val();
-						ga('send','event', 'Search', 'Size', minSize+' '+maxSize);
+						ga('send','event', 'Search', 'Size', 'Size '+minSize+' '+maxSize);
 
 						launchSearch();
 					}
@@ -57,7 +57,7 @@
 				 stop:function(e,ui) {
 				 	var minPrice = $("#price-range").slider("values")[0];
 				 	var maxPrice = $("#price-range").slider("values")[1];
-				 	ga('send','event', 'Search', 'Price', minPrice+' '+maxPrice);
+				 	ga('send','event', 'Search', 'Price', 'Price '+minPrice+' '+maxPrice);
 				 	launchSearch(); 
 				 }
 		});
@@ -77,21 +77,21 @@
 		
 		$('#white').on('click', function(event) {
 			color='White';
-			ga('send','event', 'Search', 'Color', color);
+			ga('send','event', 'Search', 'Color', 'Color '+color);
 
 			launchSearch();
 		});
 		
 		$('#pink').on('click', function(event) {
 			color='Pink';
-			ga('send','event', 'Search', 'Color', color);
+			ga('send','event', 'Search', 'Color', 'Color '+color);
 	
 			launchSearch();
 		});
 		
 		$('#whiteAndPink').on('click', function(event) {
 			color='whiteAndPink';
-			ga('send','event', 'Search', 'Color', color);
+			ga('send','event', 'Search', 'Color', 'Color '+color);
 
 			launchSearch();
 		});
