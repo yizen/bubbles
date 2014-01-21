@@ -195,6 +195,9 @@ ol.ui-slider-scale > li {
 .admin-form {
   margin-top: 80px;
 }
+#admin-producer-search {
+  margin-top: 20px;
+}
 /* Search results ----------------------------- */
 .results-count {
   margin-top: 4px;
