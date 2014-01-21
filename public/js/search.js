@@ -122,26 +122,36 @@
 			launchSearch();
 		}
 		
-		var launchSearch = function() {
-			$('header').removeClass('hidden-xs');
-			$('header').hide();
-			$("html, body").animate({ scrollTop: 0 }, 500);
-			$('#searchbox').addClass('after-search');
-			//launch spinner
-			$('#spinner').spin("large","#333");
+		var launchSearch = function(firstRun) {
+			
+			var isFirstRun = firstRun || false;
+		
+			if (!isFirstRun) {
+				$('header').removeClass('hidden-xs');
+				$('header').hide();
+				$("html, body").animate({ scrollTop: 0 }, 500);
+				$('#searchbox').addClass('after-search');
+				//launch spinner
+				$('#spinner').spin("large","#333");
+			}
+			
 			
 			var minSize = $('select#minimumSize').val();
 			var maxSize = $('select#maximumSize').val();
 			
 			var minPrice = $("#price-range").slider("values")[0];
 			var maxPrice = $("#price-range").slider("values")[1];
+			
+			var maxResults = 40;
+			
+			if (isFirstRun) maxResults = 4;
 
 			var qty 	= $("#qty").val() || 6;
 
 			var keyword = $('#text').val();
 			
 			$.ajax({
-				url: '/search?' + 'q='+keyword+'&minSize='+minSize+'&maxSize='+maxSize+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&color='+color+'&qty='+qty
+				url: '/search?' + 'q='+keyword+'&minSize='+minSize+'&maxSize='+maxSize+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&color='+color+'&qty='+qty+'&maxResults='+maxResults
 			}).done(function(wines) {
 			
 				$('#results').replaceWith(wines);
@@ -205,6 +215,9 @@
 		
 		//Check if query is set in get variable
 		$('#text').focus();	
+		
+		//Launch search at page load
+		launchSearch(true);
 		
 		function getURLParameter(sParam) {
 			var sPageURL = window.location.search.substring(1);

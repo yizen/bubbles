@@ -9,9 +9,9 @@
 			.results-count.col-md-6
 				-if (wines.resultsCount > 1)
 					- if (queryParams.producer)
-						p Voici les !{wines.resultsCount} champagnes de #{queryParams.producer} les moins cher
+						p Il y a !{wines.resultsCount} champagnes de #{queryParams.producer} les moins cher
 					- else 
-						p Voici les !{wines.resultsCount} champagnes qui correspondent à votre recherche
+						p Il y a !{wines.resultsCount} champagnes qui correspondent à votre recherche
 				-else
 					p Voici le champagne qui correspond à votre recherche.
 			.results-qty.col-md-6.hidden-xs

@@ -45,7 +45,7 @@ module.exports = function(app){
 		executeSearch(req, res, queryParams, 'results');
 	});
 	
-	var buildQuery = function(query, sort, maxResults) {
+	var buildQuery = function(query, sort) {
 		var qty 	= query.qty || 1;
 
 		var minSize =  query.minSize || 1;
@@ -59,7 +59,7 @@ module.exports = function(app){
 		if (query.color == "Pink")  colors = ['pink'];		
 		
 		//maxResults
-		var maxResults = maxResults || 35; 
+		var maxResults = query.maxResults || 35;
 
 		ejs.client = nc.NodeClient('localhost', '9200');
 		
@@ -106,9 +106,7 @@ module.exports = function(app){
 		} else {
 			constructedQuery = ejs.MatchAllQuery();
 		}
-		
-		console.log(constructedQuery.toString());
-		
+				
 		return({query:constructedQuery, filter:filter, sort:sort, highlight:highlight, maxResults:maxResults});
 	}
 	
@@ -120,6 +118,8 @@ module.exports = function(app){
 		var index 	= 'bubbles';
 		var type 	= 'winereference';
 		var request = ejs.Request({indices: index, types: type});
+		
+		//console.log(request.query(query.query).filter(query.filter).sort(query.sort).highlight(query.highlight).size(query.maxResults).toString());
 		
 		request.query(query.query).filter(query.filter).sort(query.sort).highlight(query.highlight).size(query.maxResults).doSearch(
 			function success(results){
